@@ -48,4 +48,7 @@ public class Message {
     public static final String CONFIRM_NOT_FOUND = "후기 없음";
     public static final String CONFIRM_MEMBER_FIND_SUCCESS = "명단 조회 성공";
     public static final String CONFIRM_MEMBER_FIND_FAIL = "명단 조회 실패";
+
+    //file
+    public static final String FILE_EXTENSION_EXCEPTION = "파일 확장자가 jpg나 png가 아닙니다.";
 }

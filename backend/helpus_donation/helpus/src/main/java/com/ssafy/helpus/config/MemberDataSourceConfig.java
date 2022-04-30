@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "memberEntityManagerFactory",
         transactionManagerRef = "memberTransactionManager",
-        basePackages = {"com.ssafy.helpus.member.entity"}
+        basePackages = {"com.ssafy.helpus.member.repository"}
 )
 public class MemberDataSourceConfig {
 
@@ -29,7 +29,7 @@ public class MemberDataSourceConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean memberEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         return builder.dataSource(memberDataSource)
-                .packages("com.ssafy.member.domain")
+                .packages("com.ssafy.helpus.member.entity")
                 .persistenceUnit("member").build();
     }
 
