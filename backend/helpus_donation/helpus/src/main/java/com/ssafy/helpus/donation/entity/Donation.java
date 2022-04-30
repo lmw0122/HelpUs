@@ -4,6 +4,7 @@ import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @Table(name = "donation")
 public class Donation {
-    @Id
+    @Id @Column(name = "donation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer donationId;
 

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "donation_image")
 public class DonationImage {
-    @Id
+    @Id @Column(name = "donation_image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer donationImageId;
 
