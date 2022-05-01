@@ -93,4 +93,22 @@ public class DonationController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "기부 글 마감")
+    @DeleteMapping("{donationId}")
+    public ResponseEntity endDonation(@PathVariable Integer donationId) {
+        log.info("DonationController endDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = donationService.endDonation(donationId);
+        } catch (Exception e) {
+            log.error(Message.DONATION_END_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DONATION_END_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }

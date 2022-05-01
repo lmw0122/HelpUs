@@ -117,4 +117,23 @@ public class DonationServiceImpl implements DonationService {
         resultMap.put("donation", donationResDto);
         return resultMap;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> endDonation(Integer donationId) throws Exception {
+        log.info("DonationService endDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Donation> donation = donationRepository.findById(donationId);
+        if(!donation.isPresent() || donation.get().getStatus().equals(DonationStatus.마감)) {
+            resultMap.put("message", Message.DONATION_NOT_FOUND);
+            return resultMap;
+        }
+
+        donation.get().setStatus(DonationStatus.마감);
+
+        resultMap.put("message", Message.DONATION_END_SUCCESS);
+        return resultMap;
+    }
 }
