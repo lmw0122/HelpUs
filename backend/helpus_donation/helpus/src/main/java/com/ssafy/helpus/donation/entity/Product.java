@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "product")
 public class Product {
-    @Id
+    @Id @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer productId;
 

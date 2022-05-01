@@ -14,4 +14,6 @@ public interface FileService {
     void donationFileSave(Donation donation, List<MultipartFile> files) throws Exception;
     //기부 글 파일 삭제
     void donationFileDelete(List<DonationImage> files) throws Exception;
+    //기부 글 이미지 조회
+    List<String> getDonationFileList(List<DonationImage> files) throws Exception;
 }

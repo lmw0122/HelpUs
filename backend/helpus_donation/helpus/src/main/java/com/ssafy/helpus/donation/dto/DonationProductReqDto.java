@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class DonationProductReqDto {
     @ApiModelProperty(value = "물품")
-    private ProductReqDto product;
+    private ProductDto product;
 
     @ApiModelProperty(value = "물품 설명")
     @NotBlank(message = "물품 설명을 입력해주세요")

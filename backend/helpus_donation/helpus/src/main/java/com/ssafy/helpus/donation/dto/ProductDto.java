@@ -2,6 +2,7 @@ package com.ssafy.helpus.donation.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,8 @@ import javax.validation.constraints.PositiveOrZero;
 
 @ApiModel(value = "물품 등록")
 @Getter
-public class ProductReqDto {
+@Builder
+public class ProductDto {
     @ApiModelProperty(value = "물품명")
     @NotBlank(message = "물품 명을 입력해주세요")
     private String productName;

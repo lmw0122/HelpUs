@@ -12,4 +12,6 @@ public interface DonationService {
     Map<String, Object> registerDonation(DonationReqDto donation, List<MultipartFile> files) throws Exception;
     //기부 글 수정
     Map<String, Object> updateDonation(DonationUpdateReqDto donation, List<MultipartFile> files) throws Exception;
+    //기부 글 조회
+    Map<String, Object> getDonation(Integer donationId) throws Exception;
 }

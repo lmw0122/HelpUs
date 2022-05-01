@@ -1,8 +1,6 @@
 package com.ssafy.helpus.donation.service.Impl;
 
-import com.ssafy.helpus.donation.dto.DonationProductReqDto;
-import com.ssafy.helpus.donation.dto.DonationReqDto;
-import com.ssafy.helpus.donation.dto.DonationUpdateReqDto;
+import com.ssafy.helpus.donation.dto.*;
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.entity.Product;
@@ -20,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -44,10 +39,10 @@ public class DonationServiceImpl implements DonationService {
 
         //게시글 저장
         Donation donation = Donation.builder()
-                        .memberId(donationDto.getMemberId())
-                        .title(donationDto.getTitle())
-                        .content(donationDto.getContent())
-                        .endDate(donationDto.getEndDate()).build();
+                .memberId(donationDto.getMemberId())
+                .title(donationDto.getTitle())
+                .content(donationDto.getContent())
+                .endDate(donationDto.getEndDate()).build();
         donationRepository.save(donation);
 
         //물품 저장
@@ -92,6 +87,34 @@ public class DonationServiceImpl implements DonationService {
         fileService.donationFileSave(donation.get(), files);
 
         resultMap.put("message", Message.DONATION_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> getDonation(Integer donationId) throws Exception {
+        log.info("DonationService getDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<Donation> donation = donationRepository.findById(donationId);
+        if(!donation.isPresent() || donation.get().getStatus().equals(DonationStatus.마감)) {
+            resultMap.put("message", Message.DONATION_NOT_FOUND);
+            return resultMap;
+        }
+
+        DonationResDto donationResDto = DonationResDto.builder()
+                .memberId(donation.get().getMemberId())
+                .title(donation.get().getTitle())
+                .content(donation.get().getContent())
+                .createDate(donation.get().getCreateDate())
+                .updateDate(donation.get().getUpdateDate())
+                .endDate(donation.get().getEndDate())
+                .images(fileService.getDonationFileList(donation.get().getImages()))
+                .products(productService.getDonationProduct(donation.get().getProducts())).build();
+
+        resultMap.put("message", Message.DONATION_FIND_SUCCESS);
+        resultMap.put("donation", donationResDto);
         return resultMap;
     }
 }
