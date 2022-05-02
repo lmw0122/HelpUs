@@ -1,7 +1,10 @@
 package com.ssafy.helpus.donation.service.Impl;
 
 import com.ssafy.helpus.donation.entity.Donation;
+import com.ssafy.helpus.donation.entity.DonationConfirm;
+import com.ssafy.helpus.donation.entity.DonationConfirmImage;
 import com.ssafy.helpus.donation.entity.DonationImage;
+import com.ssafy.helpus.donation.repository.DonationConfirmImageRepository;
 import com.ssafy.helpus.donation.repository.DonationImageRepository;
 import com.ssafy.helpus.donation.service.FileService;
 import com.ssafy.helpus.donation.service.S3Service;
@@ -20,6 +23,7 @@ public class FileServiceImpl implements FileService {
 
     private final S3Service s3Service;
     private final DonationImageRepository donationImageRepository;
+    private final DonationConfirmImageRepository confirmImageRepository;
 
     @Override
     public boolean fileExtensionCheck(List<MultipartFile> files) throws Exception{
@@ -70,5 +74,18 @@ public class FileServiceImpl implements FileService {
             images.add(i.getUrl());
         }
         return images;
+    }
+
+    @Override
+    public void confirmFileSave(DonationConfirm confirm, List<MultipartFile> files) throws Exception {
+        log.debug("FileService confirmFileSave call");
+
+        for (MultipartFile mfile : files) {
+            String imgURL = s3Service.upload(mfile);  //S3에 파일 업로드 후 URL 가져오기
+            DonationConfirmImage file = DonationConfirmImage.builder()
+                    .url(imgURL)
+                    .donationConfirm(confirm).build();
+            confirmImageRepository.save(file); //DB에 S3 URL 저장
+        }
     }
 }

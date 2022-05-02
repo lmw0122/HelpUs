@@ -1,7 +1,7 @@
 package com.ssafy.helpus.donation.service.Impl;
 
-import com.ssafy.helpus.donation.dto.DonationListProductResDto;
-import com.ssafy.helpus.donation.dto.DonationProductResDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
 import com.ssafy.helpus.donation.dto.ProductDto;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.entity.Product;

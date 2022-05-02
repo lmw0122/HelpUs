@@ -1,7 +1,7 @@
 package com.ssafy.helpus.donation.service;
 
-import com.ssafy.helpus.donation.dto.DonationReqDto;
-import com.ssafy.helpus.donation.dto.DonationUpdateReqDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationReqDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationUpdateReqDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

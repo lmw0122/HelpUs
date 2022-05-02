@@ -1,7 +1,7 @@
 package com.ssafy.helpus.donation.controller;
 
-import com.ssafy.helpus.donation.dto.DonationReqDto;
-import com.ssafy.helpus.donation.dto.DonationUpdateReqDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationReqDto;
+import com.ssafy.helpus.donation.dto.Donation.DonationUpdateReqDto;
 import com.ssafy.helpus.donation.service.DonationService;
 import com.ssafy.helpus.donation.service.FileService;
 import com.ssafy.helpus.utils.Message;

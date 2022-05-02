@@ -1,4 +1,4 @@
-package com.ssafy.helpus.donation.dto;
+package com.ssafy.helpus.donation.dto.Donation;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
