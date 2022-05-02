@@ -32,6 +32,9 @@ public class DonationProduct {
     @Column(name = "delivery_count", insertable = false)
     private int deliveryCount;
 
+    @Column(nullable = false, insertable = false)
+    private double percent;
+
     @Builder
     public DonationProduct(Donation donation, Product product, String productInfo) {
         this.donation = donation;

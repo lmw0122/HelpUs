@@ -43,6 +43,9 @@ public class Donation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
+    @Column(nullable = false, insertable = false)
+    private double percent;
+
     @Column(insertable = false)
     @Enumerated(EnumType.STRING)
     private DonationStatus status;
@@ -50,7 +53,7 @@ public class Donation {
     @OneToMany(mappedBy = "donation")
     List<DonationImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "donation")
+    @OneToMany(mappedBy = "donation", fetch = FetchType.EAGER)
     List<DonationProduct> products = new ArrayList<>();
 
     @Builder

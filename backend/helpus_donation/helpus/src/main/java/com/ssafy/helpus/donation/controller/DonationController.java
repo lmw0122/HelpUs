@@ -5,6 +5,8 @@ import com.ssafy.helpus.donation.dto.DonationUpdateReqDto;
 import com.ssafy.helpus.donation.service.DonationService;
 import com.ssafy.helpus.donation.service.FileService;
 import com.ssafy.helpus.utils.Message;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,6 +109,36 @@ public class DonationController {
             log.error(Message.DONATION_END_FAIL+" : {}", e.getMessage());
 
             resultMap.put("message", Message.DONATION_END_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "기부 글 목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "memberId", value = "작성자 고유 번호", required = false,
+                    dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "order", value = "정렬 순서", required = false,
+                    dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "word", value = "검색어", required = false,
+                    dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "page", value = "페이지 번호", required = false,
+                    dataType = "int", paramType = "query")
+    })
+    @GetMapping
+    public ResponseEntity listDonation(@RequestParam(required = false) Integer memberId,
+                                       @RequestParam(required = false, defaultValue = "최신순") String order,
+                                       @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("DonationController listDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = donationService.listDonation(memberId, order, page-1);
+        } catch (Exception e) {
+            log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DONATION_FIND_FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

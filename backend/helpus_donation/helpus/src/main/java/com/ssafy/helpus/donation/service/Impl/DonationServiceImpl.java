@@ -4,15 +4,19 @@ import com.ssafy.helpus.donation.dto.*;
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.entity.Product;
+import com.ssafy.helpus.donation.enumClass.DonationOrder;
 import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.repository.DonationRepository;
 import com.ssafy.helpus.donation.service.DonationService;
 import com.ssafy.helpus.donation.service.FileService;
-import com.ssafy.helpus.donation.service.ProductService;
+import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,8 +32,9 @@ public class DonationServiceImpl implements DonationService {
     private final DonationRepository donationRepository;
     private final DonationProductRepository donationProductRepository;
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final FileService fileService;
+    private final MemberService memberService;
 
     @Override
     public Map<String, Object> registerDonation(DonationReqDto donationDto, List<MultipartFile> files) throws Exception {
@@ -119,7 +124,6 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    @Transactional
     public Map<String, Object> endDonation(Integer donationId) throws Exception {
         log.info("DonationService endDonation call");
 
@@ -135,5 +139,56 @@ public class DonationServiceImpl implements DonationService {
 
         resultMap.put("message", Message.DONATION_END_SUCCESS);
         return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> listDonation(Integer memberId, String order, int page) {
+        log.info("DonationService listDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Page<Donation> donations;
+        Sort sort = gerOrder(order);
+
+        if(memberId==null) { //메인, 기부
+            donations = donationRepository.findByStatus(DonationStatus.진행, PageRequest.of(page, 8, sort));
+        }else { //기관
+            donations = donationRepository.findByMemberId(memberId, PageRequest.of(page, 8, sort));
+        }
+
+        if(donations.isEmpty()) {
+            resultMap.put("message", Message.DONATION_NOT_FOUND);
+            return resultMap;
+        }
+        List<DonationListResDto> list = new ArrayList<>();
+        for(Donation donation : donations) {
+            Map<String, String> member = memberService.getMember(donation.getMemberId());
+
+            DonationListResDto donationListResDto = DonationListResDto.builder()
+                    .donationId(donation.getDonationId())
+                    .title(donation.getTitle())
+                    .content(donation.getContent())
+                    .endDate(donation.getEndDate())
+                    .percent(donation.getPercent())
+                    .status(donation.getStatus())
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .products(productService.getDonationListProduct(donation.getProducts())).build();
+
+            list.add(donationListResDto);
+        }
+
+        resultMap.put("donation", list);
+        resultMap.put("totalPage", donations.getTotalPages());
+        resultMap.put("message", Message.DONATION_FIND_SUCCESS);
+        return resultMap;
+    }
+
+    public Sort gerOrder(String order) {
+        //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)
+        if(order.equals(DonationOrder.최신순.toString())) { return Sort.by("donationId").descending(); }
+        else if(order.equals(DonationOrder.오래된순.toString())) { return Sort.by("donationId").ascending(); }
+        else if(order.equals(DonationOrder.높은순.toString())) { return Sort.by("percent").descending(); }
+        else { return Sort.by("percent").ascending(); }
     }
 }
