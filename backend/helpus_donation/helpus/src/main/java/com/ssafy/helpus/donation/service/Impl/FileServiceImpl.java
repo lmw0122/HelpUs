@@ -88,4 +88,16 @@ public class FileServiceImpl implements FileService {
             confirmImageRepository.save(file); //DB에 S3 URL 저장
         }
     }
+
+    @Override
+    public void confirmFileDelete(List<DonationConfirmImage> images) {
+        log.debug("FileService confirmFileDelete call");
+
+        for(DonationConfirmImage file : images) {
+            //S3에서 파일 삭제
+            s3Service.delete(file.getUrl());
+            //파일 테이블에서 삭제
+            confirmImageRepository.deleteById(file.getDonationConfirmImageId());
+        }
+    }
 }

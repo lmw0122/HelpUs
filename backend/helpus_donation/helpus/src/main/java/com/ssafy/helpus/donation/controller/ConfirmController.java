@@ -1,6 +1,7 @@
 package com.ssafy.helpus.donation.controller;
 
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmReqDto;
+import com.ssafy.helpus.donation.dto.Confirm.ConfirmUpdateReqDto;
 import com.ssafy.helpus.donation.service.ConfirmService;
 import com.ssafy.helpus.donation.service.FileService;
 import com.ssafy.helpus.utils.Message;
@@ -46,6 +47,30 @@ public class ConfirmController {
             log.error(Message.CONFIRM_REGISTER_FAIL+" : {}", e.getMessage());
 
             resultMap.put("message", Message.CONFIRM_REGISTER_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "후기 글 수정")
+    @PutMapping
+    public ResponseEntity updateConfirm(@Valid @RequestPart ConfirmUpdateReqDto confirm, @RequestPart List<MultipartFile> files) {
+        log.info("ConfirmController updateConfirm call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.CREATED;
+        try {
+            //게시글 파일 확장자 확인
+            if(!fileService.fileExtensionCheck(files)) {
+                resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
+                status = HttpStatus.BAD_REQUEST;
+            } else {
+                resultMap = confirmService.updateConfirm(confirm, files);
+            }
+        } catch (Exception e) {
+            log.error(Message.CONFIRM_UPDATE_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.CONFIRM_UPDATE_FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

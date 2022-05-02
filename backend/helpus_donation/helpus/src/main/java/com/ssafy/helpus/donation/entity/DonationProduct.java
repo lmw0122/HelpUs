@@ -19,7 +19,7 @@ public class DonationProduct {
     @JoinColumn(name = "donation_id", nullable = false, updatable = false)
     private Donation donation;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id", nullable = false, updatable = false)
     private Product product;
 

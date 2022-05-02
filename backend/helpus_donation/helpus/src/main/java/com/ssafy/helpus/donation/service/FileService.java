@@ -2,6 +2,7 @@ package com.ssafy.helpus.donation.service;
 
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationConfirm;
+import com.ssafy.helpus.donation.entity.DonationConfirmImage;
 import com.ssafy.helpus.donation.entity.DonationImage;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,4 +21,6 @@ public interface FileService {
 
     //후기 글 파일 저장
     void confirmFileSave(DonationConfirm confirm, List<MultipartFile> files) throws Exception;
+    //후기 글 파일 삭제
+    void confirmFileDelete(List<DonationConfirmImage> images);
 }
