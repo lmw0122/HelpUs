@@ -9,8 +9,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -27,8 +25,16 @@ public class DonationApply {
     @Column(name = "member_id", nullable = false, updatable = false)
     private Long memberId;
 
-    @Column(name = "express_num")
-    private Integer expressNum;
+    private String parcel;
+
+    private Integer invoice;
+
+    @OneToOne
+    @JoinColumn(name = "donation_product_id", nullable = false, updatable = false)
+    private DonationProduct donationProduct;
+
+    @Column(updatable = false)
+    private int count;
 
     @Column(name = "donation_date", insertable = false, updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -37,14 +43,14 @@ public class DonationApply {
     @Enumerated(EnumType.STRING)
     private ApplyStatus status;
 
-    @OneToMany(mappedBy = "donationApply", fetch = FetchType.EAGER)
-    List<DonationApplyProduct> applyProducts = new ArrayList<>();
-
     @Builder
-    public DonationApply(Long donationId, Long memberId, Integer expressNum, ApplyStatus status) {
+    public DonationApply(Long donationId, Long memberId, DonationProduct donationProduct, String parcel, Integer invoice, int count, ApplyStatus status) {
         this.donationId = donationId;
         this.memberId = memberId;
-        this.expressNum = expressNum;
+        this.donationProduct = donationProduct;
+        this.parcel = parcel;
+        this.invoice = invoice;
+        this.count = count;
         this.status = status;
     }
 }

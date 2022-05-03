@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import javax.validation.constraints.PositiveOrZero;
 
 @ApiModel(value = "기부")
 @Getter
@@ -15,9 +15,18 @@ public class ApplyReqDto {
     @NotNull
     private Long donationId;
 
-    @ApiModelProperty(value = "송장 번호")
-    private Integer expressNum;
+    @ApiModelProperty(value = "택배사")
+    private String parcel;
 
-    @ApiModelProperty(value = "기부하는 물품")
-    List<ApplyProductReqDto> products;
+    @ApiModelProperty(value = "송장 번호")
+    private Integer invoice;
+
+    @ApiModelProperty(value = "기부 물품 고유번호")
+    @NotNull(message = "기부 물품 고유번호를 입력해주세요.")
+    private Long donationProductId;
+
+    @ApiModelProperty(value = "수량")
+    @NotNull(message = "수량을 입력해주세요.")
+    @PositiveOrZero(message = "0개 이상을 입력해주세요")
+    private int count;
 }
