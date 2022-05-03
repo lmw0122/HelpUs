@@ -29,7 +29,7 @@ public class ConfirmServiceImpl implements ConfirmService {
     private final DonationConfirmRepository confirmRepository;
 
     @Override
-    public Map<String, Object> registerConfirm(ConfirmReqDto confirmDto, List<MultipartFile> files) throws Exception {
+    public Map<String, Object> registerConfirm(ConfirmReqDto confirmDto, Long memberId, List<MultipartFile> files) throws Exception {
         log.info("ConfirmService registerConfirm call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -37,7 +37,7 @@ public class ConfirmServiceImpl implements ConfirmService {
         //게시글 저장
         DonationConfirm confirm = DonationConfirm.builder()
                 .donationId(confirmDto.getDonationId())
-                .memberId(confirmDto.getMemberId())
+                .memberId(memberId)
                 .title(confirmDto.getTitle())
                 .content(confirmDto.getContent()).build();
         confirmRepository.save(confirm);

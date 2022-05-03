@@ -12,15 +12,11 @@ import javax.validation.constraints.NotNull;
 public class ConfirmReqDto {
     @ApiModelProperty(value = "기부 글 고유 번호")
     @NotNull
-    private Integer donationId;
+    private Long donationId;
 
     @ApiModelProperty(value = "제목")
     @NotBlank(message = "제목을 입력해주세요")
     private String title;
-
-    @ApiModelProperty(value = "작성자 고유 번호")
-    @NotNull
-    private Integer memberId;
 
     @ApiModelProperty(value = "내용")
     @NotBlank(message = "내용을 입력해주세요")

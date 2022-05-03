@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 public class DonationListResDto {
     @ApiModelProperty(value = "기부 글 고유번호")
-    private Integer donationId;
+    private Long donationId;
 
     @ApiModelProperty(value = "제목")
     private String title;

@@ -17,10 +17,6 @@ public class DonationReqDto {
     @NotBlank(message = "제목을 입력해주세요")
     private String title;
 
-    @ApiModelProperty(value = "회원 고유 번호")
-    @NotNull
-    private Integer memberId;
-
     @ApiModelProperty(value = "내용")
     @NotBlank(message = "내용을 입력해주세요")
     private String content;

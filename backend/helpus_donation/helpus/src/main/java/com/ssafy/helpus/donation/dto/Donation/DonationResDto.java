@@ -19,7 +19,7 @@ public class DonationResDto {
     private String title;
 
     @ApiModelProperty(value = "회원 고유 번호")
-    private Integer memberId;
+    private Long memberId;
 
     @ApiModelProperty(value = "내용")
     private String content;

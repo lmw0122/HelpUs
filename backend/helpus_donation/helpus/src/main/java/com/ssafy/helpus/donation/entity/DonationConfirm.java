@@ -18,13 +18,13 @@ import java.util.List;
 public class DonationConfirm {
     @Id @Column(name = "donation_confirm_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer donationConfirmId;
+    private Long donationConfirmId;
 
     @Column(name = "donation_id", updatable = false)
-    private Integer donationId;
+    private Long donationId;
 
     @Column(name = "member_id", nullable = false, updatable = false)
-    private Integer memberId;
+    private Long memberId;
 
     @Column(nullable = false)
     private String title;
@@ -44,7 +44,7 @@ public class DonationConfirm {
     List<DonationConfirmImage> images = new ArrayList<>();
 
     @Builder
-    public DonationConfirm(Integer donationId, Integer memberId, String title, String content) {
+    public DonationConfirm(Long donationId, Long memberId, String title, String content) {
         this.donationId = donationId;
         this.memberId = memberId;
         this.title = title;

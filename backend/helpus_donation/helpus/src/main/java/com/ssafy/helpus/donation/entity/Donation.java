@@ -20,10 +20,10 @@ import java.util.List;
 public class Donation {
     @Id @Column(name = "donation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer donationId;
+    private Long donationId;
 
     @Column(name = "member_id", nullable = false, updatable = false)
-    private Integer memberId;
+    private Long memberId;
 
     @Column(nullable = false)
     private String title;
@@ -57,7 +57,7 @@ public class Donation {
     List<DonationProduct> products = new ArrayList<>();
 
     @Builder
-    public Donation(Integer memberId, String title, String content, LocalDate endDate) {
+    public Donation(Long memberId, String title, String content, LocalDate endDate) {
         this.memberId = memberId;
         this.title = title;
         this.content = content;

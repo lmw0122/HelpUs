@@ -8,6 +8,7 @@ import com.ssafy.helpus.utils.Message;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,8 @@ public class ConfirmController {
 
     @ApiOperation(value = "후기 글 등록")
     @PostMapping
-    public ResponseEntity registerConfirm(@Valid @RequestPart ConfirmReqDto confirm, @RequestPart List<MultipartFile> files) {
+    public ResponseEntity registerConfirm(@Valid @RequestPart ConfirmReqDto confirm, @RequestPart List<MultipartFile> files,
+                                          @RequestHeader HttpHeaders headers) {
         log.info("ConfirmController registerConfirm call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -41,7 +43,8 @@ public class ConfirmController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                resultMap = confirmService.registerConfirm(confirm, files);
+                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                resultMap = confirmService.registerConfirm(confirm, memberId, files);
             }
         } catch (Exception e) {
             log.error(Message.CONFIRM_REGISTER_FAIL+" : {}", e.getMessage());

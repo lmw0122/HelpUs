@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,8 @@ public class DonationController {
 
     @ApiOperation(value = "기부 글 등록")
     @PostMapping
-    public ResponseEntity registerDonation(@Valid @RequestPart DonationReqDto donation, @RequestPart List<MultipartFile> files) {
+    public ResponseEntity registerDonation(@Valid @RequestPart DonationReqDto donation, @RequestPart List<MultipartFile> files,
+                                           @RequestHeader HttpHeaders headers) {
         log.info("DonationController registerDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -43,7 +45,8 @@ public class DonationController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                resultMap = donationService.registerDonation(donation, files);
+                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                resultMap = donationService.registerDonation(donation, memberId, files);
             }
         } catch (Exception e) {
             log.error(Message.DONATION_REGISTER_FAIL+" : {}", e.getMessage());
@@ -81,7 +84,7 @@ public class DonationController {
 
     @ApiOperation(value = "기부 글 조회")
     @GetMapping("{donationId}")
-    public ResponseEntity getDonation(@PathVariable Integer donationId) {
+    public ResponseEntity getDonation(@PathVariable Long donationId) {
         log.info("DonationController getDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -98,8 +101,8 @@ public class DonationController {
     }
 
     @ApiOperation(value = "기부 글 마감")
-    @DeleteMapping("{donationId}")
-    public ResponseEntity endDonation(@PathVariable Integer donationId) {
+    @DeleteMapping("{donationId}/{memberId}")
+    public ResponseEntity endDonation(@PathVariable Long donationId, @PathVariable Long memberId) {
         log.info("DonationController endDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -118,7 +121,7 @@ public class DonationController {
     @ApiOperation(value = "기부 글 목록 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "memberId", value = "작성자 고유 번호", required = false,
-                    dataType = "Integer", paramType = "query"),
+                    dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "order", value = "정렬 순서", required = false,
                     dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "word", value = "검색어", required = false,
@@ -127,7 +130,7 @@ public class DonationController {
                     dataType = "int", paramType = "query")
     })
     @GetMapping
-    public ResponseEntity listDonation(@RequestParam(required = false) Integer memberId,
+    public ResponseEntity listDonation(@RequestParam(required = false) Long memberId,
                                        @RequestParam(required = false, defaultValue = "최신순") String order,
                                        @RequestParam(required = false, defaultValue = "1") int page) {
         log.info("DonationController listDonation call");

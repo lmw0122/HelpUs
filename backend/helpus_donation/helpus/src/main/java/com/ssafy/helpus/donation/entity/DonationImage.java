@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class DonationImage {
     @Id @Column(name = "donation_image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer donationImageId;
+    private Long donationImageId;
 
     @ManyToOne
     @JoinColumn(name = "donation_id", nullable = false)

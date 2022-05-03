@@ -16,7 +16,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Map<String, String> getMember (Integer memberId) {
+    public Map<String, String> getMember (Long memberId) {
         log.info("MemberService getMember call");
 
         Map<String, String> map = new HashMap<>();

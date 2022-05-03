@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DonationRepository extends JpaRepository<Donation, Integer> {
+public interface DonationRepository extends JpaRepository<Donation, Long> {
     //메인, 기부 페이지
     Page<Donation> findByStatus(DonationStatus status, Pageable pageable);
     //기관 페이지
-    Page<Donation> findByMemberId(Integer memberId, Pageable pageable);
+    Page<Donation> findByMemberId(Long memberId, Pageable pageable);
 }

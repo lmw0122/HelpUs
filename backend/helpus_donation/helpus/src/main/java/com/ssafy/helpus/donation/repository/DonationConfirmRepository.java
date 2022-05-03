@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DonationConfirmRepository extends JpaRepository<DonationConfirm, Integer> {
+public interface DonationConfirmRepository extends JpaRepository<DonationConfirm, Long> {
 }

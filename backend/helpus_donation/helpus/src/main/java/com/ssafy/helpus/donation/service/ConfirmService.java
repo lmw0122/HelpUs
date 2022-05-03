@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface ConfirmService {
     //후기 글 등록
-    Map<String, Object> registerConfirm(ConfirmReqDto confirmDto, List<MultipartFile> files) throws Exception;
+    Map<String, Object> registerConfirm(ConfirmReqDto confirmDto, Long memberId, List<MultipartFile> files) throws Exception;
     //후기 글 수정
     Map<String, Object> updateConfirm(ConfirmUpdateReqDto confirmDto, List<MultipartFile> files) throws Exception;
 }

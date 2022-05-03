@@ -36,14 +36,14 @@ public class DonationServiceImpl implements DonationService {
     private final MemberService memberService;
 
     @Override
-    public Map<String, Object> registerDonation(DonationReqDto donationDto, List<MultipartFile> files) throws Exception {
+    public Map<String, Object> registerDonation(DonationReqDto donationDto, Long memberId, List<MultipartFile> files) throws Exception {
         log.info("DonationService registerDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
 
         //게시글 저장
         Donation donation = Donation.builder()
-                .memberId(donationDto.getMemberId())
+                .memberId(memberId)
                 .title(donationDto.getTitle())
                 .content(donationDto.getContent())
                 .endDate(donationDto.getEndDate()).build();
@@ -97,7 +97,7 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     @Transactional
-    public Map<String, Object> getDonation(Integer donationId) throws Exception {
+    public Map<String, Object> getDonation(Long donationId) throws Exception {
         log.info("DonationService getDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -124,7 +124,7 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public Map<String, Object> endDonation(Integer donationId) throws Exception {
+    public Map<String, Object> endDonation(Long donationId) throws Exception {
         log.info("DonationService endDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -142,7 +142,7 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
-    public Map<String, Object> listDonation(Integer memberId, String order, int page) {
+    public Map<String, Object> listDonation(Long memberId, String order, int page) {
         log.info("DonationService listDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
