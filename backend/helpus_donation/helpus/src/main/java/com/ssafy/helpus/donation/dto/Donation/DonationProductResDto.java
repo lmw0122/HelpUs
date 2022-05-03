@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class DonationProductResDto {
 
-    private Integer productId;
+    private Long productId;
     private String productName;
     private String productInfo;
     private Integer totalCount;

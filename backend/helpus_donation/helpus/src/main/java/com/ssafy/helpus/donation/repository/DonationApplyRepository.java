@@ -1,9 +1,9 @@
 package com.ssafy.helpus.donation.repository;
 
-import com.ssafy.helpus.donation.entity.DonationProduct;
+import com.ssafy.helpus.donation.entity.DonationApply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DonationProductRepository extends JpaRepository<DonationProduct, Long> {
+public interface DonationApplyRepository extends JpaRepository<DonationApply, Long> {
 }

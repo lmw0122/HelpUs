@@ -3,17 +3,18 @@ package com.ssafy.helpus.donation.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @Table(name = "donation_product")
 public class DonationProduct {
     @Id @Column(name = "donation_product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer donationProductId;
+    private Long donationProductId;
 
     @ManyToOne
     @JoinColumn(name = "donation_id", nullable = false, updatable = false)
