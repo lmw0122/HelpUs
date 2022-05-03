@@ -2,10 +2,7 @@ package com.ssafy.helpus.donation.service.Impl;
 
 import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
 import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
-import com.ssafy.helpus.donation.dto.ProductDto;
 import com.ssafy.helpus.donation.entity.DonationProduct;
-import com.ssafy.helpus.donation.entity.Product;
-import com.ssafy.helpus.donation.repository.ProductRepository;
 import com.ssafy.helpus.donation.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,29 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-
-    @Override
-    public Product registerProduct(ProductDto productReqDto) {
-        log.info("ProductService registerProduct call");
-
-        Product product = Product.builder()
-                .productName(productReqDto.getProductName())
-                .count(productReqDto.getTotalCount()).build();
-        productRepository.save(product);
-        return product;
-    }
-
-    @Override
-    public ProductDto getProduct(Product product) {
-        log.info("ProductService getProduct call");
-
-        ProductDto productReqDto = ProductDto.builder()
-                .productName(product.getProductName())
-                .totalCount(product.getCount()).build();
-        return productReqDto;
-    }
-
     @Override
     public List<DonationProductResDto> getDonationProduct(List<DonationProduct> donationProducts) {
         log.info("ProductService getDonationProduct call");
@@ -51,7 +25,8 @@ public class ProductServiceImpl implements ProductService {
 
             DonationProductResDto donationResDto = DonationProductResDto.builder()
                     .productId(donationProduct.getDonationProductId())
-                    .product(getProduct(donationProduct.getProduct()))
+                    .productName(donationProduct.getProductName())
+                    .totalCount(donationProduct.getTotalCount())
                     .productInfo(donationProduct.getProductInfo())
                     .finishCount(donationProduct.getFinishCount())
                     .deliveryCount(donationProduct.getDeliveryCount())
@@ -70,7 +45,8 @@ public class ProductServiceImpl implements ProductService {
         for (DonationProduct donationProduct : donationProducts) {
 
             DonationListProductResDto donationResDto = DonationListProductResDto.builder()
-                    .product(getProduct(donationProduct.getProduct()))
+                    .productName(donationProduct.getProductName())
+                    .totalCount(donationProduct.getTotalCount())
                     .finishCount(donationProduct.getFinishCount())
                     .percent(donationProduct.getPercent()).build();
 

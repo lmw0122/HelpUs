@@ -56,14 +56,15 @@ public class DonationController {
 
     @ApiOperation(value = "기부 글 수정")
     @PutMapping
-    public ResponseEntity updateDonation(@Valid @RequestPart DonationUpdateReqDto donation, @RequestPart List<MultipartFile> files) {
+    public ResponseEntity updateDonation(@Valid @RequestPart DonationUpdateReqDto donation,
+                                         @RequestPart(required = false) List<MultipartFile> files) {
         log.info("DonationController updateDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
             //게시글 파일 확장자 확인
-            if(!fileService.fileExtensionCheck(files)) {
+            if(files != null && !fileService.fileExtensionCheck(files)) {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {

@@ -1,6 +1,5 @@
 package com.ssafy.helpus.donation.dto.Donation;
 
-import com.ssafy.helpus.donation.dto.ProductDto;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +10,9 @@ import lombok.Getter;
 public class DonationProductResDto {
 
     private Integer productId;
-    private ProductDto product;
+    private String productName;
     private String productInfo;
+    private Integer totalCount;
     private Integer finishCount;
     private Integer deliveryCount;
     private Double percent;
