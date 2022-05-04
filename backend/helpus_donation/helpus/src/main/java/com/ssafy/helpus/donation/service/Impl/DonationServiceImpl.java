@@ -184,6 +184,31 @@ public class DonationServiceImpl implements DonationService {
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> titleListDonation(Long memberId) {
+        log.info("DonationService listDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        List<Donation> donation = donationRepository.findByMemberId(memberId);
+        if(donation.isEmpty()) {
+            resultMap.put("message", Message.DONATION_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<DonationTitleListResDto> list = new ArrayList<>();
+        for(Donation d : donation) {
+            DonationTitleListResDto donationDto = DonationTitleListResDto.builder()
+                    .donationId(d.getDonationId())
+                    .title(d.getTitle()).build();
+            list.add(donationDto);
+        }
+
+        resultMap.put("message", Message.DONATION_FIND_SUCCESS);
+        resultMap.put("donation", list);
+        return resultMap;
+    }
+
     public Sort gerOrder(String order) {
         //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)
         if(order.equals(DonationOrder.최신순.toString())) { return Sort.by("donationId").descending(); }

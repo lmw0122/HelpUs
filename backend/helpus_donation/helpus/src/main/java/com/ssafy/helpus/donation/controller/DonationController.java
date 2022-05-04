@@ -147,4 +147,22 @@ public class DonationController {
         }
         return new ResponseEntity(resultMap, status);
     }
+    
+    @ApiOperation(value = "기부 글 제목 목록")
+    @GetMapping("/list/{memberId}")
+    public ResponseEntity titleListDonation(@PathVariable Long memberId) {
+        log.info("DonationController titleListDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = donationService.titleListDonation(memberId);
+        } catch (Exception e) {
+            log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DONATION_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }

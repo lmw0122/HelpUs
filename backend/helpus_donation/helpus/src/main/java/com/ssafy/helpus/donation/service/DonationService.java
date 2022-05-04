@@ -18,4 +18,6 @@ public interface DonationService {
     Map<String, Object> endDonation(Long donationId) throws Exception;
     //기부 글 목록
     Map<String, Object> listDonation(Long memberId, String order, int page);
+    //기부 제목 목록
+    Map<String, Object> titleListDonation(Long memberId);
 }
