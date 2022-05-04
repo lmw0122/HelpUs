@@ -1,5 +1,7 @@
 package com.ssafy.helpus.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +25,18 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public String login(Member member) {
-        Member m = memberRepository.findByMemberId(member.getMemberId());
-        if(m.getEmail().equals(member.getEmail()) && m.getPassword().equals(member.getPassword())){
+        Member m = memberRepository.findByEmailAndPassword(member.getEmail(),member.getPassword());
+        if(m != null){
             //톸큰 생성
-//            String jwt = JWT.create()
-//                    .withSubject("loginToken")
-//                    .withIssuer("auth")
-//                    .withExpiresAt(new Date(System.currentTimeMillis()+(60*1000*30)))
-//                    .withClaim("userId",user.getId())
-//                    .withClaim("role",user.getRole())
-//                    .sign(Algorithm.HMAC256("helpus"));
+            String jwt = JWT.create()
+                    .withSubject("loginToken")
+                    .withIssuer("auth")
+                    .withExpiresAt(new Date(System.currentTimeMillis()+(60*1000*30)))
+                    .withClaim("memberId",m.getMemberId())
+                    .withClaim("role",m.getRole())
+                    .sign(Algorithm.HMAC256("helpus"));
 
-            return "";
+            return jwt;
         }
         else
             return "error";

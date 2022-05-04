@@ -42,11 +42,8 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
                 return onError(exchange,"키가 유효하지 않음", HttpStatus.UNAUTHORIZED);
             }
             else{
-                long userId = jwt.getClaim("userId").asLong();
-                System.out.println("userId : "+userId);
-                Map<String,Long> map = new HashMap<>();
-                map.put("id",userId);
-                req.mutate().header("memberId", String.valueOf(userId)).build();
+                int memberId = jwt.getClaim("memberId").asInt();
+                req.mutate().header("memberId", String.valueOf(memberId)).build();
                 return chain.filter(exchange.mutate().request(req).build());
             }
         });
