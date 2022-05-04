@@ -12,4 +12,6 @@ public interface ConfirmService {
     Map<String, Object> registerConfirm(ConfirmReqDto confirmDto, Long memberId, List<MultipartFile> files) throws Exception;
     //후기 글 수정
     Map<String, Object> updateConfirm(ConfirmUpdateReqDto confirmDto, List<MultipartFile> files) throws Exception;
+    //후기 글 조회
+    Map<String, Object> getConfirm(Long donationConfirmId) throws Exception;
 }

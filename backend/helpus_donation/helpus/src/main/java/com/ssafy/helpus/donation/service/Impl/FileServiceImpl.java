@@ -100,4 +100,15 @@ public class FileServiceImpl implements FileService {
             confirmImageRepository.deleteById(file.getDonationConfirmImageId());
         }
     }
+
+    @Override
+    public List<String> getConfirmFileList(List<DonationConfirmImage> files) throws Exception {
+        log.debug("FileService getConfirmFileList call");
+
+        List<String> images = new ArrayList<>();
+        for(DonationConfirmImage i : files) {
+            images.add(i.getUrl());
+        }
+        return images;
+    }
 }

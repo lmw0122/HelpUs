@@ -23,4 +23,6 @@ public interface FileService {
     void confirmFileSave(DonationConfirm confirm, List<MultipartFile> files) throws Exception;
     //후기 글 파일 삭제
     void confirmFileDelete(List<DonationConfirmImage> images);
+
+    List<String> getConfirmFileList(List<DonationConfirmImage> files) throws Exception;
 }

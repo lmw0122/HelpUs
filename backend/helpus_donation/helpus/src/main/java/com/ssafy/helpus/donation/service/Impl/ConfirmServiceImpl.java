@@ -1,6 +1,7 @@
 package com.ssafy.helpus.donation.service.Impl;
 
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmReqDto;
+import com.ssafy.helpus.donation.dto.Confirm.ConfirmResDto;
 import com.ssafy.helpus.donation.dto.Confirm.ConfirmUpdateReqDto;
 import com.ssafy.helpus.donation.entity.DonationConfirm;
 import com.ssafy.helpus.donation.repository.DonationConfirmRepository;
@@ -73,6 +74,33 @@ public class ConfirmServiceImpl implements ConfirmService {
         fileService.confirmFileSave(confirm.get(), files);
 
         resultMap.put("message", Message.CONFIRM_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> getConfirm(Long donationConfirmId) throws Exception {
+        log.info("ConfirmService getConfirm call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<DonationConfirm> confirm = confirmRepository.findById(donationConfirmId);
+        if(!confirm.isPresent()) {
+            resultMap.put("message", Message.CONFIRM_NOT_FOUND);
+            return resultMap;
+        }
+
+        ConfirmResDto confrimDto = ConfirmResDto.builder()
+                .donationId(confirm.get().getDonationId())
+                .memberId(confirm.get().getMemberId())
+                .title(confirm.get().getTitle())
+                .content(confirm.get().getContent())
+                .createDate(confirm.get().getCreateDate())
+                .updateDate(confirm.get().getUpdateDate())
+                .images(fileService.getConfirmFileList(confirm.get().getImages())).build();
+
+        resultMap.put("message", Message.CONFIRM_FIND_SUCCESS);
+        resultMap.put("confirm", confrimDto);
         return resultMap;
     }
 }

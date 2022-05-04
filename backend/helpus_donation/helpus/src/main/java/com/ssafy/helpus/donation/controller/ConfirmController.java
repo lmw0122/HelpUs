@@ -78,4 +78,23 @@ public class ConfirmController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "후기 글 조회")
+    @GetMapping("{donationConfirmId}")
+    public ResponseEntity getConfirm(@PathVariable Long donationConfirmId) {
+        log.info("ConfirmController getConfirm call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = confirmService.getConfirm(donationConfirmId);
+        } catch (Exception e) {
+            log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DONATION_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
 }
