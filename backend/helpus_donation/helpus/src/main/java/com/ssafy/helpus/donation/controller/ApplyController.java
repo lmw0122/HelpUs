@@ -62,4 +62,22 @@ public class ApplyController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "배송 완료")
+    @PutMapping("{donationApplyId}/{memberId}")
+    public ResponseEntity deliveryCompleted(@PathVariable Long donationApplyId, @PathVariable Long memberId) {
+        log.info("ApplyController deliveryCompleted call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = applyService.deliveryCompleted(donationApplyId);
+        } catch (Exception e) {
+            log.error(Message.DELIVERY_UPDATE_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DELIVERY_UPDATE_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }

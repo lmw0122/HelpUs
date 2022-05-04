@@ -8,6 +8,7 @@ import com.ssafy.helpus.donation.enumClass.ApplyStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.service.ApplyService;
+import com.ssafy.helpus.donation.service.ProductService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,8 @@ public class ApplyServiceImpl implements ApplyService {
 
     private final DonationApplyRepository applyRepository;
     private final DonationProductRepository productRepository;
+
+    private final ProductService productService;
 
     @Override
     public Map<String, Object> applyDonation(ApplyReqDto applyDto, Long memberId) throws Exception {
@@ -77,7 +80,7 @@ public class ApplyServiceImpl implements ApplyService {
 
         if(apply.get().getInvoice()==null) {
             DonationProduct donationProduct = productRepository.findById(apply.get().getDonationProduct().getDonationProductId()).get();
-            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount()+ apply.get().getCount());
+            donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() + apply.get().getCount());
         }
 
         apply.get().setInvoice(waybillDto.getInvoice());
@@ -85,6 +88,27 @@ public class ApplyServiceImpl implements ApplyService {
         apply.get().setStatus(ApplyStatus.배송중);
 
         resultMap.put("message", Message.INVOICE_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deliveryCompleted(Long donationApplyId) throws Exception {
+        log.info("ApplyService deliveryCompleted call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<DonationApply> apply = applyRepository.findById(donationApplyId);
+        if (!apply.isPresent()) {
+            resultMap.put("message", Message.APPLY_NOT_FOUND);
+            return resultMap;
+        }
+
+        apply.get().setStatus(ApplyStatus.배송완료);
+
+        productService.deliveryCompleted(apply.get()); //수량 계산
+
+        resultMap.put("message", Message.DELIVERY_UPDATE_SUCCESS);
         return resultMap;
     }
 }
