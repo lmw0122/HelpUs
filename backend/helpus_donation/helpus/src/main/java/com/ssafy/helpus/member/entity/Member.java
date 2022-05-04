@@ -38,7 +38,7 @@ public class Member {
     private String info;
 
     @Column(name = "org_zipcode")
-    private Integer orgZipcode;
+    private String orgZipcode;
 
     @Column(name = "warn_count", nullable = false)
     private int warnCount;

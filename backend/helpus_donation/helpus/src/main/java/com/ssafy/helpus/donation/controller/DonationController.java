@@ -118,27 +118,22 @@ public class DonationController {
         return new ResponseEntity(resultMap, status);
     }
 
-    @ApiOperation(value = "기부 글 목록 조회")
+    @ApiOperation(value = "기부 글 목록 조회 - 기부해주세요,메인 페이지")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "memberId", value = "작성자 고유 번호", required = false,
-                    dataType = "Long", paramType = "query"),
             @ApiImplicitParam(name = "order", value = "정렬 순서", required = false,
-                    dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "word", value = "검색어", required = false,
                     dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "page", value = "페이지 번호", required = false,
                     dataType = "int", paramType = "query")
     })
-    @GetMapping
-    public ResponseEntity listDonation(@RequestParam(required = false) Long memberId,
-                                       @RequestParam(required = false, defaultValue = "최신순") String order,
-                                       @RequestParam(required = false, defaultValue = "1") int page) {
-        log.info("DonationController listDonation call");
+    @GetMapping("/main")
+    public ResponseEntity mainListDonation(@RequestParam(required = false, defaultValue = "최신순") String order,
+                                           @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("DonationController mainListDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
-            resultMap = donationService.listDonation(memberId, order, page-1);
+            resultMap = donationService.mainListDonation(order, page-1);
         } catch (Exception e) {
             log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
 
@@ -147,7 +142,35 @@ public class DonationController {
         }
         return new ResponseEntity(resultMap, status);
     }
-    
+
+    @ApiOperation(value = "기부 글 목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "memberId", value = "작성자 고유 번호", required = true,
+                    dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(name = "donationStatus", value = "글 상태", required = false,
+                    dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "page", value = "페이지 번호", required = false,
+                    dataType = "int", paramType = "query")
+    })
+    @GetMapping
+    public ResponseEntity listDonation(@RequestParam Long memberId,
+                                       @RequestParam(required = false, defaultValue = "진행") String donationStatus,
+                                       @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("DonationController listDonation call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = donationService.listDonation(memberId, donationStatus, page-1);
+        } catch (Exception e) {
+            log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DONATION_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
     @ApiOperation(value = "기부 글 제목 목록")
     @GetMapping("/list/{memberId}")
     public ResponseEntity titleListDonation(@PathVariable Long memberId) {

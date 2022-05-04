@@ -16,8 +16,10 @@ public interface DonationService {
     Map<String, Object> getDonation(Long donationId) throws Exception;
     //기부 글 마감
     Map<String, Object> endDonation(Long donationId) throws Exception;
-    //기부 글 목록
-    Map<String, Object> listDonation(Long memberId, String order, int page);
+    //기부 글 목록 - 메인/기부해주세요 페이지
+    Map<String, Object> mainListDonation(String order, int page);
+    //기부 글 목록 - 기관 페이지
+    Map<String, Object> listDonation(Long memberId, String donationStatus, int page);
     //기부 제목 목록
     Map<String, Object> titleListDonation(Long memberId);
 }
