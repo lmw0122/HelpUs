@@ -1,23 +1,26 @@
 package com.ssafy.helpus.donation.service.Impl;
 
+import com.ssafy.helpus.donation.dto.Apply.ApplyListResDto;
 import com.ssafy.helpus.donation.dto.Apply.ApplyReqDto;
 import com.ssafy.helpus.donation.dto.Apply.WaybillReqDto;
+import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
 import com.ssafy.helpus.donation.enumClass.ApplyStatus;
 import com.ssafy.helpus.donation.repository.DonationApplyRepository;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
+import com.ssafy.helpus.donation.repository.DonationRepository;
 import com.ssafy.helpus.donation.service.ApplyService;
 import com.ssafy.helpus.donation.service.ProductService;
+import com.ssafy.helpus.member.service.MemberService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -26,8 +29,10 @@ public class ApplyServiceImpl implements ApplyService {
 
     private final DonationApplyRepository applyRepository;
     private final DonationProductRepository productRepository;
+    private final DonationRepository donationRepository;
 
     private final ProductService productService;
+    private final MemberService memberService;
 
     @Override
     public Map<String, Object> applyDonation(ApplyReqDto applyDto, Long memberId) throws Exception {
@@ -35,6 +40,7 @@ public class ApplyServiceImpl implements ApplyService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
+        Donation donation = donationRepository.findById(applyDto.getDonationId()).get();
         DonationProduct donationProduct = productRepository.findById(applyDto.getDonationProductId()).get();
 
         DonationApply apply;
@@ -44,7 +50,7 @@ public class ApplyServiceImpl implements ApplyService {
             donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() + applyDto.getCount());
 
             apply = DonationApply.builder()
-                    .donationId(applyDto.getDonationId())
+                    .donation(donation)
                     .memberId(memberId)
                     .donationProduct(donationProduct)
                     .count(applyDto.getCount())
@@ -53,7 +59,7 @@ public class ApplyServiceImpl implements ApplyService {
                     .status(ApplyStatus.배송중).build();
         } else {
             apply = DonationApply.builder()
-                    .donationId(applyDto.getDonationId())
+                    .donation(donation)
                     .memberId(memberId)
                     .donationProduct(donationProduct)
                     .count(applyDto.getCount())
@@ -109,6 +115,75 @@ public class ApplyServiceImpl implements ApplyService {
         productService.deliveryCompleted(apply.get()); //수량 계산
 
         resultMap.put("message", Message.DELIVERY_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> userApplyList(Long memberId, String type, int page) {
+        log.info("ApplyService userApplyList call");
+
+        Page<DonationApply> applies;
+        if(type.equals("tracking"))
+               applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
+        else
+            applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
+
+        return makeList(applies, "user");
+    }
+
+    @Override
+    public Map<String, Object> orgApplyList(Long memberId, Long donationId, String type, int page) {
+        log.info("ApplyService orgApplyList call");
+
+        ApplyStatus status = type.equals("tracking") ? ApplyStatus.배송중 : ApplyStatus.배송완료;
+        Page<DonationApply> applies;
+
+        if(donationId == null) { //전체 조회
+            List<Donation> donations = donationRepository.findByMemberId(memberId);
+
+            if(donations.isEmpty()) { //기부 글이 없을 경우
+                return new HashMap<>(){{put("message", Message.DONATION_NOT_FOUND);}};
+            }
+
+            applies = applyRepository.findByStatusAndDonationIn(status, donations, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+        } else { //글별 조회
+            Donation donation = donationRepository.findById(donationId).get();
+            applies = applyRepository.findByStatusAndDonation(status, donation, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+        }
+
+        return makeList(applies, "org");
+    }
+
+    public Map<String, Object> makeList(Page<DonationApply> applies, String type) {
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(applies.isEmpty()) {
+            resultMap.put("message", Message.APPLY_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<ApplyListResDto> list = new ArrayList<>();
+        for(DonationApply apply : applies) {
+            Long memberId = type.equals("user") ? apply.getDonation().getMemberId() : apply.getMemberId();
+
+            ApplyListResDto applyDto = ApplyListResDto.builder()
+                    .donationApplyId(apply.getDonationApplyId())
+                    .donationId(apply.getDonation().getDonationId())
+                    .memberId(memberId)
+                    .name(memberService.getMemberName(memberId))
+                    .title(apply.getDonation().getTitle())
+                    .productName(apply.getDonationProduct().getProductName())
+                    .count(apply.getCount())
+                    .parcel(apply.getParcel())
+                    .invoice(apply.getInvoice())
+                    .donationDate(apply.getDonationDate())
+                    .status(apply.getStatus()).build();
+            list.add(applyDto);
+        }
+
+        resultMap.put("apply", list);
+        resultMap.put("message", Message.APPLY_FIND_SUCCESS);
+        resultMap.put("totalPage", applies.getTotalPages());
         return resultMap;
     }
 }

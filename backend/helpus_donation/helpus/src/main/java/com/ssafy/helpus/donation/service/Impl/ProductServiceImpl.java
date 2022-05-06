@@ -73,8 +73,8 @@ public class ProductServiceImpl implements ProductService {
         donationProduct.setPercent(percent); //각 물품 퍼센트 변경
 
         //전체 퍼센트 변경
-        double totalPercent = productRepository.percentCalculation(apply.getDonationId());
-        Donation donation = donationRepository.findById(apply.getDonationId()).get();
+        double totalPercent = productRepository.percentCalculation(apply.getDonation().getDonationId());
+        Donation donation = donationRepository.findById(apply.getDonation().getDonationId()).get();
         donation.setPercent(totalPercent);
     }
 }

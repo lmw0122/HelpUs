@@ -26,4 +26,10 @@ public class MemberService {
 
         return map;
     }
+
+    public String getMemberName (Long memberId) {
+        log.info("MemberService getMemberName");
+
+        return memberRepository.findById(memberId).get().getName();
+    }
 }

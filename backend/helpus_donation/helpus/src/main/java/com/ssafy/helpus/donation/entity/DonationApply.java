@@ -19,8 +19,9 @@ public class DonationApply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long donationApplyId;
 
-    @Column(name = "donation_id", nullable = false, updatable = false)
-    private Long donationId;
+    @ManyToOne
+    @JoinColumn(name = "donation_id", nullable = false)
+    private Donation donation;
 
     @Column(name = "member_id", nullable = false, updatable = false)
     private Long memberId;
@@ -44,8 +45,8 @@ public class DonationApply {
     private ApplyStatus status;
 
     @Builder
-    public DonationApply(Long donationId, Long memberId, DonationProduct donationProduct, String parcel, Integer invoice, int count, ApplyStatus status) {
-        this.donationId = donationId;
+    public DonationApply(Donation donation, Long memberId, DonationProduct donationProduct, String parcel, Integer invoice, int count, ApplyStatus status) {
+        this.donation = donation;
         this.memberId = memberId;
         this.donationProduct = donationProduct;
         this.parcel = parcel;
