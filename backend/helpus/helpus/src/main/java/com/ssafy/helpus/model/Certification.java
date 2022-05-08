@@ -4,10 +4,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Transactional
 @Table(name = "certification")
 public class Certification {
 
