@@ -89,12 +89,29 @@ public class ConfirmController {
         try {
             resultMap = confirmService.getConfirm(donationConfirmId);
         } catch (Exception e) {
-            log.error(Message.DONATION_FIND_FAIL+" : {}", e.getMessage());
+            log.error(Message.CONFIRM_FIND_FAIL+" : {}", e.getMessage());
 
-            resultMap.put("message", Message.DONATION_FIND_FAIL);
+            resultMap.put("message", Message.CONFIRM_FIND_FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);
     }
 
+    @ApiOperation(value = "후기 목록")
+    @GetMapping
+    public ResponseEntity confirmList(@RequestParam(required = false) Long memberId, @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("ConfirmController confirmList");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = confirmService.confirmList(memberId, page-1);
+        } catch (Exception e) {
+            log.error(Message.CONFIRM_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.CONFIRM_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }

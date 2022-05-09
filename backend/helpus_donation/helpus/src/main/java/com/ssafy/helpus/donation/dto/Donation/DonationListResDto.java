@@ -1,6 +1,5 @@
 package com.ssafy.helpus.donation.dto.Donation;
 
-import com.ssafy.helpus.donation.dto.Donation.DonationListProductResDto;
 import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
