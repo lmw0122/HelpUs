@@ -9,10 +9,12 @@ import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -55,6 +57,28 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
 
         resultMap.put("message", Message.COMMENT_REGISTER_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteComment(Long commentId) throws Exception {
+        log.info("DonationService deleteComment call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        if(!comment.isPresent()) {
+            resultMap.put("message", Message.COMMENT_NOT_FOUND);
+            return resultMap;
+        }
+
+        if(comment.get().getParentCommentId()==null) {
+            commentRepository.deleteById(commentId);
+        }else {
+            comment.get().setContent("삭제된 댓글입니다.");
+        }
+
+        resultMap.put("message", Message.COMMENT_DELETE_SUCCESS);
         return resultMap;
     }
 }
