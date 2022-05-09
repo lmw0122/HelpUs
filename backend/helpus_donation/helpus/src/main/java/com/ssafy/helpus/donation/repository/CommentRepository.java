@@ -2,6 +2,9 @@ package com.ssafy.helpus.donation.repository;
 
 import com.ssafy.helpus.donation.entity.Comment;
 import com.ssafy.helpus.donation.enumClass.CommentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +17,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findTopByBoardIdAndCategoryAndCommentGroupOrderByDepthDesc(Long boardId, CommentStatus category, int group);
 
     List<Comment> findByBoardIdAndCategoryAndDepthOrderByCommentGroupDesc(Long boardId, CommentStatus category, int depth);
+
+    Page<Comment> findByBoardIdAndCategoryOrderByCommentGroupDescDepth(Long boardId, CommentStatus category, Pageable pageable);
 }

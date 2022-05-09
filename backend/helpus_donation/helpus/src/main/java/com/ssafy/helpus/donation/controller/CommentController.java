@@ -61,4 +61,23 @@ public class CommentController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "댓글 조회")
+    @GetMapping("{category}/{boardId}")
+    public ResponseEntity listComment(@PathVariable String category, @PathVariable Long boardId,
+                                      @RequestParam(required = false, defaultValue = "1") int page) {
+        log.info("CommentController listComment call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = commentService.listComment(category, boardId, page-1);
+        } catch (Exception e) {
+            log.error(Message.COMMENT_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.COMMENT_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }
