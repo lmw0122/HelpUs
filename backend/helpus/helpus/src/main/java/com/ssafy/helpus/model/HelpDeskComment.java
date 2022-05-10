@@ -1,5 +1,6 @@
 package com.ssafy.helpus.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,13 +15,13 @@ public class HelpDeskComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "help_desk_comment_id")
-    private int HelpDeskCommentId;
+    @Column(name = "comment_id", insertable = false)
+    private Long commentId;
 
     @Column(name = "content")
     private String content;
 
-    @Column(name = "create_date")
+    @Column(name = "create_date", insertable = false)
     private LocalDateTime createDate;
 
     @ManyToOne
@@ -30,4 +31,11 @@ public class HelpDeskComment {
     @ManyToOne
     @JoinColumn(name = "help_desk_id")
     private HelpDesk helpDesk;
+
+    @Builder
+    public HelpDeskComment(String content, Member member, HelpDesk helpDesk) {
+        this.content = content;
+        this.member = member;
+        this.helpDesk = helpDesk;
+    }
 }
