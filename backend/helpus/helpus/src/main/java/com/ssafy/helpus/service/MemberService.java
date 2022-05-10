@@ -9,7 +9,6 @@ import java.util.List;
 public interface MemberService {
     boolean joinUser(Member member);
     boolean joinOrg(Member member,MultipartFile registration);
-    String login(Member member);
     String getEmailCode(String email);
     String getPhoneCode(String phoneNumber);
     boolean checkEmail(String email);

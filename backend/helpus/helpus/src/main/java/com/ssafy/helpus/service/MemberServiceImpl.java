@@ -58,26 +58,6 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
-
-    @Override
-    public String login(Member member) {
-        Member m = memberRepository.findByEmailAndPassword(member.getEmail(),member.getPassword());
-        if(m != null){
-            //톸큰 생성
-            String jwt = JWT.create()
-                    .withSubject("loginToken")
-                    .withIssuer("auth")
-                    .withExpiresAt(new Date(System.currentTimeMillis()+(60*1000*30)))
-                    .withClaim("memberId",m.getMemberId())
-                    .withClaim("role",m.getRole())
-                    .sign(Algorithm.HMAC256("helpus"));
-
-            return jwt;
-        }
-        else
-            return "error";
-    }
-
     @Override
     public String getEmailCode(String email) {
         Random rand = new Random();
