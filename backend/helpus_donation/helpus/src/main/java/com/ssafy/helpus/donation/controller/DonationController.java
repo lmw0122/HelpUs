@@ -101,8 +101,8 @@ public class DonationController {
     }
 
     @ApiOperation(value = "기부 글 마감")
-    @DeleteMapping("{donationId}/{memberId}")
-    public ResponseEntity endDonation(@PathVariable Long donationId, @PathVariable Long memberId) {
+    @DeleteMapping("{donationId}")
+    public ResponseEntity endDonation(@PathVariable Long donationId) {
         log.info("DonationController endDonation call");
 
         Map<String, Object> resultMap = new HashMap<>();

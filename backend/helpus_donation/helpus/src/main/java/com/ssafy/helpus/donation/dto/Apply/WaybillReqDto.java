@@ -15,8 +15,8 @@ public class WaybillReqDto {
     @NotNull(message = "기부 고유번호를 입력해주세요.")
     private Long donationApplyId;
 
-    @ApiModelProperty(value = "작성자 고유 번호")
-    @NotNull(message = "작성자 고유 번호를 입력해주세요")
+    @ApiModelProperty(value = "신청자 고유 번호")
+    @NotNull(message = "신청자 고유 번호를 입력해주세요")
     private Long memberId;
 
     @ApiModelProperty(value = "송장 번호")

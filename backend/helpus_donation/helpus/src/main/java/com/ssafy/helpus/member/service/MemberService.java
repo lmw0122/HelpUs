@@ -32,4 +32,10 @@ public class MemberService {
 
         return memberRepository.findById(memberId).get().getName();
     }
+
+    public String getMemberRole (Long memberId) {
+        log.info("MemberService getMemberRole");
+
+        return memberRepository.findById(memberId).get().getRole();
+    }
 }

@@ -70,7 +70,6 @@ public class ConfirmServiceImpl implements ConfirmService {
         confirm.get().setTitle(confirmDto.getTitle());
         confirm.get().setContent(confirmDto.getContent());
         confirm.get().setUpdateDate(LocalDateTime.now());
-        System.out.println(confirm.get().getImages().isEmpty());
 
         //게시글 파일 삭제 후 저장
         fileService.confirmFileDelete(confirm.get().getImages());

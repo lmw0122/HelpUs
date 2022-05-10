@@ -99,7 +99,8 @@ public class ConfirmController {
 
     @ApiOperation(value = "후기 목록")
     @GetMapping
-    public ResponseEntity confirmList(@RequestParam(required = false) Long memberId, @RequestParam(required = false, defaultValue = "1") int page) {
+    public ResponseEntity confirmList(@RequestParam(required = false) Long memberId,
+                                      @RequestParam(required = false, defaultValue = "1") int page) {
         log.info("ConfirmController confirmList");
 
         Map<String, Object> resultMap = new HashMap<>();

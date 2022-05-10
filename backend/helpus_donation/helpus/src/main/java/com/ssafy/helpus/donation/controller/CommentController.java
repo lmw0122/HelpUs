@@ -45,8 +45,8 @@ public class CommentController {
     }
 
     @ApiOperation(value = "댓글 삭제")
-    @DeleteMapping("{commentId}/{memberId}")
-    public ResponseEntity deleteComment(@PathVariable Long commentId, @PathVariable Long memberId) {
+    @DeleteMapping("{commentId}")
+    public ResponseEntity deleteComment(@PathVariable Long commentId) {
         log.info("CommentController deleteComment call");
 
         Map<String, Object> resultMap = new HashMap<>();
