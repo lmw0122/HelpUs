@@ -1,6 +1,7 @@
 package com.ssafy.helpus.controller;
 
 import com.ssafy.helpus.dto.Desk.DeskReqDto;
+import com.ssafy.helpus.dto.Desk.DeskUpdateReqDto;
 import com.ssafy.helpus.service.FileService;
 import com.ssafy.helpus.service.HelpDeskService;
 import com.ssafy.helpus.utils.Message;
@@ -48,6 +49,31 @@ public class HelpDeskController {
             log.error(Message.DESK_REGISTER_FAIL+" : {}", e.getMessage());
 
             resultMap.put("message", Message.DESK_REGISTER_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "고객센터 글 수정")
+    @PutMapping
+    public ResponseEntity updateDesk(@Valid @RequestPart DeskUpdateReqDto desk,
+                                     @RequestPart(required = false) List<MultipartFile> files) {
+        log.info("HelpDeskController updateDesk call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.CREATED;
+        try {
+            //게시글 파일 확장자 확인
+            if(files != null && !fileService.fileExtensionCheck(files)) {
+                resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
+                status = HttpStatus.BAD_REQUEST;
+            } else {
+                resultMap = helpDeskService.updateDesk(desk, files);
+            }
+        } catch (Exception e) {
+            log.error(Message.DESK_UPDATE_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DESK_UPDATE_FAIL);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, status);

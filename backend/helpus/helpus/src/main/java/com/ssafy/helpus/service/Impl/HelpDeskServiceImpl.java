@@ -2,6 +2,7 @@ package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.config.enumClass.DeskCategory;
 import com.ssafy.helpus.dto.Desk.DeskReqDto;
+import com.ssafy.helpus.dto.Desk.DeskUpdateReqDto;
 import com.ssafy.helpus.model.HelpDesk;
 import com.ssafy.helpus.repository.DeskRepository;
 import com.ssafy.helpus.repository.MemberRepository;
@@ -11,11 +12,14 @@ import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -47,7 +51,34 @@ public class HelpDeskServiceImpl implements HelpDeskService {
 
         resultMap.put("message", Message.DESK_REGISTER_SUCCESS);
         resultMap.put("helpDeskId", desk.getHelpDeskId());
+        return resultMap;
+    }
 
+    @Override
+    @Transactional
+    public Map<String, Object> updateDesk(DeskUpdateReqDto desk, List<MultipartFile> files) throws Exception {
+        log.info("HelpDeskService updateDesk call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<HelpDesk> helpDesk = deskRepository.findById(desk.getHelpDeskId());
+        if(!helpDesk.isPresent()) {
+            resultMap.put("message", Message.DESK_NOT_FOUND);
+            return resultMap;
+        }
+
+        helpDesk.get().setTitle(desk.getTitle());
+        helpDesk.get().setContent(desk.getContent());
+        helpDesk.get().setCategory(DeskCategory.valueOf(desk.getCategory()));
+        helpDesk.get().setVisible(desk.getVisible());
+        helpDesk.get().setUpdateDate(LocalDateTime.now());
+
+        //게시글 파일 삭제 후 저장
+        if(files != null) {
+            fileService.deskFileDelete(helpDesk.get().getHelpDeskImages());
+            fileService.deskFileSave(helpDesk.get(), files);
+        }
+        resultMap.put("message", Message.DESK_UPDATE_SUCCESS);
         return resultMap;
     }
 }

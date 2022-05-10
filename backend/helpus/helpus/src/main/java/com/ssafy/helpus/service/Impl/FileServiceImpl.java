@@ -56,4 +56,16 @@ public class FileServiceImpl implements FileService {
             deskImageRepository.save(file); //DB에 S3 URL 저장
         }
     }
+
+    @Override
+    public void deskFileDelete(List<HelpDeskImage> helpDeskImages) throws Exception {
+        log.debug("FileService deskFileDelete call");
+
+        for(HelpDeskImage file : helpDeskImages) {
+            //S3에서 파일 삭제
+            s3Service.delete(file.getUrl());
+            //파일 테이블에서 삭제
+            deskImageRepository.deleteById(file.getHelpDeskCommentId());
+        }
+    }
 }

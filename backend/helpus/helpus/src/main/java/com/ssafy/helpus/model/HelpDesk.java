@@ -19,7 +19,7 @@ public class HelpDesk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "help_desk_id", insertable = false, updatable = false)
-    private int helpDeskId;
+    private Long helpDeskId;
 
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class HelpDesk {
     private LocalDateTime createDate;
 
     @Column(name = "update_date", insertable = false)
-    private LocalDateTime update_date;
+    private LocalDateTime updateDate;
 
     @Column(name = "status", insertable = false)
     private String status;
