@@ -17,19 +17,11 @@ public class Message {
     public static final String APPLY_FIND_FAIL = "기부 조회 실패";
     public static final String APPLY_NOT_FOUND = "기부 내역 없음";
 
-    public static final String INVOICE_REGISTER_SUCCESS = "송장 번호 등록 성공";
-    public static final String INVOICE_REGISTER_FAIL = "송장 번호 등록 실패";
     public static final String INVOICE_UPDATE_SUCCESS = "송장 번호 수정 성공";
     public static final String INVOICE_UPDATE_FAIL = "송장 번호 수정 실패";
-    public static final String INVOICE_FIND_SUCCESS = "송장 조회 성공";
-    public static final String INVOICE_FIND_FAIL = "송장 조회 실패";
-    public static final String INVOICE_NOT_FOUND = "송장 내역 없음";
 
     public static final String DELIVERY_UPDATE_SUCCESS = "배송 현황 수정 성공";
     public static final String DELIVERY_UPDATE_FAIL = "배송 현황 수정 실패";
-    public static final String DELIVERY_FIND_SUCCESS = "배송 현황 조회 성공";
-    public static final String DELIVERY_FIND_FAIL = "배송 현황 조회 실패";
-    public static final String DELIVERY_NOT_FOUND = "배송 현황 없음";
 
     public static final String COMMENT_REGISTER_SUCCESS = "댓글 등록 성공";
     public static final String COMMENT_REGISTER_FAIL = "댓글 등록 실패";
@@ -46,8 +38,10 @@ public class Message {
     public static final String CONFIRM_FIND_SUCCESS = "후기 조회 성공";
     public static final String CONFIRM_FIND_FAIL = "후기 조회 실패";
     public static final String CONFIRM_NOT_FOUND = "후기 없음";
-    public static final String CONFIRM_MEMBER_FIND_SUCCESS = "명단 조회 성공";
-    public static final String CONFIRM_MEMBER_FIND_FAIL = "명단 조회 실패";
+
+    public static final String NOT_FOUND_NEWS = "뉴스를 찾을 수 없습니다";
+    public static final String FIND_NEWS_SUCCESS = "뉴스 조회 성공";
+    public static final String FIND_NEWS_FAIL = "뉴스 조회 실패";
 
     //file
     public static final String FILE_EXTENSION_EXCEPTION = "파일 확장자가 jpg나 png가 아닙니다.";
