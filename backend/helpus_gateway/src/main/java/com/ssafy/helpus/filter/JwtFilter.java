@@ -35,13 +35,15 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
             }
             String auth = Objects.requireNonNull(req.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0));
             String token = auth.replace("Bearer ","").trim();
+            System.out.println(token);
             DecodedJWT jwt = getDecodedJWT(token);
             if(jwt == null){
                 return onError(exchange,"키가 유효하지 않음", HttpStatus.UNAUTHORIZED);
             }
             else{
                 int memberId = jwt.getClaim("memberId").asInt();
-                req.mutate().header("memberId", String.valueOf(memberId)).build();
+                String role = jwt.getClaim("role").asString();
+                req.mutate().header("memberId", String.valueOf(memberId)).header("role",role).build();
                 return chain.filter(exchange.mutate().request(req).build());
             }
         });
@@ -56,10 +58,13 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
     private DecodedJWT getDecodedJWT(String token){
         try {
-            Algorithm algo = Algorithm.HMAC256("helpus");
-            JWTVerifier verifier = JWT.require(algo).withIssuer("auth").build();
-            DecodedJWT jwt = verifier.verify(token);
             System.out.println("--------------------------------------------------------");
+            Algorithm algo = Algorithm.HMAC256("helpus");
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            JWTVerifier verifier = JWT.require(algo).withIssuer("auth").build();
+            System.out.println("--------------------------------------------------------");
+            DecodedJWT jwt = verifier.verify(token);
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println(jwt.getClaim("memberId"));
             return jwt;
 

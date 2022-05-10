@@ -35,11 +35,9 @@ public class MemberServiceImpl implements MemberService{
     private final PhoneService phoneService;
 
     @Override
-    public boolean joinUser(Member member, MultipartFile image) {
+    public boolean joinUser(Member member) {
         try {
             member.setRole("USER");
-            String imgUrl = s3Service.upload(image);
-            member.setProfile(imgUrl);
             memberRepository.save(member);
             return true;
         }catch (Exception e){
@@ -48,13 +46,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public boolean joinOrg(Member member, MultipartFile registration, MultipartFile profile) {
+    public boolean joinOrg(Member member, MultipartFile registration) {
         try {
             member.setRole("ORG_WAIT");
             String registUrl = s3Service.upload(registration);
             member.setRegistration(registUrl);
-            String profileUrl = s3Service.upload(profile);
-            member.setProfile(profileUrl);
             memberRepository.save(member);
             return true;
         }catch (Exception e){

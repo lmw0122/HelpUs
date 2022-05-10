@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface MemberService {
-    boolean joinUser(Member member, MultipartFile profile);
-    boolean joinOrg(Member member,MultipartFile registration,MultipartFile profile);
+    boolean joinUser(Member member);
+    boolean joinOrg(Member member,MultipartFile registration);
     String login(Member member);
     String getEmailCode(String email);
     String getPhoneCode(String phoneNumber);

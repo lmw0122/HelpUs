@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,40 +18,41 @@ import java.util.*;
 @RequestMapping("/member")
 public class MemberController {
 
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private MemberService memberService;
 
-    @PostMapping(value = "/user",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity join(@RequestPart Member member, @RequestPart MultipartFile profile){
-//        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+    @PostMapping(value = "/user")
+    public ResponseEntity join(@RequestBody Member member){
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 
         System.out.println(member);
-        boolean success = memberService.joinUser(member,profile);
+        boolean success = memberService.joinUser(member);
         if(success)
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
     @PostMapping(value = "/org",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity joinOrg(@RequestPart Member member, @RequestPart MultipartFile registration, @RequestPart MultipartFile profile){
+    public ResponseEntity joinOrg(@RequestPart Member member, @RequestPart MultipartFile registration){
+        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         System.out.println(member);
-        boolean result = memberService.joinOrg(member, registration,profile);
+        boolean result = memberService.joinOrg(member, registration);
         if(result)
             return new ResponseEntity(HttpStatus.OK);
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Member member){
-//        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-        String result = memberService.login(member);
-        if(!result.equals("error"))
-            return new ResponseEntity<String>("Bearer "+result,HttpStatus.OK);
-        else
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody Member member){
+////        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+//        String result = memberService.login(member);
+//        if(!result.equals("error"))
+//            return new ResponseEntity<String>("Bearer "+result,HttpStatus.OK);
+//        else
+//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//    }
 
 
     @PostMapping("/email-auth")
