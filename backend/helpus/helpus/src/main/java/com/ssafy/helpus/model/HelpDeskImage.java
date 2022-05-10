@@ -1,10 +1,10 @@
 package com.ssafy.helpus.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -15,19 +15,18 @@ public class HelpDeskImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "help_desk_image_id")
-    private int HelpDeskCommentId;
+    private Long HelpDeskCommentId;
 
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "create_date")
-    private LocalDateTime createDate;
-
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "url")
+    private String url;
 
     @ManyToOne
     @JoinColumn(name = "help_desk_id")
     private HelpDesk helpDesk;
+
+    @Builder
+    public HelpDeskImage(String url, HelpDesk helpDesk) {
+        this.url = url;
+        this.helpDesk = helpDesk;
+    }
 }

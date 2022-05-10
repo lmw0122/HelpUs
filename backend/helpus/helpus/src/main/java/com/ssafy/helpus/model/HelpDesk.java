@@ -1,5 +1,7 @@
 package com.ssafy.helpus.model;
 
+import com.ssafy.helpus.config.enumClass.DeskCategory;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,11 +18,12 @@ public class HelpDesk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "help_desk_id")
+    @Column(name = "help_desk_id", insertable = false, updatable = false)
     private int helpDeskId;
 
     @Column(name = "category")
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private DeskCategory category;
 
     @Column(name = "title")
     private String title;
@@ -29,25 +32,33 @@ public class HelpDesk {
     private String content;
 
     @Column(name = "visible")
-    private int visible;
+    private String visible;
 
-    @Column(name = "create_date")
+    @Column(name = "create_date", insertable = false, updatable = false)
     private LocalDateTime createDate;
 
-    @Column(name = "update_date")
+    @Column(name = "update_date", insertable = false)
     private LocalDateTime update_date;
 
-    @Column(name = "status")
-    private int status;
+    @Column(name = "status", insertable = false)
+    private String status;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
-    @OneToMany(mappedBy = "helpDesk",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "helpDesk", cascade = CascadeType.ALL)
     private List<HelpDeskComment> helpDeskComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "helpDesk",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "helpDesk", cascade = CascadeType.ALL)
     private List<HelpDeskImage> helpDeskImages = new ArrayList<>();
 
+    @Builder
+    public HelpDesk(DeskCategory category, String title, String content, Member member, String visible) {
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.member = member;
+        this.visible = visible;
+    }
 }

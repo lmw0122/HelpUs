@@ -1,10 +1,14 @@
-package com.ssafy.helpus.service;
+package com.ssafy.helpus.service.Impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.netflix.discovery.converters.Auto;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.MemberRepository;
+import com.ssafy.helpus.service.EmailService;
+import com.ssafy.helpus.service.MemberService;
+import com.ssafy.helpus.service.PhoneService;
+import com.ssafy.helpus.service.S3Service;
 import javassist.Loader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,7 @@ import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
