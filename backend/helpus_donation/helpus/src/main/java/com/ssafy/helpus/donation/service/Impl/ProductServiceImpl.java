@@ -5,6 +5,7 @@ import com.ssafy.helpus.donation.dto.Donation.DonationProductResDto;
 import com.ssafy.helpus.donation.entity.Donation;
 import com.ssafy.helpus.donation.entity.DonationApply;
 import com.ssafy.helpus.donation.entity.DonationProduct;
+import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import com.ssafy.helpus.donation.repository.DonationProductRepository;
 import com.ssafy.helpus.donation.repository.DonationRepository;
 import com.ssafy.helpus.donation.service.ProductService;
@@ -76,5 +77,7 @@ public class ProductServiceImpl implements ProductService {
         double totalPercent = productRepository.percentCalculation(apply.getDonation().getDonationId());
         Donation donation = donationRepository.findById(apply.getDonation().getDonationId()).get();
         donation.setPercent(totalPercent);
+
+        if(totalPercent==100) donation.setStatus(DonationStatus.마감);
     }
 }
