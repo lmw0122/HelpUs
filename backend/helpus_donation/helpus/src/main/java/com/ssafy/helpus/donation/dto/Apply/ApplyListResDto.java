@@ -36,4 +36,6 @@ public class ApplyListResDto {
     private LocalDate donationDate;
 
     private ApplyStatus status;
+
+    private String end;
 }

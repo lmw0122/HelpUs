@@ -20,6 +20,8 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Slf4j
@@ -165,6 +167,7 @@ public class ApplyServiceImpl implements ApplyService {
         List<ApplyListResDto> list = new ArrayList<>();
         for(DonationApply apply : applies) {
             Long memberId = type.equals("user") ? apply.getDonation().getMemberId() : apply.getMemberId();
+            String end = type.equals("user") ? (ChronoUnit.DAYS.between(apply.getInvoiceEndDate(), LocalDate.now()))+ "일" : "";
 
             ApplyListResDto applyDto = ApplyListResDto.builder()
                     .donationApplyId(apply.getDonationApplyId())
@@ -177,6 +180,7 @@ public class ApplyServiceImpl implements ApplyService {
                     .parcel(apply.getParcel())
                     .invoice(apply.getInvoice())
                     .donationDate(apply.getDonationDate())
+                    .end(end)
                     .status(apply.getStatus()).build();
             list.add(applyDto);
         }

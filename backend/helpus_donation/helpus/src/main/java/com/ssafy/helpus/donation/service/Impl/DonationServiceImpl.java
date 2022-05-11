@@ -124,6 +124,7 @@ public class DonationServiceImpl implements DonationService {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> endDonation(Long donationId) throws Exception {
         log.info("DonationService endDonation call");
 

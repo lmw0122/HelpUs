@@ -41,6 +41,10 @@ public class DonationApply {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate donationDate;
 
+    @Column(name = "invoice_end_date", insertable = false, updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate invoiceEndDate;
+
     @Enumerated(EnumType.STRING)
     private ApplyStatus status;
 

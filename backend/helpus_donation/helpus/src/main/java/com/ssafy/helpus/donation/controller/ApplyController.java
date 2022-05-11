@@ -96,6 +96,7 @@ public class ApplyController {
         HttpStatus status = HttpStatus.OK;
         try {
             String role = memberService.getMemberRole(memberId);
+            System.out.println(role);
             if(role.equals("USER"))
                 resultMap = applyService.userApplyList(memberId, type, page-1);
             else if(role.equals("ORG"))

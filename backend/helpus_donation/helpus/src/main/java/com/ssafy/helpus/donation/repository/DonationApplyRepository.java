@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,6 @@ public interface DonationApplyRepository extends JpaRepository<DonationApply, Lo
     Page<DonationApply> findByStatusAndDonation(ApplyStatus status, Donation donation, Pageable pageable);
 
     Page<DonationApply> findByMemberIdAndStatus(Long memberId, ApplyStatus status, Pageable pageable);
+
+    List<DonationApply> findByStatusAndInvoiceEndDateBefore(ApplyStatus status, LocalDate date);
 }
