@@ -14,4 +14,6 @@ public interface FileService {
     void deskFileSave(HelpDesk desk, List<MultipartFile> files) throws Exception;
     //고객센터 게시글 이미지 삭제
     void deskFileDelete(List<HelpDeskImage> helpDeskImages) throws Exception;
+    //고객센터 게시글 이미지 조회
+    List<String> getDeskFileList(List<HelpDeskImage> files);
 }

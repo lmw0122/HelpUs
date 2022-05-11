@@ -2,10 +2,12 @@ package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.config.enumClass.DeskCategory;
 import com.ssafy.helpus.dto.Desk.DeskReqDto;
+import com.ssafy.helpus.dto.Desk.DeskResDto;
 import com.ssafy.helpus.dto.Desk.DeskUpdateReqDto;
 import com.ssafy.helpus.model.HelpDesk;
 import com.ssafy.helpus.repository.DeskRepository;
 import com.ssafy.helpus.repository.MemberRepository;
+import com.ssafy.helpus.service.CommentService;
 import com.ssafy.helpus.service.FileService;
 import com.ssafy.helpus.service.HelpDeskService;
 import com.ssafy.helpus.utils.Message;
@@ -30,6 +32,7 @@ public class HelpDeskServiceImpl implements HelpDeskService {
     private final DeskRepository deskRepository;
 
     private final FileService fileService;
+    private final CommentService commentService;
 
     @Override
     public Map<String, Object> registerDesk(DeskReqDto deskDto, int memberId, List<MultipartFile> files) throws Exception {
@@ -79,6 +82,37 @@ public class HelpDeskServiceImpl implements HelpDeskService {
             fileService.deskFileSave(helpDesk.get(), files);
         }
         resultMap.put("message", Message.DESK_UPDATE_SUCCESS);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> getHelpDesk(Long helpDeskId) throws Exception {
+        log.info("HelpDeskService getHelpDesk call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Optional<HelpDesk> helpDesk = deskRepository.findById(helpDeskId);
+        if(!helpDesk.isPresent()) {
+            resultMap.put("message", Message.DESK_NOT_FOUND);
+            return resultMap;
+        }
+
+        DeskResDto desk = DeskResDto.builder()
+                .memberId(helpDesk.get().getMember().getMemberId())
+                .name(helpDesk.get().getMember().getName())
+                .profile(helpDesk.get().getMember().getProfile())
+                .title(helpDesk.get().getTitle())
+                .content(helpDesk.get().getContent())
+                .category(helpDesk.get().getCategory())
+                .visible(helpDesk.get().getVisible())
+                .status(helpDesk.get().getStatus())
+                .createDate(helpDesk.get().getCreateDate())
+                .updateDate(helpDesk.get().getUpdateDate())
+                .images(fileService.getDeskFileList(helpDesk.get().getHelpDeskImages()))
+                .comments(commentService.getComment(helpDesk.get().getHelpDeskComments())).build();
+
+        resultMap.put("message", Message.DESK_FIND_SUCCESS);
+        resultMap.put("desk", desk);
         return resultMap;
     }
 }

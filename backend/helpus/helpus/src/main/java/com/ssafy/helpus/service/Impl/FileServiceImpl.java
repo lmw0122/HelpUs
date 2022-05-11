@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -67,5 +68,16 @@ public class FileServiceImpl implements FileService {
             //파일 테이블에서 삭제
             deskImageRepository.deleteById(file.getHelpDeskCommentId());
         }
+    }
+
+    @Override
+    public List<String> getDeskFileList(List<HelpDeskImage> files) {
+        log.debug("FileService getFileList call");
+
+        List<String> images = new ArrayList<>();
+        for(HelpDeskImage i : files) {
+            images.add(i.getUrl());
+        }
+        return images;
     }
 }

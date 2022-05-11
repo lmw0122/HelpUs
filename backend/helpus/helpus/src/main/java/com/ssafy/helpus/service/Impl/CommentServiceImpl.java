@@ -1,6 +1,7 @@
 package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.dto.CommentDto;
+import com.ssafy.helpus.dto.Desk.DeskCommentResDto;
 import com.ssafy.helpus.model.HelpDeskComment;
 import com.ssafy.helpus.repository.CommentRepository;
 import com.ssafy.helpus.repository.DeskRepository;
@@ -62,5 +63,20 @@ public class CommentServiceImpl implements CommentService {
 
         resultMap.put("message", Message.COMMENT_DELETE_SUCCESS);
         return resultMap;
+    }
+
+    @Override
+    public List<DeskCommentResDto> getComment(List<HelpDeskComment> comments) {
+        List<DeskCommentResDto> list = new ArrayList<>();
+        for(HelpDeskComment comment : comments) {
+            DeskCommentResDto deskDto = DeskCommentResDto.builder()
+                    .memberId(comment.getMember().getMemberId())
+                    .name(comment.getMember().getName())
+                    .profile(comment.getMember().getProfile())
+                    .content(comment.getContent())
+                    .createDate(comment.getCreateDate()).build();
+            list.add(deskDto);
+        }
+        return list;
     }
 }

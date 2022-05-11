@@ -78,4 +78,22 @@ public class HelpDeskController {
         }
         return new ResponseEntity(resultMap, status);
     }
+
+    @ApiOperation(value = "고객센터 글 조회")
+    @GetMapping("{helpDeskId}")
+    public ResponseEntity getHelpDesk(@PathVariable Long helpDeskId) {
+        log.info("HelpDeskController getHelpDesk call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = helpDeskService.getHelpDesk(helpDeskId);
+        } catch (Exception e) {
+            log.error(Message.DESK_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DESK_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 }

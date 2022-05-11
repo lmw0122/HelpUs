@@ -12,4 +12,6 @@ public interface HelpDeskService {
     Map<String, Object> registerDesk(DeskReqDto desk, int memberId, List<MultipartFile> files) throws Exception ;
     //고객센터 글 수정
     Map<String, Object> updateDesk(DeskUpdateReqDto desk, List<MultipartFile> files) throws Exception;
+    //고객센터 글 조회
+    Map<String, Object> getHelpDesk(Long helpDeskId) throws Exception;
 }
