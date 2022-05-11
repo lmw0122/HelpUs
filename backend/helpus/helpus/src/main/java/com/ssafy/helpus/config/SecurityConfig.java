@@ -24,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
-                .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()));
+                .httpBasic().disable();
     }
 }

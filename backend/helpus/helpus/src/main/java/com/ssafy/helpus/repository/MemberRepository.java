@@ -3,6 +3,7 @@ package com.ssafy.helpus.repository;
 import com.ssafy.helpus.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

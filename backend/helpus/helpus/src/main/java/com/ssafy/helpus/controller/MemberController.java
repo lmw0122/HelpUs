@@ -44,15 +44,19 @@ public class MemberController {
         else
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
-//    @PostMapping("/login")
-//    public ResponseEntity<String> login(@RequestBody Member member){
-////        member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
-//        String result = memberService.login(member);
-//        if(!result.equals("error"))
-//            return new ResponseEntity<String>("Bearer "+result,HttpStatus.OK);
-//        else
-//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Member member){
+        System.out.println(member.getPassword());
+        Member checked = memberService.checkMember(member);
+        System.out.println(checked);
+        if(checked != null && bCryptPasswordEncoder.matches(member.getPassword(),checked.getPassword())){
+            String token = memberService.login(checked);
+            return ResponseEntity.ok().header("Authorization","Bearer "+token).body(checked);
+        }
+        else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     @PostMapping("/email-auth")
