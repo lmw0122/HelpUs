@@ -27,4 +27,8 @@ public interface MemberService {
     boolean updateMemberPermission(int memberId);
 
     boolean updateMemberWarning(int memberId);
+
+    List<Member> getMembersByEmail(String content);
+
+    List<Member> getMembersByName(String content);
 }

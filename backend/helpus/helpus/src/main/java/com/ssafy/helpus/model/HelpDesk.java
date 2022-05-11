@@ -1,5 +1,6 @@
 package com.ssafy.helpus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.helpus.config.enumClass.DeskCategory;
 import lombok.Builder;
 import lombok.Data;
@@ -45,6 +46,7 @@ public class HelpDesk {
 
     @ManyToOne
     @JoinColumn(name = "member_id", updatable = false)
+    @JsonBackReference
     private Member member;
 
     @OneToMany(mappedBy = "helpDesk", cascade = CascadeType.ALL)

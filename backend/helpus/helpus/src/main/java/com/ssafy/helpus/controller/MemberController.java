@@ -23,6 +23,12 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+    @GetMapping
+    public ResponseEntity<Member> getOneMemberByToken(@RequestHeader HttpHeaders headers){
+        int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
+        Member result = memberService.getMemberById(tokenMemberId);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
     @PostMapping(value = "/user")
     public ResponseEntity join(@RequestBody Member member){
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
@@ -113,15 +119,12 @@ public class MemberController {
     @PutMapping(value = "/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Boolean> updateMember(@RequestPart Member member, @RequestPart MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
         int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
-        int memberId = member.getMemberId();
-        if(tokenMemberId != memberId){
-            return new ResponseEntity(false,HttpStatus.BAD_REQUEST);
-        }
+
         String newInfo = member.getInfo();
-        boolean result = memberService.updateMember(memberId,profile,newInfo);
+        boolean result = memberService.updateMember(tokenMemberId,profile,newInfo);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
-    @PutMapping(value = "/update/admin",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/admin/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Boolean> updateMemberByAdmin(@RequestPart Member member, @RequestPart MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
         String role = headers.get("role").get(0);
         int memberId = member.getMemberId();
@@ -134,18 +137,9 @@ public class MemberController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteMember(@RequestBody Member member, @RequestHeader HttpHeaders headers){
-        String role = headers.get("role").get(0);
-        if(role.equals("ADMIN")){
-            return new ResponseEntity(memberService.deleteMember(member.getMemberId()),HttpStatus.OK);
-        }
-        else if(role.equals("USER") || role.equals("ORG")){
-            Member tmp = memberService.getMemberById(member.getMemberId());
-            int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
-            if(tokenMemberId == tmp.getMemberId())
-                return new ResponseEntity(memberService.deleteMember(tokenMemberId),HttpStatus.OK);
-        }
-        return new ResponseEntity(false,HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Boolean> deleteMember(@RequestHeader HttpHeaders headers){
+        int id = Integer.parseInt(headers.get("memberId").get(0));
+        return new ResponseEntity(memberService.deleteMember(id),HttpStatus.OK);
     }
 
     @GetMapping("/admin/{page_num}")
@@ -172,7 +166,7 @@ public class MemberController {
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
-    @GetMapping("/waiting-list/{page_num}")
+    @GetMapping("/admin/waiting-list/{page_num}")
     public ResponseEntity<List<Map<String,Object>>> getWaitMemberByAdmin(@RequestHeader HttpHeaders headers, @PathVariable("page_num") int pageNum) {
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))
@@ -195,7 +189,7 @@ public class MemberController {
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
-    @GetMapping("/waiting-detail/{member_id}")
+    @GetMapping("/admin/waiting-detail/{member_id}")
     public ResponseEntity<Member> getWaitMemberDetailByAdmin(@RequestHeader HttpHeaders headers, @PathVariable("member_id") int memberId) {
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))
@@ -207,7 +201,7 @@ public class MemberController {
         else
             return new ResponseEntity(result,HttpStatus.OK);
     }
-    @PutMapping("/permission")
+    @PutMapping("/admin/permission")
     public ResponseEntity<Boolean> updateMemberPermission(@RequestHeader HttpHeaders headers,@RequestBody Map<String,Object> param){
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))
@@ -220,7 +214,33 @@ public class MemberController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/warning")
+    @GetMapping("/admin/search/{type}/{content}/{page_num}")
+    public ResponseEntity<List<Map<String,Object>>> getMembersByAdmin(@PathVariable("type") String type,@PathVariable("content") String content, @PathVariable("page_num") int pageNum){
+        List<Map<String, Object>> result = new ArrayList<>();
+        Map<String,Object> member = new HashMap<>();
+        List<Member> members;
+        Map<String,Object> cnt = new HashMap<>();
+        int totalCount = 0;
+        if(type.equals("email")){
+            members = memberService.getMembersByEmail(content);
+            totalCount = members.size();
+        }
+        else{
+            members = memberService.getMembersByName(content);
+            totalCount = members.size();
+        }
+
+        cnt.put("total_page",totalCount);
+        result.add(cnt);
+
+        int from = 10*(pageNum-1);
+        int to = Math.min(from+10,totalCount);
+        List<Member> resultMembers = members.subList(from,to);
+        member.put("members",resultMembers);
+        result.add(member);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+    @PutMapping("/admin/warning")
     public ResponseEntity<Boolean> updateMemberWarning(@RequestHeader HttpHeaders headers, @RequestBody Member member){
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))

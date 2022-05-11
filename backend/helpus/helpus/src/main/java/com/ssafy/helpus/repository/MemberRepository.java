@@ -19,4 +19,9 @@ public interface MemberRepository extends JpaRepository<Member,Integer> {
     int getWaitCount();
     @Query(nativeQuery = true,value = "SELECT * FROM member WHERE role='ORG_WAIT'")
     List<Member> getWaitMembers();
+
+
+    List<Member> findByEmailContains(String content);
+
+    List<Member> findByNameContains(String content);
 }

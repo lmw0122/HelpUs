@@ -12,23 +12,24 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 @Component
-public class AdminFilter extends AbstractGatewayFilterFactory<AdminFilter.Config> {
+public class CheckFilter extends AbstractGatewayFilterFactory<CheckFilter.Config> {
     public static class Config{
 
     }
-    public AdminFilter(){
+    public CheckFilter(){
         super(Config.class);
     }
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
             ServerHttpRequest req = exchange.getRequest();
-            if(!req.getHeaders().containsKey("role")){
-                return onError(exchange, "role이 없음", HttpStatus.UNAUTHORIZED);
+            if(!req.getHeaders().containsKey("memberId") || !req.getHeaders().containsKey("memberIdByToken")){
+                return onError(exchange, "키가 없음", HttpStatus.UNAUTHORIZED);
             }
-            String role = Objects.requireNonNull(req.getHeaders().get("role").get(0));
-            if(!role.equals("ADMIN"))
-                return onError(exchange,"권한 없음", HttpStatus.UNAUTHORIZED);
+            int memberId = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberId").get(0)));
+            int memberIdByToken = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberIdByToken").get(0)));
+            if(memberId != memberIdByToken)
+                return onError(exchange,"본인이 아님", HttpStatus.UNAUTHORIZED);
             return chain.filter(exchange);
 
         });
@@ -40,4 +41,5 @@ public class AdminFilter extends AbstractGatewayFilterFactory<AdminFilter.Config
         System.out.println(e);
         return res.setComplete();
     }
+
 }
