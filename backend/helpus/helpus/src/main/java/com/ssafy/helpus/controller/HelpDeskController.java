@@ -5,6 +5,8 @@ import com.ssafy.helpus.dto.Desk.DeskUpdateReqDto;
 import com.ssafy.helpus.service.FileService;
 import com.ssafy.helpus.service.HelpDeskService;
 import com.ssafy.helpus.utils.Message;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +90,37 @@ public class HelpDeskController {
         HttpStatus status = HttpStatus.OK;
         try {
             resultMap = helpDeskService.getHelpDesk(helpDeskId);
+        } catch (Exception e) {
+            log.error(Message.DESK_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.DESK_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "고객센터 글 목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "category", value = "카테고리", required = false, example = "문의, 정보, 신고, 도움",
+                    dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "word", value = "검색어", required = false,
+                    dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "memberId", value = "작성자 고유번호", required = false,
+                    dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "page", value = "페이지 번호", required = false,
+                    dataType = "int", paramType = "query")
+    })
+    @GetMapping
+    public ResponseEntity helpDeskList (@RequestParam(required = false) String category,
+                                        @RequestParam(required = false) String word,
+                                        @RequestParam(required = false) Integer memberId,
+                                        @RequestParam(defaultValue = "1") int page) {
+        log.info("HelpDeskController helpDeskList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = helpDeskService.helpDeskList(category, word, memberId, page-1);
         } catch (Exception e) {
             log.error(Message.DESK_FIND_FAIL+" : {}", e.getMessage());
 

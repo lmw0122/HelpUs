@@ -1,6 +1,7 @@
 package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.config.enumClass.DeskCategory;
+import com.ssafy.helpus.dto.Desk.DeskListResDto;
 import com.ssafy.helpus.dto.Desk.DeskReqDto;
 import com.ssafy.helpus.dto.Desk.DeskResDto;
 import com.ssafy.helpus.dto.Desk.DeskUpdateReqDto;
@@ -13,15 +14,15 @@ import com.ssafy.helpus.service.HelpDeskService;
 import com.ssafy.helpus.utils.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -113,6 +114,58 @@ public class HelpDeskServiceImpl implements HelpDeskService {
 
         resultMap.put("message", Message.DESK_FIND_SUCCESS);
         resultMap.put("desk", desk);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> helpDeskList(String category, String word, Integer memberId, int page) throws Exception {
+        log.info("HelpDeskService helpDeskList call");
+
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("helpDeskId").descending());
+        Page<HelpDesk> helpDesks;
+
+        if(memberId!=null) { //작성자별 조회
+            helpDesks = deskRepository.findByMember(memberRepository.findById(memberId).get(), pageRequest);
+        } else if(category==null && word==null) { //전체 조회
+            helpDesks = deskRepository.findAll(pageRequest);
+        } else if(category!=null && word==null) { //카테고리 조회
+            helpDesks = deskRepository.findByCategory(DeskCategory.valueOf(category), pageRequest);
+        } else if(category==null && word!=null) { //전체 검색
+            helpDesks = deskRepository.findByContentContainingIgnoreCase(word, pageRequest);
+        } else { //카테고리 검색
+            helpDesks = deskRepository.findByCategoryAndContentContainingIgnoreCase(DeskCategory.valueOf(category), word, pageRequest);
+        }
+
+        return makeList(helpDesks);
+    }
+
+    public Map<String, Object> makeList(Page<HelpDesk> helpDesks) {
+        log.info("HelpDeskService makeList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        if(helpDesks.isEmpty()) {
+            resultMap.put("message", Message.DESK_NOT_FOUND);
+            return resultMap;
+        }
+
+        List<DeskListResDto> list = new ArrayList<>();
+        for(HelpDesk helpDesk : helpDesks) {
+            DeskListResDto deskDto = DeskListResDto.builder()
+                    .helpDeskId(helpDesk.getHelpDeskId())
+                    .category(helpDesk.getCategory())
+                    .memberId(helpDesk.getMember().getMemberId())
+                    .name(helpDesk.getMember().getName())
+                    .title(helpDesk.getTitle())
+                    .createDate(helpDesk.getCreateDate())
+                    .visible(helpDesk.getVisible())
+                    .status(helpDesk.getStatus()).build();
+            list.add(deskDto);
+        }
+
+        resultMap.put("message", Message.DESK_FIND_SUCCESS);
+        resultMap.put("desk", list);
+        resultMap.put("totalPage", helpDesks.getTotalPages());
         return resultMap;
     }
 }
