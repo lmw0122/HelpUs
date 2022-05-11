@@ -1,6 +1,5 @@
 package com.ssafy.helpus.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +26,6 @@ public class Certification {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    @JsonBackReference(value = "certi-member")
     private Member member;
 
 }
