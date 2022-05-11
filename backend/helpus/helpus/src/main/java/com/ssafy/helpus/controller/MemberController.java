@@ -25,7 +25,7 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity<Member> getOneMemberByToken(@RequestHeader HttpHeaders headers){
-        int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
+        int tokenMemberId = Integer.parseInt(headers.get("memberIdByToken").get(0));
         Member result = memberService.getMemberById(tokenMemberId);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
