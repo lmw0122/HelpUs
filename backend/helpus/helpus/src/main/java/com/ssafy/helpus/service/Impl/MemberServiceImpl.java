@@ -137,7 +137,9 @@ public class MemberServiceImpl implements MemberService {
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            s3Service.delete(preUrl);
+            if(preUrl != null){
+                s3Service.delete(preUrl);
+            }
             String newUrl = s3Service.upload(newProfile);
             m.setProfile(newUrl);
             m.setInfo(newInfo);
@@ -226,6 +228,16 @@ public class MemberServiceImpl implements MemberService {
         }
         else
             return false;
+    }
+
+    @Override
+    public List<Member> getMembersByEmail(String content) {
+        return memberRepository.findByEmailContains(content);
+    }
+
+    @Override
+    public List<Member> getMembersByName(String content) {
+        return memberRepository.findByNameContains(content);
     }
 
     @Override

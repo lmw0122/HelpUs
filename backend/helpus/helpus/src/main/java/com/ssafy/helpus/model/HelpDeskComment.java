@@ -1,5 +1,6 @@
 package com.ssafy.helpus.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,10 +27,12 @@ public class HelpDeskComment {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonBackReference(value = "comment-member")
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "help_desk_id")
+    @JsonBackReference(value = "comment-desk")
     private HelpDesk helpDesk;
 
     @Builder
