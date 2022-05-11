@@ -206,7 +206,7 @@ public class MemberController {
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        int memberId = (int) param.get("member_id");
+        int memberId = (int) param.get("memberId");
         boolean permission = (boolean) param.get("permission");
         if(permission){
             boolean result = memberService.updateMemberPermission(memberId);
