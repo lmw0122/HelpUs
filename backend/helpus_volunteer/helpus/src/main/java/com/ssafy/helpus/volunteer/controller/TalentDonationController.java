@@ -38,7 +38,7 @@ public class TalentDonationController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 String role = headers.get("role").get(0);
                 resultMap = talentDonationService.registerTalentDonation(talentDonationReqDto, memberId, files, role);
         } catch (Exception e){

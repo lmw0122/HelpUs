@@ -37,7 +37,7 @@ public class VolunteerController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 String role = headers.get("role").get(0);
                 resultMap = volunteerService.registerVoluneer(volunteerReqDto, memberId, files, role);
         } catch (Exception e){
@@ -131,7 +131,7 @@ public class VolunteerController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
             String role = headers.get("role").get(0);
             resultMap = volunteerService.applyVolunteer(volunteerId, memberId, role);
         }catch (Exception e){
