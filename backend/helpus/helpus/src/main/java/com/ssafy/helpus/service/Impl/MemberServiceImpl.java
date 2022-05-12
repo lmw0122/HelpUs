@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.netflix.discovery.converters.Auto;
 import com.ssafy.helpus.config.jwt.JwtProperties;
+import com.ssafy.helpus.dto.Member.MemberDto;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.MemberRepository;
 import com.ssafy.helpus.service.EmailService;
@@ -19,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +38,24 @@ public class MemberServiceImpl implements MemberService {
     private final PhoneService phoneService;
 
     @Override
-    public boolean joinUser(Member member) {
+    public boolean joinUser(MemberDto member) {
         try {
             member.setRole("USER");
-            memberRepository.save(member);
+            Member m = Member.builder()
+                    .memberId(member.getMemberId())
+                    .address(member.getAddress())
+                    .createDate(member.getCreateDate())
+                    .email(member.getEmail())
+                    .info(member.getInfo())
+                    .name(member.getName())
+                    .orgZipcode(member.getOrgZipcode())
+                    .password(member.getPassword())
+                    .profile(member.getProfile())
+                    .registration(member.getRegistration())
+                    .tel(member.getTel())
+                    .warnCount(0)
+                    .role("USER").build();
+            memberRepository.save(m);
             return true;
         }catch (Exception e){
             return false;
@@ -51,12 +63,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean joinOrg(Member member, MultipartFile registration) {
+    public boolean joinOrg(MemberDto member, MultipartFile registration) {
         try {
-            member.setRole("ORG_WAIT");
             String registUrl = s3Service.upload(registration);
-            member.setRegistration(registUrl);
-            memberRepository.save(member);
+            Member m = Member.builder()
+                    .memberId(member.getMemberId())
+                    .address(member.getAddress())
+                    .createDate(member.getCreateDate())
+                    .email(member.getEmail())
+                    .info(member.getInfo())
+                    .name(member.getName())
+                    .orgZipcode(member.getOrgZipcode())
+                    .password(member.getPassword())
+                    .profile(member.getProfile())
+                    .registration(registUrl)
+                    .tel(member.getTel())
+                    .warnCount(0)
+                    .role("ORG_WAIT").build();
+            memberRepository.save(m);
             return true;
         }catch (Exception e){
             return false;
@@ -64,13 +88,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member checkMember(Member member) {
+    public MemberDto checkMember(MemberDto member) {
         Member result = memberRepository.findByEmail(member.getEmail());
-        return result;
+        MemberDto r = converter(result);
+        return r;
     }
 
     @Override
-    public String login(Member member) {
+    public String login(MemberDto member) {
 
         String jwtToken = JWT.create()
                 .withIssuer("auth")
@@ -128,8 +153,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member getMemberById(int id) {
-        return memberRepository.findByMemberId(id);
+    public MemberDto getMemberById(int id) {
+        Member result = memberRepository.findByMemberId(id);
+        MemberDto m = converter(result);
+        return m;
     }
 
     @Override
@@ -199,8 +226,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+    public List<MemberDto> getAllMembers() {
+        List<Member> resultsFrom = memberRepository.findAll();
+        List<MemberDto> results = new ArrayList<>();
+        for(Member result :resultsFrom){
+            MemberDto m = converter(result);
+            results.add(m);
+        }
+        return results;
     }
 
     @Override
@@ -209,8 +242,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getWaitMembers() {
-        return memberRepository.getWaitMembers();
+    public List<MemberDto> getWaitMembers() {
+
+        List<Member> resultsFrom =  memberRepository.getWaitMembers();
+        List<MemberDto> results = new ArrayList<>();
+        for(Member result :resultsFrom){
+            MemberDto m = converter(result);
+            results.add(m);
+        }
+        return results;
     }
 
     @Override
@@ -241,13 +281,25 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Member> getMembersByEmail(String content) {
-        return memberRepository.findByEmailContains(content);
+    public List<MemberDto> getMembersByEmail(String content) {
+        List<Member> resultsFrom = memberRepository.findByEmailContains(content);
+        List<MemberDto> results = new ArrayList<>();
+        for(Member result :resultsFrom){
+            MemberDto m = converter(result);
+            results.add(m);
+        }
+        return results;
     }
 
     @Override
-    public List<Member> getMembersByName(String content) {
-        return memberRepository.findByNameContains(content);
+    public List<MemberDto> getMembersByName(String content) {
+        List<Member> resultsFrom = memberRepository.findByNameContains(content);
+        List<MemberDto> results = new ArrayList<>();
+        for(Member result :resultsFrom){
+            MemberDto m = converter(result);
+            results.add(m);
+        }
+        return results;
     }
 
     @Override
@@ -257,5 +309,22 @@ public class MemberServiceImpl implements MemberService {
             return false;
         else
             return true;
+    }
+    public MemberDto converter(Member result){
+        MemberDto m = MemberDto.builder()
+                .memberId(result.getMemberId())
+                .address(result.getAddress())
+                .createDate(result.getCreateDate())
+                .email(result.getEmail())
+                .info(result.getInfo())
+                .name(result.getName())
+                .orgZipcode(result.getOrgZipcode())
+                .password(result.getPassword())
+                .profile(result.getProfile())
+                .registration(result.getRegistration())
+                .tel(result.getTel())
+                .warnCount(result.getWarnCount())
+                .role(result.getRole()).build();
+        return m;
     }
 }

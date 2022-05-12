@@ -26,13 +26,11 @@ public class HelpDeskComment {
     private LocalDateTime createDate;
 
     @ManyToOne
-    @JsonBackReference(value = "comment-member")
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "help_desk_id")
-    @JsonBackReference(value = "comment-desk")
     private HelpDesk helpDesk;
 
     @Builder

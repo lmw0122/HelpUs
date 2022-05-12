@@ -44,7 +44,7 @@ public class HelpDeskController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                int memberId = Integer.parseInt((headers.get("memberId").get(0)));
+                int memberId = Integer.parseInt((headers.get("memberIdByToken").get(0)));
                 resultMap = helpDeskService.registerDesk(desk, memberId, files);
             }
         } catch (Exception e) {

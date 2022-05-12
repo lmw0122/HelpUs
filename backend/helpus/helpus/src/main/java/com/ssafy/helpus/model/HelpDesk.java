@@ -46,7 +46,6 @@ public class HelpDesk {
 
     @ManyToOne
     @JoinColumn(name = "member_id", updatable = false)
-    @JsonBackReference
     private Member member;
 
     @OneToMany(mappedBy = "helpDesk", cascade = CascadeType.ALL)

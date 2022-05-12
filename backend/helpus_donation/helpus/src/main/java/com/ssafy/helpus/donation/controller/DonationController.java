@@ -45,7 +45,7 @@ public class DonationController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 resultMap = donationService.registerDonation(donation, memberId, files);
             }
         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class DonationController {
     @DeleteMapping("{donationId}")
     public ResponseEntity endDonation(@PathVariable Long donationId) {
         log.info("DonationController endDonation call");
-
+        log.info("donation id : "+donationId);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {

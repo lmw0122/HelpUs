@@ -1,5 +1,6 @@
 package com.ssafy.helpus.controller;
 
+import com.ssafy.helpus.dto.Member.MemberDto;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,13 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<Member> getOneMemberByToken(@RequestHeader HttpHeaders headers){
+    public ResponseEntity<MemberDto> getOneMemberByToken(@RequestHeader HttpHeaders headers){
         int tokenMemberId = Integer.parseInt(headers.get("memberIdByToken").get(0));
-        Member result = memberService.getMemberById(tokenMemberId);
+        MemberDto result = memberService.getMemberById(tokenMemberId);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @PostMapping(value = "/user")
-    public ResponseEntity join(@RequestBody Member member){
+    public ResponseEntity join(@RequestBody MemberDto member){
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 
         System.out.println(member);
@@ -41,7 +42,7 @@ public class MemberController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
     @PostMapping(value = "/org",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity joinOrg(@RequestPart Member member, @RequestPart MultipartFile registration){
+    public ResponseEntity joinOrg(@RequestPart MemberDto member, @RequestPart MultipartFile registration){
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         System.out.println(member);
         boolean result = memberService.joinOrg(member, registration);
@@ -51,9 +52,9 @@ public class MemberController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Member member){
+    public ResponseEntity<?> login(@RequestBody MemberDto member){
         System.out.println(member.getPassword());
-        Member checked = memberService.checkMember(member);
+        MemberDto checked = memberService.checkMember(member);
         System.out.println(checked);
         if(checked != null && bCryptPasswordEncoder.matches(member.getPassword(),checked.getPassword())){
             String token = memberService.login(checked);
@@ -117,7 +118,7 @@ public class MemberController {
     }
 
     @PutMapping(value = "/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Boolean> updateMember(@RequestPart(required = false) Member member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
+    public ResponseEntity<Boolean> updateMember(@RequestPart(required = false) MemberDto member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
         int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
         String newInfo = "";
         if(member != null)
@@ -155,10 +156,10 @@ public class MemberController {
         result.add(cnt);
 
         Map<String,Object> member = new HashMap<>();
-        List<Member> members = memberService.getAllMembers();
+        List<MemberDto> members = memberService.getAllMembers();
         int from = 10*(pageNum-1);
         int to = Math.min(from+10,totalCount);
-        List<Member> resultMembers = members.subList(from,to);
+        List<MemberDto> resultMembers = members.subList(from,to);
         member.put("members",resultMembers);
         result.add(member);
 
@@ -179,22 +180,20 @@ public class MemberController {
         result.add(cnt);
 
         Map<String,Object> member = new HashMap<>();
-        List<Member> members = memberService.getWaitMembers();
+        List<MemberDto> members = memberService.getWaitMembers();
         int from = 10*(pageNum-1);
         int to = Math.min(from+10,totalCount);
-        List<Member> resultMembers = members.subList(from,to);
+        List<MemberDto> resultMembers = members.subList(from,to);
         member.put("members",resultMembers);
         result.add(member);
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @GetMapping("/admin/waiting-detail/{member_id}")
-    public ResponseEntity<Member> getWaitMemberDetailByAdmin(@RequestHeader HttpHeaders headers, @PathVariable("member_id") int memberId) {
+    public ResponseEntity<MemberDto> getWaitMemberDetailByAdmin(@RequestHeader HttpHeaders headers, @PathVariable("member_id") int memberId) {
         String role = headers.get("role").get(0);
-        if (!role.equals("ADMIN"))
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
-        Member result = memberService.getMemberById(memberId);
+        MemberDto result = memberService.getMemberById(memberId);
         if(result == null)
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         else
@@ -217,7 +216,7 @@ public class MemberController {
     public ResponseEntity<List<Map<String,Object>>> getMembersByAdmin(@PathVariable("type") String type,@PathVariable("content") String content, @PathVariable("page_num") int pageNum){
         List<Map<String, Object>> result = new ArrayList<>();
         Map<String,Object> member = new HashMap<>();
-        List<Member> members;
+        List<MemberDto> members;
         Map<String,Object> cnt = new HashMap<>();
         int totalCount = 0;
         if(type.equals("email")){
@@ -234,13 +233,13 @@ public class MemberController {
 
         int from = 10*(pageNum-1);
         int to = Math.min(from+10,totalCount);
-        List<Member> resultMembers = members.subList(from,to);
+        List<MemberDto> resultMembers = members.subList(from,to);
         member.put("members",resultMembers);
         result.add(member);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @PutMapping("/admin/warning")
-    public ResponseEntity<Boolean> updateMemberWarning(@RequestHeader HttpHeaders headers, @RequestBody Member member){
+    public ResponseEntity<Boolean> updateMemberWarning(@RequestHeader HttpHeaders headers, @RequestBody MemberDto member){
         String role = headers.get("role").get(0);
         if (!role.equals("ADMIN"))
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -250,9 +249,9 @@ public class MemberController {
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @GetMapping("/{member_id}")
-    public ResponseEntity<Member> getOneMember(@PathVariable("member_id") int memberId){
+    public ResponseEntity<MemberDto> getOneMember(@PathVariable("member_id") int memberId){
 
-        Member result = memberService.getMemberById(memberId);
+        MemberDto result = memberService.getMemberById(memberId);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

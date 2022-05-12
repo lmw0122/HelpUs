@@ -33,7 +33,7 @@ public class CommentController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
             resultMap = commentService.registerComment(comment, memberId);
         } catch (Exception e) {
             log.error(Message.COMMENT_REGISTER_FAIL+" : {}", e.getMessage());

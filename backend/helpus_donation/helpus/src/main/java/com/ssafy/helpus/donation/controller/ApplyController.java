@@ -36,7 +36,7 @@ public class ApplyController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.CREATED;
         try {
-            Long memberId = Long.valueOf(headers.get("memberId").get(0));
+            Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
             resultMap = applyService.applyDonation(apply, memberId);
 
         } catch (Exception e) {

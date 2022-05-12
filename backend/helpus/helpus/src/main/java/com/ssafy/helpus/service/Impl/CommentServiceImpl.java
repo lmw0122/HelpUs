@@ -2,7 +2,9 @@ package com.ssafy.helpus.service.Impl;
 
 import com.ssafy.helpus.dto.CommentDto;
 import com.ssafy.helpus.dto.Desk.DeskCommentResDto;
+import com.ssafy.helpus.dto.Member.MemberDto;
 import com.ssafy.helpus.model.HelpDeskComment;
+import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.repository.CommentRepository;
 import com.ssafy.helpus.repository.DeskRepository;
 import com.ssafy.helpus.service.CommentService;
@@ -31,9 +33,23 @@ public class CommentServiceImpl implements CommentService {
         log.info("CommentService registerComment call");
 
         Map<String, Object> resultMap = new HashMap<>();
-
+        MemberDto member = memberService.getMemberById(memberId);
+        Member m = Member.builder()
+                .memberId(member.getMemberId())
+                .address(member.getAddress())
+                .createDate(member.getCreateDate())
+                .email(member.getEmail())
+                .info(member.getInfo())
+                .name(member.getName())
+                .orgZipcode(member.getOrgZipcode())
+                .password(member.getPassword())
+                .profile(member.getProfile())
+                .registration(member.getRegistration())
+                .tel(member.getTel())
+                .warnCount(member.getWarnCount())
+                .role(member.getRole()).build();
         HelpDeskComment comment = HelpDeskComment.builder()
-                .member(memberService.getMemberById(memberId))
+                .member(m)
                 .content(commentDto.getContent())
                 .helpDesk(deskRepository.findById(commentDto.getHelpDeskId()).get()).build();
 

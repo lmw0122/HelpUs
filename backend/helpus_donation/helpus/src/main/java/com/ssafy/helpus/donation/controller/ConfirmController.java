@@ -43,7 +43,7 @@ public class ConfirmController {
                 resultMap.put("message", Message.FILE_EXTENSION_EXCEPTION);
                 status = HttpStatus.BAD_REQUEST;
             } else {
-                Long memberId = Long.valueOf(headers.get("memberId").get(0));
+                Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 resultMap = confirmService.registerConfirm(confirm, memberId, files);
             }
         } catch (Exception e) {

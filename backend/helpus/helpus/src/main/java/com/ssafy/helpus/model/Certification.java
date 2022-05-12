@@ -27,7 +27,6 @@ public class Certification {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    @JsonBackReference(value = "certi-member")
     private Member member;
 
 }
