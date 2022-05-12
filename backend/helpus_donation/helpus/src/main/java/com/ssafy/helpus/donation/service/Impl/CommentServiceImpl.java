@@ -60,6 +60,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
 
         resultMap.put("message", Message.COMMENT_REGISTER_SUCCESS);
+        resultMap.put("content", commentDto.getContent());
         return resultMap;
     }
 
