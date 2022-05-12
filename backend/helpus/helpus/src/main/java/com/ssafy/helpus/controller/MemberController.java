@@ -117,22 +117,21 @@ public class MemberController {
     }
 
     @PutMapping(value = "/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Boolean> updateMember(@RequestPart Member member, @RequestPart MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
+    public ResponseEntity<Boolean> updateMember(@RequestPart(required = false) Member member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
         int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
-
-        String newInfo = member.getInfo();
+        String newInfo = "";
+        if(member != null)
+            newInfo = member.getInfo();
         boolean result = memberService.updateMember(tokenMemberId,profile,newInfo);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @PutMapping(value = "/admin/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Boolean> updateMemberByAdmin(@RequestPart Member member, @RequestPart MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
-        String role = headers.get("role").get(0);
-        int memberId = member.getMemberId();
-        if(!role.equals("ADMIN")){
-            return new ResponseEntity(false,HttpStatus.BAD_REQUEST);
-        }
-
-        boolean result = memberService.updateMemberByAdmin(memberId,profile,member);
+    public ResponseEntity<Boolean> updateMemberByAdmin(@RequestPart(required = false) Member member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
+        int memberId = Integer.parseInt(headers.get("memberIdByToken").get(0));
+        Member tmp = null;
+        if(member != null)
+            tmp = member;
+        boolean result = memberService.updateMemberByAdmin(memberId,profile,tmp);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 

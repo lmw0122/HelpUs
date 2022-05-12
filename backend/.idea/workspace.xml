@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4ea7c348-74ca-4764-8f53-2c016bfd347a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/config/jwt/JwtProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/config/jwt/JwtProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/service/Impl/MemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/helpus/helpus/src/main/java/com/ssafy/helpus/service/Impl/MemberServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpus_donation/helpus/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/helpus_donation/helpus/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helpus_donation/helpus/src/main/java/com/ssafy/helpus/HelpusDonationApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/helpus_donation/helpus/src/main/java/com/ssafy/helpus/HelpusDonationApplication.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="293LSnrn5YB1mFrv0Uvah7pLXaB" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ea7c348-74ca-4764-8f53-2c016bfd347a" name="Changes" comment="" />
+      <created>1652336827121</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1652336827121</updated>
+      <workItem from="1652336827581" duration="2000" />
+    </task>
+    <servers />
+  </component>
+</project>

@@ -140,9 +140,13 @@ public class MemberServiceImpl implements MemberService {
             if(preUrl != null){
                 s3Service.delete(preUrl);
             }
-            String newUrl = s3Service.upload(newProfile);
-            m.setProfile(newUrl);
-            m.setInfo(newInfo);
+            if(newProfile != null){
+                String newUrl = s3Service.upload(newProfile);
+                m.setProfile(newUrl);
+            }
+            if(newInfo != ""){
+                m.setInfo(newInfo);
+            }
             memberRepository.save(m);
 
             return true;
@@ -156,11 +160,17 @@ public class MemberServiceImpl implements MemberService {
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            s3Service.delete(preUrl);
-            String newUrl = s3Service.upload(newProfile);
-            m.setProfile(newUrl);
-            m.setInfo(member.getInfo());
-            m.setName(member.getName());
+            if(preUrl != null){
+                s3Service.delete(preUrl);
+            }
+            if(newProfile != null){
+                String newUrl = s3Service.upload(newProfile);
+                m.setProfile(newUrl);
+            }
+            if(member != null){
+                m.setInfo(member.getInfo());
+                m.setName(member.getName());
+            }
             memberRepository.save(m);
 
             return true;
