@@ -28,7 +28,7 @@ public class DonationApply {
 
     private String parcel;
 
-    private Integer invoice;
+    private String invoice;
 
     @OneToOne
     @JoinColumn(name = "donation_product_id", nullable = false, updatable = false)
@@ -49,7 +49,7 @@ public class DonationApply {
     private ApplyStatus status;
 
     @Builder
-    public DonationApply(Donation donation, Long memberId, DonationProduct donationProduct, String parcel, Integer invoice, int count, ApplyStatus status) {
+    public DonationApply(Donation donation, Long memberId, DonationProduct donationProduct, String parcel, String invoice, int count, ApplyStatus status) {
         this.donation = donation;
         this.memberId = memberId;
         this.donationProduct = donationProduct;

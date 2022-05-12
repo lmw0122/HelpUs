@@ -21,7 +21,7 @@ public class WaybillReqDto {
 
     @ApiModelProperty(value = "송장 번호")
     @NotNull(message = "송장 번호를 입력해주세요.")
-    private Integer invoice;
+    private String invoice;
 
     @ApiModelProperty(value = "택배사")
     @NotBlank(message = "택배사를 입력해주세요")

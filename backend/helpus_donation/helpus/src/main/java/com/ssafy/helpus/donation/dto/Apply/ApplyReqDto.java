@@ -19,7 +19,7 @@ public class ApplyReqDto {
     private String parcel;
 
     @ApiModelProperty(value = "송장 번호")
-    private Integer invoice;
+    private String invoice;
 
     @ApiModelProperty(value = "기부 물품 고유번호")
     @NotNull(message = "기부 물품 고유번호를 입력해주세요.")

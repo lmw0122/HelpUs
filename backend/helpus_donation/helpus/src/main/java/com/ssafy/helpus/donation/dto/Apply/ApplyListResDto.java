@@ -27,7 +27,7 @@ public class ApplyListResDto {
     private String parcel;
 
     @ApiModelProperty(value = "송장 번호")
-    private Integer invoice;
+    private String invoice;
 
     private String productName;
 
