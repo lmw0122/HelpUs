@@ -6,28 +6,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 @Component
-public class CheckFilter extends AbstractGatewayFilterFactory<CheckFilter.Config> {
+public class CheckInPathFilter extends AbstractGatewayFilterFactory<CheckInPathFilter.Config> {
     public static class Config{
 
     }
-    public CheckFilter(){
+    public CheckInPathFilter(){
         super(Config.class);
     }
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            System.out.println("check filter act");
+            System.out.println("check in path filter act");
             ServerHttpRequest req = exchange.getRequest();
-            if(!req.getHeaders().containsKey("memberId") || !req.getHeaders().containsKey("memberIdByToken")){
+            if(!req.getHeaders().containsKey("memberIdByToken")){
                 return onError(exchange, "키가 없음", HttpStatus.UNAUTHORIZED);
             }
-            int memberId = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberId").get(0)));
+            int memberId = 0;
+            String path = req.getPath().toString();
+            if(path.contains("?")){
+                int idx = path.indexOf("?");
+                path = path.substring(0,idx);
+            }
+            MultiValueMap<String,String> map = req.getQueryParams();
+            StringTokenizer st = new StringTokenizer(path,"/");
+            while(true){
+                if(!st.hasMoreTokens()){
+                    break;
+                }
+                else if(st.countTokens() == 1)
+                    memberId = Integer.parseInt(st.nextToken());
+                else
+                    System.out.println("token : "+st.nextToken());
+            }
+            System.out.println(map);
+            System.out.println("path : "+path);
             int memberIdByToken = Integer.parseInt(Objects.requireNonNull(req.getHeaders().get("memberIdByToken").get(0)));
             if(memberId != memberIdByToken)
                 return onError(exchange,"본인이 아님", HttpStatus.UNAUTHORIZED);

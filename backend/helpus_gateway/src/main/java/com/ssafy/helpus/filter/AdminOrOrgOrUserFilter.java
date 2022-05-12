@@ -12,23 +12,24 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 @Component
-public class AdminFilter extends AbstractGatewayFilterFactory<AdminFilter.Config> {
+public class AdminOrOrgOrUserFilter extends AbstractGatewayFilterFactory<AdminOrOrgOrUserFilter.Config> {
     public static class Config{
 
     }
-    public AdminFilter(){
+    public AdminOrOrgOrUserFilter(){
         super(Config.class);
     }
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
-            System.out.println("admin filter act");
+            System.out.println("org or user filter act");
             ServerHttpRequest req = exchange.getRequest();
             if(!req.getHeaders().containsKey("role")){
                 return onError(exchange, "role이 없음", HttpStatus.UNAUTHORIZED);
             }
             String role = Objects.requireNonNull(req.getHeaders().get("role").get(0));
-            if(!role.equals("ADMIN"))
+            System.out.println("role : "+role);
+            if(!role.equals("ORG") && !role.equals("USER") && !role.equals("ADMIN"))
                 return onError(exchange,"권한 없음", HttpStatus.UNAUTHORIZED);
             return chain.filter(exchange);
 

@@ -28,6 +28,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
+            System.out.println("jwt filter act");
             ServerHttpRequest req = exchange.getRequest();
             if(!req.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
                 return onError(exchange, "키가 없음",HttpStatus.UNAUTHORIZED);
@@ -57,13 +58,9 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
     private DecodedJWT getDecodedJWT(String token){
         try {
-            System.out.println("--------------------------------------------------------");
             Algorithm algo = Algorithm.HMAC256("helpus");
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             JWTVerifier verifier = JWT.require(algo).withIssuer("auth").build();
-            System.out.println("--------------------------------------------------------");
             DecodedJWT jwt = verifier.verify(token);
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             System.out.println(jwt.getClaim("memberId"));
             return jwt;
 

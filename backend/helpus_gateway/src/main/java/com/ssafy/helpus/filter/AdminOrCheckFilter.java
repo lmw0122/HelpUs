@@ -22,6 +22,7 @@ public class AdminOrCheckFilter extends AbstractGatewayFilterFactory<AdminOrChec
     @Override
     public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
+            System.out.println("admin or check filter act");
             ServerHttpRequest req = exchange.getRequest();
             if(!req.getHeaders().containsKey("role")){
                 return onError(exchange, "키가 없음", HttpStatus.UNAUTHORIZED);
