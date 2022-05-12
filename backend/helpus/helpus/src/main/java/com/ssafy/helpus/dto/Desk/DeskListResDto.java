@@ -15,7 +15,7 @@ public class DeskListResDto {
     @ApiModelProperty(value = "고객센터 글 고유번호")
     private Long helpDeskId;
 
-    @ApiModelProperty(value = "카테고리", example = "문의, 정보, 신고, 도움")
+    @ApiModelProperty(value = "카테고리", example = "문의, 정보수정, 신고, 도움")
     private DeskCategory category;
 
     @ApiModelProperty(value = "제목")

@@ -42,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
         comment.getHelpDesk().setStatus("등록");
 
         resultMap.put("message", Message.COMMENT_REGISTER_SUCCESS);
+        resultMap.put("content", commentDto.getContent());
         return resultMap;
     }
 

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class DeskReqDto {
 
-    @ApiModelProperty(value = "카테고리", example = "문의, 정보, 신고, 도움")
+    @ApiModelProperty(value = "카테고리", example = "문의, 정보수정, 신고, 도움")
     @NotBlank(message = "카테고리를 선택해주세요")
     private String category;
 

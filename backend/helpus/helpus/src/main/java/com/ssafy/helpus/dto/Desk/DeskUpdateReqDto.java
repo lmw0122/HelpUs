@@ -17,7 +17,7 @@ public class DeskUpdateReqDto {
     @NotBlank(message = "작성자 고유 번호를 입력해주세요")
     private int memberId;
 
-    @ApiModelProperty(value = "카테고리", example = "문의, 정보, 신고, 도움")
+    @ApiModelProperty(value = "카테고리", example = "문의, 정보수정, 신고, 도움")
     @NotBlank(message = "카테고리를 선택해주세요")
     private String category;
 
