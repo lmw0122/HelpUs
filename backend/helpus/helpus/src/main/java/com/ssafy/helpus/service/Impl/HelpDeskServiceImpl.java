@@ -102,6 +102,7 @@ public class HelpDeskServiceImpl implements HelpDeskService {
                 .memberId(helpDesk.get().getMember().getMemberId())
                 .name(helpDesk.get().getMember().getName())
                 .profile(helpDesk.get().getMember().getProfile())
+                .email(helpDesk.get().getMember().getEmail())
                 .title(helpDesk.get().getTitle())
                 .content(helpDesk.get().getContent())
                 .category(helpDesk.get().getCategory())

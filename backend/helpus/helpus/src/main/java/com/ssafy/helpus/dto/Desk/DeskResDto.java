@@ -22,6 +22,9 @@ public class DeskResDto {
     @ApiModelProperty(value = "작성자 프로필")
     private String profile;
 
+    @ApiModelProperty(value = "이메일")
+    private String email;
+
     @ApiModelProperty(value = "카테고리", example = "문의, 정보수정, 신고, 도움")
     @NotBlank(message = "카테고리를 선택해주세요")
     private DeskCategory category;
