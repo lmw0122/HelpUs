@@ -25,8 +25,8 @@ public class Certification {
     @Column(name = "cerification_num")
     private String certificationNum;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @ManyToOne
+//    @JoinColumn(name = "member_id")
+//    private Member member;
 
 }

@@ -5,16 +5,17 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @ApiModel(value = "고객센터 게시글 수정")
 @Getter
 public class DeskUpdateReqDto {
     @ApiModelProperty(value = "고객센터 글 고유 번호")
-    @NotBlank(message = "고객센터 고유번호를 입력해주세요")
+    @NotNull(message = "고객센터 고유번호를 입력해주세요")
     private Long helpDeskId;
 
     @ApiModelProperty(value = "작성자 고유 번호")
-    @NotBlank(message = "작성자 고유 번호를 입력해주세요")
+    @NotNull(message = "작성자 고유 번호를 입력해주세요")
     private int memberId;
 
     @ApiModelProperty(value = "카테고리", example = "문의, 정보수정, 신고, 도움")

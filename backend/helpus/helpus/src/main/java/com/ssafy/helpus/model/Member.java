@@ -61,9 +61,9 @@ public class Member {
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
-    @JsonBackReference(value = "1")
-    private List<Certification> certifications = new ArrayList<>();
+//    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+//    @JsonBackReference(value = "1")
+//    private List<Certification> certifications = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     @JsonBackReference(value = "2")
