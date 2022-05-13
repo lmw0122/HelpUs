@@ -74,9 +74,11 @@ public class CommentServiceImpl implements CommentService {
             return resultMap;
         }
 
-        if(comment.get().getHelpDesk().getHelpDeskComments().size()==1)
-            comment.get().getHelpDesk().setStatus("미등록");
         commentRepository.deleteById(commentId);
+
+        if(!commentRepository.existsByHelpDesk(comment.get().getHelpDesk())) {
+            comment.get().getHelpDesk().setStatus("미등록");
+        }
 
         resultMap.put("message", Message.COMMENT_DELETE_SUCCESS);
         return resultMap;
