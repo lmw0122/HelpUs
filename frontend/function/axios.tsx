@@ -16,9 +16,10 @@ import { id } from "date-fns/locale";
 export const getDonation = async () => {
   return await axios({
     method: "GET",
-    url: "/9080/donation/main",
-  });
-};
+    url: '/9080/donation/main'
+  })
+}
+
 
 // 물품 기부 상세 조회
 export const donationDetail = async (id) => {
@@ -108,6 +109,8 @@ export const createDonation = async (id, token, donation, files) => {
 
   files?.map((file) => newForm.append("files", file));
 
+  // newForm.append("files", files);
+
   return await axios({
     method: "POST",
     url: "/8000/donation",
@@ -118,12 +121,6 @@ export const createDonation = async (id, token, donation, files) => {
     data: newForm,
   });
 };
-
-// 봉사 글 작성
-export const createVolunteer = async () => {
-  return;
-};
-
 // ----------------------- 9081 ------------------------------
 
 // 봉사 글 상세 조회
@@ -140,18 +137,18 @@ export const volunteerComment = async (id, params) => {
     method: "POST",
     url: "/9081/v.comment",
     headers: {
-      memberId: id,
+      memberId : id
     },
-    data: params,
-  });
-};
+    data: params
+  })
+}
 
 // 봉사 상세 페이지 댓글 조회
 export const volunteerCommentList = async (id, params) => {
   return await axios({
     method: "GET",
     url: `/9081/v.comment/${id}`,
-    params: params,
+    params : params
   });
 };
 
@@ -159,9 +156,9 @@ export const volunteerCommentList = async (id, params) => {
 export const volunteerCommentDelete = async (id) => {
   return await axios({
     method: "DELETE",
-    url: `/9081/v.comment/${id}`,
-  });
-};
+    url: `/9081/v.comment/${id}`
+  })
+}
 
 // ----------------------- 9082 ------------------------------
 
@@ -262,6 +259,13 @@ export const userDetail = async (id) => {
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제
 // 고객센터 상세 조회
+export const getCsDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/9082/desk/${id}`,
+  });
+};
+
 // 고객센터 목록 조회
 export const getCSList = async (params) => {
   return await axios({
