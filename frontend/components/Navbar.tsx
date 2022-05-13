@@ -70,6 +70,16 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                   나눔하기
                 </Link>
               </Typography>
+              <Typography variant="h6" sx={{ mx: 2 }}>
+                <Link href="/cs" underline="none" color="inherit">
+                  고객센터
+                </Link>
+              </Typography>
+              <Typography variant="h6" sx={{ mx: 2 }}>
+                <Link href="/news" underline="none" color="inherit">
+                  기부 소식
+                </Link>
+              </Typography>
             </Stack>
           </Box>
           <Box>
