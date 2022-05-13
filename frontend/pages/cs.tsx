@@ -12,6 +12,7 @@ import {
   InputBase,
   Paper,
   Tabs,
+  Link
 } from "@mui/material/";
 import {
   Table,
@@ -27,6 +28,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import { locale } from "dayjs";
+// import Link from "next/link";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -156,7 +159,9 @@ const CsMain: FC = () => {
                           {data.category}
                         </StyledTableCell>
                         <StyledTableCell align="center" sx={{ width: 400 }}>
-                          {data.title}
+                          <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
+                            {data.title}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.createDate.substr(0, 10)}

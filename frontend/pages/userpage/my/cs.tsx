@@ -14,6 +14,7 @@ import {
   Paper,
   Table,
   Button,
+  Link
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
@@ -137,7 +138,9 @@ const UserMypageCs: FC = () => {
                         {data.category}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
-                        {data.title}
+                        <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
+                          {data.title}
+                        </Link>
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {data.createDate.substr(0, 10)}
