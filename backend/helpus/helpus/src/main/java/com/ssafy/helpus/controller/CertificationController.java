@@ -4,6 +4,7 @@ import com.ssafy.helpus.dto.Member.MemberDto;
 import com.ssafy.helpus.model.Certification;
 import com.ssafy.helpus.service.CertificationService;
 import com.ssafy.helpus.service.Impl.CertificationServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,10 +17,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/certi")
+@RequiredArgsConstructor
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class CertificationController {
 
-    @Autowired
-    CertificationService certificationService;
+
+    private final CertificationService certificationService;
+    
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity registerCertification(@RequestPart Certification certification, @RequestPart MultipartFile image){
         boolean result = certificationService.registerCertification(image, certification);
