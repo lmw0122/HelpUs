@@ -188,10 +188,10 @@ public class MemberServiceImpl implements MemberService {
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            if(preUrl != null){
-                s3Service.delete(preUrl);
-            }
             if(newProfile != null){
+                if(preUrl != null){
+                    s3Service.delete(preUrl);
+                }
                 String newUrl = s3Service.upload(newProfile);
                 m.setProfile(newUrl);
             }
