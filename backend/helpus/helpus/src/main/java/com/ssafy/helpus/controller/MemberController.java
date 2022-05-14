@@ -3,6 +3,7 @@ package com.ssafy.helpus.controller;
 import com.ssafy.helpus.dto.Member.MemberDto;
 import com.ssafy.helpus.model.Member;
 import com.ssafy.helpus.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,12 +18,14 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
+@CrossOrigin(origins = {"*"}, maxAge = 6000)
 public class MemberController {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private MemberService memberService;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final MemberService memberService;
 
     @GetMapping
     public ResponseEntity<MemberDto> getOneMemberByToken(@RequestHeader HttpHeaders headers){
