@@ -161,13 +161,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean updateMember(int id, MultipartFile newProfile,String newInfo) throws IOException {
+        System.out.println(newProfile);
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            if(preUrl != null){
-                s3Service.delete(preUrl);
-            }
             if(newProfile != null){
+                if(preUrl != null){
+                    s3Service.delete(preUrl);
+                }
                 String newUrl = s3Service.upload(newProfile);
                 m.setProfile(newUrl);
             }

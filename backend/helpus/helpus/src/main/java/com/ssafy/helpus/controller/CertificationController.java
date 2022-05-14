@@ -23,7 +23,7 @@ public class CertificationController {
 
 
     private final CertificationService certificationService;
-    
+
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity registerCertification(@RequestPart Certification certification, @RequestPart MultipartFile image){
         boolean result = certificationService.registerCertification(image, certification);

@@ -46,6 +46,15 @@ export const getApplyList = async (id, params) => {
   });
 };
 
+// 마이페이지(개인) - 개인 배송완료 목록 조회
+export const getUserDonationList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
+    params: params,
+  });
+};
+
 // 마이페이지(개인) - 후원 송장 입력
 export const sendApply = async (id, params) => {
   return await axios({
@@ -88,6 +97,14 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
+// 마이페이지(기관) - 기관 물품기부 현황 조회
+export const getOrgDonationList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
+    params: params,
+  });
+};
 // 기부 뉴스
 export const getNewsList = async (params) => {
   return await axios({
