@@ -291,6 +291,17 @@ export const volunteerDetail = async (id) => {
   });
 };
 
+// 봉사 신청
+export const volunteerApply = async (id, token) => {
+  return await axios({
+    method: "PUT",
+    url: `/8000/volunteer/apply/${id}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 // 마이페이지 유저가 완료한 봉사 목록
 export const getMyvolunteerList = async (id, params) => {
   return await axios({

@@ -20,6 +20,7 @@ import {
   Button,
   Divider,
   TextField,
+  alertClasses,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 
@@ -43,7 +44,8 @@ import {
   volunteerDetail,
   volunteerCommentList,
   volunteerComment,
-  userDetail
+  userDetail,
+  volunteerApply
 } from "function/axios";
 import { useRouter } from "next/router";
 
@@ -57,8 +59,6 @@ const CustomButton = styled(Button)({
   },
 });
 
-
-
 const VolunteerDetail: FC = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
@@ -69,6 +69,7 @@ const VolunteerDetail: FC = () => {
   const [userDetails, setUserDetails] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
+
   let userId = 0;
 
   useEffect(() => {
@@ -131,6 +132,16 @@ const VolunteerDetail: FC = () => {
         console.log(res + "성공");
       })
       .catch((err) => console.log(err + "실패"));
+  };
+
+  // 봉사 신청
+  const Apply = (e) => {
+    const token = localStorage.getItem("jwt");
+    const id = router.query.id;
+
+    volunteerApply(id, token).then((res) => {
+        console.log(res + "성공");
+    }).catch((err) => console.log(err + "실패"));
   };
 
   return (
@@ -273,7 +284,7 @@ const VolunteerDetail: FC = () => {
                 모집 인원수 : {volunteerDetails?.people}명
               </Typography>
               <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 1 }}>
-                장소 : 경기도 수원시 팔달구 중부대로 222번길 22 2-22
+                장소 : {volunteerDetails?.volAddress}
               </Typography>
               <Stack
                 sx={{
@@ -332,7 +343,7 @@ const VolunteerDetail: FC = () => {
             </Stack> */}
               </Stack>
               <Stack sx={{ mt: 3 }}>
-                <CustomButton sx={{ width: 100, mx: "auto" }}>
+                <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
                   신청하기
                 </CustomButton>
               </Stack>
