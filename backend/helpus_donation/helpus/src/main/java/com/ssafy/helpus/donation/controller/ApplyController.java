@@ -96,11 +96,28 @@ public class ApplyController {
         HttpStatus status = HttpStatus.OK;
         try {
             String role = memberService.getMemberRole(memberId);
-            System.out.println(role);
             if(role.equals("USER"))
                 resultMap = applyService.userApplyList(memberId, type, page-1);
             else if(role.equals("ORG"))
                 resultMap = applyService.orgApplyList(memberId, donationId, type, page-1);
+        } catch (Exception e) {
+            log.error(Message.APPLY_FIND_FAIL+" : {}", e.getMessage());
+
+            resultMap.put("message", Message.APPLY_FIND_FAIL);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
+
+    @ApiOperation(value = "내가 후원한 전체 목록")
+    @GetMapping("/all/{memberId}")
+    public ResponseEntity applyAllList(@PathVariable Long memberId) {
+        log.info("ApplyController applyAllList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = applyService.applyAllList(memberId);
         } catch (Exception e) {
             log.error(Message.APPLY_FIND_FAIL+" : {}", e.getMessage());
 

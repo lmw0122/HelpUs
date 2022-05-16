@@ -22,4 +22,6 @@ public interface DonationApplyRepository extends JpaRepository<DonationApply, Lo
     Page<DonationApply> findByMemberIdAndStatus(Long memberId, ApplyStatus status, Pageable pageable);
 
     List<DonationApply> findByStatusAndInvoiceEndDateBefore(ApplyStatus status, LocalDate date);
+
+    List<DonationApply> findByMemberIdAndStatusOrderByDonationApplyIdDesc(Long memberId, ApplyStatus status);
 }

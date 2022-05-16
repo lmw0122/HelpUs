@@ -16,4 +16,6 @@ public interface ApplyService {
     Map<String, Object> orgApplyList(Long memberId, Long donationId, String type, int page);
     //물품 후원 내역 - 개인
     Map<String, Object> userApplyList(Long memberId, String type, int page);
+    //물품 후원 전체 내역
+    Map<String, Object> applyAllList(Long memberId) throws Exception;
 }
