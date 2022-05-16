@@ -306,6 +306,24 @@ export const getInquiryApplyList = async (id) => {
   });
 };
 
+// 재능기부 목록 조회
+export const getTalentDonationList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/talentDonation/main`,
+    params: params,
+  });
+};
+
+// 마이페이지(개인) - 재능기부 목록 조회
+export const getMyTalentDonationList = async (params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/talentDonation/mylist/${params.memberId}`,
+    params: params.page
+  });
+};
+
 // ----------------------- 9082 ------------------------------
 
 // 이메일 중복 체크

@@ -14,9 +14,11 @@ import {
   Paper,
   Table,
   Button,
+  Link
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
+import { getMyTalentDonationList } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -60,109 +62,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 50,
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: null,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: null,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-];
-
 const IsFact = ({ fact }) => {
   // const fact = props.fact;
 
@@ -189,6 +88,27 @@ const IsFact = ({ fact }) => {
 };
 
 const UserMypageTalent: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [myTalentDonationList, setMyTalentDonationList] = useState<any>(null);
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+  const params = {
+    memberId: "",
+    page: curPage + 1,
+  };
+
+  useEffect(() => {
+    params.memberId = localStorage.getItem("id");
+    getMyTalentDonationList(params).then((res) => {
+      setMyTalentDonationList(res.data.listTalentDonation);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }, [curPage]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -223,16 +143,18 @@ const UserMypageTalent: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dummyData.map((data) => (
-                  <StyledTableRow key={data.donationApplyId}>
+                {myTalentDonationList && myTalentDonationList.map((data) => (
+                  <StyledTableRow key={data.volunteerId}>
                     <StyledTableCell align="center">
-                      {data.donationApplyId}
+                      {data.volunteerId}
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ width: 400 }}>
-                      {data.title}
+                      <Link href={`/detail/talent/${data.volunteerId}`} underline="none" color="inherit">
+                        {data.title}
+                      </Link>
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {data.donationDate}
+                      {data.createDate}
                     </StyledTableCell>
                     {/* <StyledTableCell align="center">
                       {data.name}

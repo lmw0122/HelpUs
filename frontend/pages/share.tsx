@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Box, Grid, Typography, Stack, Button, InputBase, Paper } from "@mui/material/";
+import { FC, useState, useEffect } from "react";
+import { Box, Grid, Typography, Stack, Button, InputBase, Paper, Link } from "@mui/material/";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material/";
 import { tableCellClasses } from "@mui/material/TableCell";
 import SearchIcon from '@mui/icons-material/Search';
@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Image from 'next/image';
 import { styled } from "@mui/material/styles";
 import volunteer1 from "../public/images/volunteer1.jpg";
-
+import { getTalentDonationList } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -147,6 +147,25 @@ const dummyData = [
 
 
 const Share: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [talentDonationList, setTalentDonationList] = useState<any>(null);
+  // pagination
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+  const params = {
+    page: curPage + 1,
+  };
+
+  useEffect(() => {
+    getTalentDonationList(params).then((res) => {
+      setTalentDonationList(res.data.listTalentDonation);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
+  }, [curPage]);
+
   return (
     <div>
       <Grid container justifyContent="center" alignItems="center">
@@ -198,19 +217,21 @@ const Share: FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dummyData.map((data) => (
-                    <StyledTableRow key={data.donationApplyId}>
+                  {talentDonationList && talentDonationList.map((data) => (
+                    <StyledTableRow key={data.volunteerId}>
                       <StyledTableCell align="center">
-                        {data.donationApplyId}
+                        {data.volunteerId}
                       </StyledTableCell>
                       <StyledTableCell align="center" sx={{ width: 400 }}>
-                        {data.title}
+                        <Link href={`/detail/talent/${data.volunteerId}`} underline="none" color="inherit">
+                          {data.title}
+                        </Link>
                       </StyledTableCell>
                       <StyledTableCell align="center">
                         {data.name}
                       </StyledTableCell>
                       <StyledTableCell align="center">
-                        {data.donationDate}
+                        {data.createDate}
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
