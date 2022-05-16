@@ -232,6 +232,14 @@ export const getVolunteerMain = async () => {
   });
 };
 
+//봉사 현황 조회
+export const getInquiryApplyList = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/inquiry/apply/${id}`,
+  });
+};
+
 // ----------------------- 9082 ------------------------------
 
 // 이메일 중복 체크
