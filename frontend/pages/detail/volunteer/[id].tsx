@@ -232,6 +232,7 @@ const VolunteerDetail: FC = () => {
                   variant="contained"
                   size="small"
                   sx={{ width: 30 }}
+                  onClick={() => history.back()}
                 >
                   목록
                 </CustomButton>
