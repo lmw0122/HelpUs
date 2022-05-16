@@ -125,7 +125,7 @@ const UserMypageTalent: FC = () => {
         <Container maxWidth="lg" sx={{}}>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="h4">재능 기부 글</Typography>
-            <CustomButton>글 작성</CustomButton>
+            <CustomButton href="../../create/talent">글 작성</CustomButton>
           </Stack>
           <TableContainer component={Paper} sx={{ mt: 5 }}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">

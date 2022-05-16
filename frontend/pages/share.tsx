@@ -182,7 +182,7 @@ const Share: FC = () => {
           <Typography variant="h4" textAlign="center">재능 기부 목록</Typography>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
-          <CustomButton variant="contained">재능 기부 등록</CustomButton>
+          <CustomButton variant="contained" href="create/talent">재능 기부 등록</CustomButton>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt : 2}}>
           <Paper
