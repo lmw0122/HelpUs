@@ -32,7 +32,8 @@ public class HelpDeskController {
 
     @ApiOperation(value = "고객센터 글 등록")
     @PostMapping
-    public ResponseEntity registerDesk(@Valid @RequestPart DeskReqDto desk, @RequestPart List<MultipartFile> files,
+    public ResponseEntity registerDesk(@Valid @RequestPart DeskReqDto desk,
+                                       @RequestPart(required = false) List<MultipartFile> files,
                                        @RequestHeader HttpHeaders headers) {
         log.info("HelpDeskController registerDesk call");
 
