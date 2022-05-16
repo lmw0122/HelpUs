@@ -108,22 +108,4 @@ public class ApplyController {
         }
         return new ResponseEntity(resultMap, status);
     }
-
-    @ApiOperation(value = "내가 후원한 전체 목록")
-    @GetMapping("/all/{memberId}")
-    public ResponseEntity applyAllList(@PathVariable Long memberId) {
-        log.info("ApplyController applyAllList call");
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        try {
-            resultMap = applyService.applyAllList(memberId);
-        } catch (Exception e) {
-            log.error(Message.APPLY_FIND_FAIL+" : {}", e.getMessage());
-
-            resultMap.put("message", Message.APPLY_FIND_FAIL);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity(resultMap, status);
-    }
 }

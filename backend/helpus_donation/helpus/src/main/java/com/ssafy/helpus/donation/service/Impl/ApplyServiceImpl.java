@@ -125,17 +125,20 @@ public class ApplyServiceImpl implements ApplyService {
     public Map<String, Object> userApplyList(Long memberId, String type, int page) {
         log.info("ApplyService userApplyList call");
 
-        Page<DonationApply> applies;
-        if(type.equals("tracking"))
-               applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page,10, Sort.by("status").ascending()));
-        else
-            applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
-
-        return makeList(applies, "user");
+        if(type.equals("all")) {
+            return applyAllList(memberId);
+        } else {
+            Page<DonationApply> applies;
+            if (type.equals("tracking"))
+                applies = applyRepository.findByMemberIdAndStatusNot(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("status").ascending()));
+            else
+                applies = applyRepository.findByMemberIdAndStatus(memberId, ApplyStatus.배송완료, PageRequest.of(page, 10, Sort.by("donationApplyId").descending()));
+            return makeList(applies, "user");
+        }
     }
 
     @Override
-    public Map<String, Object> applyAllList(Long memberId) throws Exception {
+    public Map<String, Object> applyAllList(Long memberId){
         log.info("ApplyService applyAllList call");
 
         List<DonationApply> applies = applyRepository.findByMemberIdAndStatusOrderByDonationApplyIdDesc(memberId, ApplyStatus.배송완료);
