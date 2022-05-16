@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -24,6 +24,9 @@ import {
   FormGroup,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
+import CustomCarousel from "@/components/Carousel";
+// import defaultImage from "../../public/images/defaultImage.png";
+import defaultImage from "../../../public/images/defaultImage.png";
 
 import Link from "next/link";
 import helpImage from "../../public/images/help.png";
@@ -39,6 +42,8 @@ import goodImage from "../../../public/images/good.jpg";
 
 import Comment from "../../../components/Comment";
 
+import { useRouter } from "next/router";
+import { getTalentDonationDetail, getUserInfo } from "function/axios";
 // import { CommentData } from "../../../interfaces";
 
 const CustomButton = styled(Button)({
@@ -129,11 +134,35 @@ export interface CommentData {
 }
 
 const TalentDetail: FC = () => {
-  const imageList = [testImage, testImage, testImage, testImage, testImage];
+  //const imageList = [testImage, testImage, testImage, testImage, testImage];
+  
+  const router = useRouter();
 
+  const [loading, setLoadging] = useState<boolean>(false);
+  const [loading2, setLoading2] = useState<boolean>(false);
 
+  // console.log("라우터 쿼리는", router.query.id);
+
+  const [talentDonationDetail, setTalentDonationDetail] = useState<any>("");
+  const [userInfo, setUserInfo] = useState<any>("");
+  useEffect(() => {
+    if (router.isReady) {
+      getTalentDonationDetail(router.query.id).then((res) => {
+        setTalentDonationDetail(res.data.volunteer);
+        setLoading2(true)
+      });
+      getUserInfo(localStorage.getItem("id")).then((res) => {
+        console.log(res.data.profile === null);
+        setUserInfo(res.data);
+        setLoadging(true)
+      });
+    }
+  }, [router.isReady]);
 
   return (
+    <>
+    {loading && loading2 ? (
+
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box
@@ -164,17 +193,27 @@ const TalentDetail: FC = () => {
                   marginTop: "6px",
                 }}
               >
-                <Image
-                  src={goodImage}
-                  alt="orgImage"
-                  width="125px"
-                  height="125px"
-                />
+                {userInfo.profile === null ? (
+                  <Image
+                    src={defaultImage}
+                    alt="orgImage"
+                    width="300px"
+                    height="300px"
+                  />
+                ) : (
+                  <Image
+                    src={userInfo.profile}
+                    // src={defaultImage}
+                    alt="orgImage"
+                    width="300px"
+                    height="300px"
+                  />
+                )}
               </div>
             </Grid>
             <Grid>
               <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
-                이다예
+                {userInfo.name}
               </Typography>
               <Grid
                 sx={{ mt: 2 }}
@@ -183,7 +222,7 @@ const TalentDetail: FC = () => {
                 alignItems="center"
               >
                 <MailIcon sx={{ mr: 1 }} />
-                <Typography align="center">test@gmail.com</Typography>
+                <Typography align="center">{userInfo.email}</Typography>
               </Grid>
             </Grid>
           </Grid>
@@ -194,55 +233,42 @@ const TalentDetail: FC = () => {
             alignItems="center"
           >
             <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
-              운동회를 위한 기부가 필요합니다.
+            {talentDonationDetail.title}
             </Typography>
-            <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+            <CustomButton variant="contained" size="small" sx={{ width: 30 }} onClick={() => history.back()}>
               목록
             </CustomButton>
           </Stack>
           {/* 게시글 이미지 */}
-          <Stack direction="row" justifyContent="center" spacing={5}>
-            {imageList.map((item) => (
-              <div
-                style={{
-                  // borderRadius: "5px",
-                  overflow: "hidden",
-                  height: "200px",
-                }}
-              >
-                <Image src={item} alt="orgImage" width="200px" height="200px" />
-              </div>
-            ))}
-          </Stack>
-          <Stack>
-            <Box
-              sx={{
-                mt: 2,
-                bgcolor: "#f5e1be",
-                borderRadius: 1.25,
-                // height: "120px",
-              }}
-              minHeight="120px"
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ mb: 3 }}
+          >
+            <Stack
+              justifyContent="center"
+              alignItems="center"
+              sx={{ mb: 0, mr: 5 }}
             >
-              <Typography sx={{ p: 2, mt: 0 }}>
-                바람을 타고 날아오르는 새들은 걱정없이 아름다운 태양속으로
-                음표가 되어 나네 향기나는 연필로 쓴 일기처럼 숨겨두었던 마음
-                기댈수 있는 어깨가 있어 비가 와도 젖지 않아 어제의 일들은 잊어
-                누구나 조금씩은 틀려 완벽한 사람은 없어 실수투성이고 외로운 나를
-                봐 난 다시 태어난 것만 같아 그대를 만나고부터 그대 나의 초라한
-                마음을 받아준 순간부터 랄랄랄랄랄 하루 하루 조금씩 나아질거야
-                그대가 지켜보니 힘을 내야지 행복해져야지 뒷뜰에 핀 꽃들처럼
-                점심을 함께 먹어야지 새로 연 그 가게에서 새 샴푸를 사러가야지
-                아침 하늘빛의 민트 향이면 어떨까 난 다시 꿈을 꾸게 되었어 그대를
-                만나고부터 그대 나의 초라한 마음을 받아준 순간부터 월요일도
-                화요일도 봄에도 겨울에도 해가 질 무렵에도 비둘기를 안은 아이같이
-                행복해줘 나를 위해서 난 다시 태어난 것만 같아 그대를 만나고부터
-                그대 나의 초라한 마음을 받아준 순간부터 난 다시 꿈을 꾸게 되었어
-                그대를 만나고부터 그대 나의 초라한 마음을 받아준 순간부터
-                랄랄랄랄랄 랄랄랄랄랄랄랄 랄랄랄랄랄 랄랄랄랄랄랄랄 우
-                랄랄랄랄랄 랄랄랄랄랄랄랄랄랄 우
-              </Typography>
-            </Box>
+              <CustomCarousel item={talentDonationDetail?.images} />
+            </Stack>
+            <Stack>
+              <Box
+                sx={{
+                  my: "auto",
+                  bgcolor: "#f5e1be",
+                  borderRadius: 1.25,
+                  // height: "120px",
+                }}
+                height="470px"
+                width="500px"
+              >
+                <Typography sx={{ p: 2, mt: 0 }}>
+                  {talentDonationDetail?.content}
+                </Typography>
+              </Box>
+            </Stack>
           </Stack>
           <Typography
             sx={{ mt: 2 }}
@@ -250,8 +276,18 @@ const TalentDetail: FC = () => {
             fontWeight="bold"
             textAlign="right"
           >
-            작성일 2022-05-09
+            작성일 {talentDonationDetail.createDate}
           </Typography>
+            {talentDonationDetail.updateDate === null ? null : (
+              <Typography
+                sx={{ mt: 2 }}
+                variant="h6"
+                fontWeight="bold"
+                textAlign="right"
+              >
+                수정일 {talentDonationDetail.updateDate}
+              </Typography>
+            )}
           <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
             댓글 
@@ -278,6 +314,8 @@ const TalentDetail: FC = () => {
         </Container>
       </Box>
     </Box>
+    ) : null}
+    </>
   );
 };
 

@@ -221,7 +221,7 @@ const CsDetail: FC = () => {
                 <Typography variant="h4" fontWeight="bold" sx={{ mt: 3 }}>
                 {csDetails.title}
                 </Typography>
-                <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+                <CustomButton variant="contained" size="small" sx={{ width: 30 }} onClick={() => history.back()}>
                   목록
                 </CustomButton>
               </Stack>

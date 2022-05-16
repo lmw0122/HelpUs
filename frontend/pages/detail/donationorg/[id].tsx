@@ -249,7 +249,7 @@ const DonationOrgDetail: FC = () => {
               {donationDetails ? donationDetails.title : null}
             </Typography>
             <Link href="/donation">
-              <CustomButton variant="contained" size="small" sx={{ width: 30 }}>
+              <CustomButton variant="contained" size="small" sx={{ width: 30 }} onClick={() => history.back()}>
                 목록
               </CustomButton>
             </Link>
