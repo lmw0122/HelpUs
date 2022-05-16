@@ -454,7 +454,7 @@ export const signupUser = async (data) => {
 export const userDetail = async (id) => {
   return await axios({
     method: "GET",
-    url: `/9082/member/${id}`,
+    url: `/8000/api/member/${id}`,
   });
 };
 
