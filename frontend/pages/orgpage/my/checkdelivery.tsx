@@ -19,7 +19,8 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useEffect, useState } from "react";
 
 // api
-import { getDeliveryList } from "function/axios";
+import { getDeliveryList, endDelivery } from "function/axios";
+import { WindowSharp } from "@mui/icons-material";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -62,102 +63,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-  },
-];
-
 const orgpageMyCheckDelivery: FC = () => {
   // 배송 현황 리스트
   const [deliveryList, setDeliveryList] = useState<any>("");
+
+  // 도착 완료
+  const deliverySubmit = (e) => {
+    const id = localStorage.getItem("id");
+    const donationApplyId = e;
+    const token = localStorage.getItem("jwt");
+
+    endDelivery(token, donationApplyId, id)
+      .then((res) => {
+        console.log(res + "성공");
+      })
+      .catch((err) => console.log(err + "실패"));
+  };
+
 
   useEffect(() => {
     const memberId = localStorage.getItem("id");
@@ -167,7 +89,8 @@ const orgpageMyCheckDelivery: FC = () => {
     getDeliveryList(memberId, params).then((res) => {
       setDeliveryList(res.data.apply);
     });
-  }, []);
+  }, [deliverySubmit]);
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -290,7 +213,7 @@ const orgpageMyCheckDelivery: FC = () => {
                           </>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          <CustomButton sx={{ width: 80, height: 30 }}>
+                          <CustomButton sx={{ width: 80, height: 30 }} onClick={() => deliverySubmit(data.donationApplyId)}>
                             도착 완료
                           </CustomButton>
                         </StyledTableCell>

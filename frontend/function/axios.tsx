@@ -125,6 +125,18 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
+// 마이페이지(개인) - 배송중 -> 배송완료 처리
+export const endDelivery = async (token, donationApplyId, id) => {
+  return await axios({
+    method: "PUT",
+    url: `/8000/d.apply/${donationApplyId}/${id}`,
+    headers: {
+      Authorization: token,
+      memberId: id,
+    },
+  });
+};
+
 // 마이페이지(기관) - 기관 물품기부 현황 조회
 export const getOrgDonationList = async (id, params) => {
   return await axios({
