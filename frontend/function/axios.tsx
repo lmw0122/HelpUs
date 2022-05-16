@@ -232,6 +232,13 @@ export const applyDonationUser = async (id, token, data) => {
 
 // ----------------------- 9081 ------------------------------
 
+// 내가 기부한 전체 목록
+export const getDonatonAll = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/all/${id}`,
+  });
+};
 // 봉사 글 작성
 export const createVolunteer = async (id, token, volunteerReqDto, files) => {
   const newForm = new FormData();
