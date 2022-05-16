@@ -66,17 +66,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const CsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [csList, setCSList] = useState<any>(null);
-
   // pagination
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
-
+  const [myId, setMyId] = useState(0);
+  const [myRole, setMyRole] = useState("");
   const params = {
     page: curPage + 1,
   };
 
   useEffect(() => {
+    setMyId(Number(localStorage.getItem("id")));
+    setMyRole(localStorage.getItem("role"));
     getCSList(params).then((res) => {
       setCSList(res.data.desk);
       setTotalPages(res.data.totalPage);
@@ -158,11 +160,20 @@ const CsMain: FC = () => {
                         <StyledTableCell align="center">
                           {data.category}
                         </StyledTableCell>
-                        <StyledTableCell align="center" sx={{ width: 400 }}>
+                        
+                          {myRole !== "ADMIN" && data.visible === "비공개" && data.memberId !== myId ? (
+                            <StyledTableCell align="center" sx={{ width: 400 }}>
+                            { data.title }
+                            </StyledTableCell>
+                        ) : (
+                          <StyledTableCell align="center" sx={{ width: 400 }}>
                           <Link href={`/detail/cs/${data.helpDeskId}`} underline="none" color="inherit">
-                            {data.title}
-                          </Link>
+                          {data.title}
+                        </Link>
                         </StyledTableCell>
+                            )
+                          }
+                        
                         <StyledTableCell align="center">
                           {data.createDate.substr(0, 10)}
                         </StyledTableCell>
