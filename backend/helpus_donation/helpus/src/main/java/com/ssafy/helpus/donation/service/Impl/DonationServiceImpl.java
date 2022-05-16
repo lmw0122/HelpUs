@@ -103,7 +103,7 @@ public class DonationServiceImpl implements DonationService {
         Map<String, Object> resultMap = new HashMap<>();
 
         Optional<Donation> donation = donationRepository.findById(donationId);
-        if(!donation.isPresent() || donation.get().getStatus().equals(DonationStatus.마감)) {
+        if(!donation.isPresent()) {
             resultMap.put("message", Message.DONATION_NOT_FOUND);
             return resultMap;
         }
