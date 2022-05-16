@@ -200,13 +200,11 @@ const orgpageMyCheckVolunteer: FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
-  const params = {
-    memberId: ""
-  };
+  
 
   useEffect(() => {
-    params.memberId = localStorage.getItem("id");
-    getInquiryApplyList(params).then((res) => {
+    
+    getInquiryApplyList(localStorage.getItem("id")).then((res) => {
       console.log(res.data.listApply.volunteerApplyId);
       setInquiryApplyList(res.data.listApply);
       setTotalPages(res.data.totalPage);

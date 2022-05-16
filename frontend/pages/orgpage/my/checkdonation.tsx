@@ -16,8 +16,9 @@ import {
   Button,
 } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
-import { FC } from "react";
-
+import { FC,useState,useEffect } from "react";
+import Pagination from "@/components/Pagination";
+import { getOrgDonationList } from "../../../function/axios";
 const mdTheme = createTheme();
 
 const CustomButton = styled(Button)({
@@ -156,6 +157,22 @@ const dummyData = [
 ];
 
 const orgpageMyCheckDonation: FC = () => {
+  const [donationList, setDonationList] = useState([]);
+
+  const [curPage, setCurPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const paginate = (pageNumber) => setCurPage(pageNumber);
+
+  const params = {
+    page: curPage + 1,
+  };
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    getOrgDonationList(id, params).then((res) => {
+      setDonationList(res.data.apply);
+      setTotalPages(res.data.totalPage);
+    });
+  }, [curPage]);
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -176,7 +193,10 @@ const orgpageMyCheckDonation: FC = () => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    번호
+                    기부 번호
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    글 번호
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     제목
@@ -185,7 +205,13 @@ const orgpageMyCheckDonation: FC = () => {
                     물품 상세
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                    빌송인
+                    발송인
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    송장번호
+                  </StyledTableCell>
+                  <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                    택배사
                   </StyledTableCell>
                   <StyledTableCell align="center" sx={{ fontSize: 17 }}>
                     기부 신청일
@@ -193,19 +219,28 @@ const orgpageMyCheckDonation: FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {dummyData.map((data) => (
+                {donationList.map((data) => (
                   <StyledTableRow key={data.donationApplyId}>
                     <StyledTableCell align="center">
                       {data.donationApplyId}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.donationId}
                     </StyledTableCell>
                     <StyledTableCell align="center" sx={{ width: 400 }}>
                       {data.title}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {data.productList}
+                      {data.productName}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {data.name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.invoice}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {data.parcel}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {data.donationDate}

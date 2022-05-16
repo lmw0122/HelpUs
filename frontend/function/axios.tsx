@@ -99,7 +99,14 @@ export const updateApply = async (id, params) => {
     data: params,
   });
 };
-
+// 마이페이지(기관) - 봉사 현황 조회
+export const getInquiryList = async (id,params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/inquiry/apply/${id}`,
+    params: params,
+  });
+};
 // 마이페이지(기관) - 기부글 목록 조회
 export const getDonationList = async (params) => {
   return await axios({
