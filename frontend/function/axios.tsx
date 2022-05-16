@@ -24,7 +24,7 @@ export const getDonationMain = async () => {
 export const donationDetail = async (id) => {
   return await axios({
     method: "GET",
-    url: `/9080/donation/${id}`,
+    url: `/8000/api/donation/${id}`,
   });
 };
 
@@ -59,10 +59,13 @@ export const createReview = async (id, token, confirm, files) => {
 };
 
 // 마이페이지(개인) - 송장 입력 목록 조회
-export const getApplyList = async (id, params) => {
+export const getApplyList = async (id, params,token) => {
   return await axios({
+    headers: {
+      Authorization: token,
+    },
     method: "GET",
-    url: `/9080/d.apply/tracking/${id}`,
+    url: `/8000/d.apply/tracking/${id}`,
     params: params,
   });
 };
@@ -371,7 +374,7 @@ export const userDetail = async (id) => {
 // 고객센터 댓글 등록
 // 고객센터 댓글 삭제
 // 고객센터 상세 조회
-export const getCsDetail = async (id) => {
+export const getCsDetail = async (id,) => {
   return await axios({
     method: "GET",
     url: `/9082/desk/${id}`,

@@ -86,18 +86,22 @@ const UserMypageDelivery: FC = () => {
   const params = {
     page: curPage,
   };
-
   const [loading, setLoading] = useState<boolean>(true);
 
   const [applyList, setApplyList] = useState<any>("");
 
   useEffect(() => {
+  }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("jwt")
     const id = localStorage.getItem("id");
-    getApplyList(id, params).then((res) => {
+    console.log(token);
+    getApplyList(id, params,token).then((res) => {
       setApplyList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
-  }, [curPage]);
+    console.log(process.env.NEXT_PUBLIC_POST_TRACKER_API_KEY);
+  }, [curPage, PostInfo]);
 
   return (
     <>
@@ -153,7 +157,7 @@ const UserMypageDelivery: FC = () => {
                           {data.name}
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          <Link href={"/detail/donationorg/1"}>
+                          <Link href={`/detail/donationorg/${data.donationId}`}>
                             <Button>
                               <InsertLinkIcon
                                 sx={{

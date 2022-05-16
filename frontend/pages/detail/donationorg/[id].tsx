@@ -145,6 +145,7 @@ const DonationOrgDetail: FC = () => {
     setToken(localStorage.getItem("jwt"));
     if (router.isReady) {
       donationDetail(router.query.id).then((res) => {
+        console.log(res);
         setDonationDetails(res.data.donation);
         setDetailLoading(true);
       });
@@ -153,7 +154,8 @@ const DonationOrgDetail: FC = () => {
 
   useEffect(() => {
     if (detailLoading) {
-      getUserInfo(donationDetails.memberId).then((res) => {
+      console.log(donationDetails);
+        getUserInfo(donationDetails.memberId).then((res) => {
         setOrgInfo(res.data);
       });
     }

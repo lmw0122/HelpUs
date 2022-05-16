@@ -163,9 +163,8 @@ const PostInfo: FC<IPostInfo> = ({ donationApplyId, memberId }) => {
     };
     sendApply(userId, params)
       .then((res) => {
-        if (res.status === 200) {
-          console.log("송장 입력 성공");
-        }
+        console.log("송장 입력 성공");
+        
       })
       .catch((err) => {
         console.error(err);
