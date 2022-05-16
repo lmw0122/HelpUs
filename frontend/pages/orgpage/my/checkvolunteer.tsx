@@ -19,7 +19,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
 
 // api
-import { getInquiryApplyList } from "function/axios";
+import { getInquiryApplyList, endInquiry } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -63,109 +63,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   height: 50,
 }));
 
-const dummyData = [
-  {
-    donationApplyId: 1,
-    title: "엉키는 마음은 꿈에선 다 잊게 영원처럼 안아줘",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: null,
-  },
-  {
-    donationApplyId: 2,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: null,
-  },
-  {
-    donationApplyId: 3,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 4,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 5,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 6,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 7,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: true,
-  },
-  {
-    donationApplyId: 8,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 9,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-  {
-    donationApplyId: 10,
-    title: "더미",
-    memberID: 1,
-    name: "콜리",
-    productList: ["찐빵", "사이다"],
-    donationDate: "2022-05-03",
-    expressNum: 1234,
-    fact: false,
-  },
-];
-
 const IsFact = ({ fact }) => {
   // const fact = props.fact;
 
@@ -200,7 +97,19 @@ const orgpageMyCheckVolunteer: FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
-  
+  // 봉사 참여 여부
+  const inquirySubmit = (id, s) => {
+    console.log(id, s);
+    const volunteerApplyId = id;
+    const status = s;
+    const token = localStorage.getItem("jwt");
+
+    endInquiry(token, volunteerApplyId, status)
+      .then((res) => {
+        console.log(res + "성공");
+      })
+      .catch((err) => console.log(err + "실패"));
+  };
 
   useEffect(() => {
     
@@ -265,7 +174,7 @@ const orgpageMyCheckVolunteer: FC = () => {
                       {data.name}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <IsFact fact={data.status} />
+                      <IsFact fact={data.status}/>
                       {/* <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
                         참석
                       </CustomButton>

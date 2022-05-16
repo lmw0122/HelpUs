@@ -110,6 +110,18 @@ export const getInquiryList = async (id, params) => {
     params: params,
   });
 };
+
+// 마이페이지(기관) - 봉사 참석 여부
+export const endInquiry = async (token, volunteerApplyId, status) => {
+  return await axios({
+    method: "PUT",
+    url: `/8000/inquiry/apply/${volunteerApplyId}/${status}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
 // 마이페이지(기관) - 기부글 목록 조회
 export const getDonationList = async (params) => {
   return await axios({
@@ -128,7 +140,7 @@ export const getDeliveryList = async (id, params) => {
   });
 };
 
-// 마이페이지(개인) - 배송중 -> 배송완료 처리
+// 마이페이지(기관) - 배송중 -> 배송완료 처리
 export const endDelivery = async (token, donationApplyId, id) => {
   return await axios({
     method: "PUT",
