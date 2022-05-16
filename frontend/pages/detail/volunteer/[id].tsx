@@ -393,8 +393,8 @@ const VolunteerDetail: FC = () => {
                     등록
                   </CustomButton>
                 </Stack>
-                {commentList &&
-                  commentList.map((item) => <Comment comment={item} />)}
+                {/* {commentList &&
+                  commentList.map((item) => <Comment comment={item} />)} */}
               </Box>
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination
