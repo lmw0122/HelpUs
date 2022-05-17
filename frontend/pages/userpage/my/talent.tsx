@@ -20,6 +20,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import { FC, useState, useEffect } from "react";
 import { getMyTalentDonationList } from "function/axios";
 
+import Pagination from "@/components/Pagination";
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -91,12 +92,12 @@ const UserMypageTalent: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [myTalentDonationList, setMyTalentDonationList] = useState<any>(null);
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const params = {
     memberId: "",
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -156,23 +157,22 @@ const UserMypageTalent: FC = () => {
                     <StyledTableCell align="center">
                       {data.createDate}
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center">
-                      {data.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <IsFact fact={data.fact} />
-                      <CustomButton sx={{ width: 40, height: 30, mr: 2 }}>
-                        참석
-                      </CustomButton>
-                      <CustomButton2 sx={{ width: 40, height: 30 }}>
-                        불참
-                      </CustomButton2>
-                    </StyledTableCell> */}
                   </StyledTableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
+          {myTalentDonationList && myTalentDonationList.length > 0 ? (
+            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
+          ) : (
+            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>재능기부 글이 없습니다.</Typography>
+          )}
         </Container>
       </Box>
     </Box>

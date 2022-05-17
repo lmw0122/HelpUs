@@ -82,12 +82,12 @@ const Unix_timestamp = (t) => {
 const UserMypageVolunteer: FC = () => {
   const [volunteerList, setVolunteerList] = useState([]);
 
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -191,13 +191,17 @@ const UserMypageVolunteer: FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            {volunteerList && volunteerList.length > 0 ? (
             <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
-              <Pagination
-                curPage={curPage}
-                paginate={paginate}
-                totalPage={totalPages}
-              />
-            </Stack>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
+          ) : (
+            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>봉사 내역이 없습니다.</Typography>
+          )}
           </Container>
         </Box>
       </Box>

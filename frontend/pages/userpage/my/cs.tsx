@@ -69,13 +69,13 @@ const UserMypageCs: FC = () => {
   const [csList, setCSList] = useState<any>(null);
 
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
 
   const params = {
     memberId: "",
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -156,6 +156,17 @@ const UserMypageCs: FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          {csList && csList.length > 0 ? (
+            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
+          ) : (
+            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>문의한 내역이 없습니다.</Typography>
+          )}
         </Container>
       </Box>
     </Box>
