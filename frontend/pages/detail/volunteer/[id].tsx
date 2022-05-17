@@ -45,9 +45,11 @@ import {
   volunteerCommentList,
   volunteerComment,
   userDetail,
-  volunteerApply
+  volunteerApply,
+  volunteerApplyCheck
 } from "function/axios";
 import { useRouter } from "next/router";
+import { setDefaultResultOrder } from "dns";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -58,7 +60,19 @@ const CustomButton = styled(Button)({
     color: "white",
   },
 });
-
+// const setApplyPart = ({ role, status }) => {
+//   if (role === "USER" && status === -1) {
+//     return(<CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+//       신청하기
+//     </CustomButton>);
+//   }
+//   else if (role === "USER") {
+//     return(<>신청완료 되었습니다.</>);
+//   }
+//   else {
+//     return(<></>);
+//   }
+// }
 const VolunteerDetail: FC = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
@@ -69,11 +83,16 @@ const VolunteerDetail: FC = () => {
   const [userDetails, setUserDetails] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
+  
+  const [loading3, setLoading3] = useState<boolean>(false);
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
-
+  const [role, setRole] = useState<any>();
+  const [checkApply, setCheckApply] = useState<any>(-1);
   let userId = 0;
+  let applyPart;
 
+  
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -88,6 +107,14 @@ const VolunteerDetail: FC = () => {
           // console.log(res);
           setUserDetails(res.data);
           setLoading2(true);
+        })
+      }).then(() => {
+        volunteerApplyCheck(router.query.id, token).then((res) => {
+          console.log(res.data.applyStatus.status);
+          setCheckApply(res.data.applyStatus.status);
+          
+          console.log(applyPart);
+          setLoading3(true);
         })
       });
     }
@@ -106,6 +133,7 @@ const VolunteerDetail: FC = () => {
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
+        console.log(res);
         setTotalPages(res.data.totalPage);
         setLoading(true);
       });
@@ -115,6 +143,8 @@ const VolunteerDetail: FC = () => {
   useEffect(()=> {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
+    const role = localStorage.getItem("role");
+    setRole(role);
     setId(id);
     setToken(token);
   })
@@ -154,7 +184,7 @@ const VolunteerDetail: FC = () => {
 
   return (
     <>
-      {loading && loading2 ? (
+      {loading && loading2 && loading3 ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -354,6 +384,7 @@ const VolunteerDetail: FC = () => {
                 <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
                   신청하기
                 </CustomButton>
+                {/* <setApplyPart role={role} status={checkApply}></setApplyPart> */}
               </Stack>
               {/* 카카오 맵 */}
               <Stack sx={{ width: 800, height: 300, mt: 3, ml: 20 }}>

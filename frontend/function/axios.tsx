@@ -441,7 +441,15 @@ export const volunteerApply = async (id, token) => {
     },
   });
 };
-
+export const volunteerApplyCheck = async (id, token) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/volunteer/apply/${id}`,
+    headers: {
+      Authorization: token,
+    },
+  });
+};
 // 마이페이지 유저가 완료한 봉사 목록
 export const getMyvolunteerList = async (id, params) => {
   return await axios({
