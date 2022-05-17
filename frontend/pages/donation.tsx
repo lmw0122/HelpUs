@@ -27,6 +27,7 @@ import Pagination from "@/components/Pagination";
 
 // api
 import { getDonationMain, getVolunteerMain } from "function/axios";
+import { NineKOutlined } from "@mui/icons-material";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -131,7 +132,7 @@ const theme = createTheme({
 const Donation: FC = () => {
   const router = useRouter();
   const [value, setValue] = useState<any>(0);
-  const [option, setOption] = useState("");
+  const [option, setOption] = useState("최신순");
 
   // pagination
   const [curPage, setCurPage] = useState(1);
@@ -155,10 +156,12 @@ const Donation: FC = () => {
 
   const params1 = {
     page: curPage,
+    order: option
   };
 
   const params2 = {
     page: curPage2,
+    order: option
   };
 
   useEffect(() => {
@@ -171,7 +174,20 @@ const Donation: FC = () => {
       setTotalPages2(res.data.totalPage);
     });
   }, [curPage, curPage2]);
-
+  useEffect(() => {
+    params1.order = option;
+    params2.order = option;
+    
+    getDonationMain(params1).then((res) => {
+      setRecentDonation(res.data.donation);
+      setTotalPages(res.data.totalPage);
+    });
+    
+    getVolunteerMain(params2).then((res) => {
+      setRecentVolunteer(res.data.listVolunteer);
+      setTotalPages2(res.data.totalPage);
+    });
+  }, [option]);
   return (
     <>
       <Container maxWidth="lg">
@@ -222,10 +238,10 @@ const Donation: FC = () => {
                         label="option"
                         onChange={optionHandleChange}
                       >
-                        <MenuItem value="latest">최신순</MenuItem>
-                        <MenuItem value="high">달성률 높은 순</MenuItem>
-                        <MenuItem value="low">달성률 낮은 순</MenuItem>
-                        <MenuItem value="endDate">종료일 순</MenuItem>
+                        <MenuItem value="최신순">최신순</MenuItem>
+                        <MenuItem value="높은순">달성률 높은 순</MenuItem>
+                        <MenuItem value="낮은순">달성률 낮은 순</MenuItem>
+                        <MenuItem value="오래된순">오래된 순</MenuItem>
                       </Select>
                     </FormControl>
                   </Box>
