@@ -160,7 +160,7 @@ const orgpageMyDonation: FC = () => {
       page: curPage2,
     };
     getDonationList(ingParams).then((res) => {
-      setIngDonation(res.data.donation);
+      // setIngDonation(res.data.donation);
       // console.log(res.)
       setTotalPages(res.data.totalPage);
     });
@@ -239,13 +239,17 @@ const orgpageMyDonation: FC = () => {
                           <Typography>진행 중인 기부가 없습니다.</Typography>
                         )}
                       </Box>
+                      {ingDonation && ingDonation.length > 0 ? (
                       <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
                         <Pagination
                           curPage={curPage}
                           paginate={paginate}
                           totalPage={totalPages}
                         />
-                      </Stack>
+                        </Stack>
+                        ) : (
+                          <></>
+                        )}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                       <Box
@@ -266,13 +270,17 @@ const orgpageMyDonation: FC = () => {
                           <Typography>마감된 기부가 없습니다.</Typography>
                         )}
                       </Box>
+                      {doneDonation && doneDonation.length > 0 ? (
                       <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
                         <Pagination
                           curPage={curPage2}
                           paginate={paginate2}
                           totalPage={totalPages2}
                         />
-                      </Stack>
+                        </Stack>
+                      ) : (
+                          <></>
+                        )}
                     </TabPanel>
                   </Box>
                 </Box>

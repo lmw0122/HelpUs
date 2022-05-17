@@ -250,13 +250,17 @@ const orgpageMyCheckDonation: FC = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
+          {donationList && donationList.length > 0 ? (
+            <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
             <Pagination
               curPage={curPage}
               paginate={paginate}
               totalPage={totalPages}
             />
           </Stack>
+          ) : (
+            <Typography variant="h5" sx={{ mt: 10, display: 'flex', justifyContent: 'center'}}>진행 중인 기부가 없습니다.</Typography>
+          )}
         </Container>
       </Box>
     </Box>
