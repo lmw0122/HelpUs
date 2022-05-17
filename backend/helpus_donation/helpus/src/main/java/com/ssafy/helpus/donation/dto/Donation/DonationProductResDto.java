@@ -15,5 +15,6 @@ public class DonationProductResDto {
     private Integer totalCount;
     private Integer finishCount;
     private Integer deliveryCount;
+    private Integer waitingCount;
     private Double percent;
 }

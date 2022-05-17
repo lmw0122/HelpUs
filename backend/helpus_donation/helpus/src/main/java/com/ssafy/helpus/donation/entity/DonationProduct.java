@@ -35,6 +35,9 @@ public class DonationProduct {
     @Column(name = "delivery_count", insertable = false)
     private int deliveryCount;
 
+    @Column(name = "waiting_count", insertable = false)
+    private int waitingCount;
+
     @Column(nullable = false, insertable = false)
     private double percent;
 

@@ -38,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
                     .productInfo(donationProduct.getProductInfo())
                     .finishCount(donationProduct.getFinishCount())
                     .deliveryCount(donationProduct.getDeliveryCount())
+                    .waitingCount(donationProduct.getWaitingCount())
                     .percent(donationProduct.getPercent()).build();
 
             products.add(donationResDto);

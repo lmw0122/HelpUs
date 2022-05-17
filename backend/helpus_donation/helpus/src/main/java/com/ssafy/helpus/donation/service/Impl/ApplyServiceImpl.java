@@ -38,6 +38,7 @@ public class ApplyServiceImpl implements ApplyService {
     private final MemberService memberService;
 
     @Override
+    @Transactional
     public Map<String, Object> applyDonation(ApplyReqDto applyDto, Long memberId) throws Exception {
         log.info("ApplyService applyDonation call");
 
@@ -61,6 +62,9 @@ public class ApplyServiceImpl implements ApplyService {
                     .invoice(applyDto.getInvoice())
                     .status(ApplyStatus.배송중).build();
         } else {
+            // 배송 대기 수량 변경
+            donationProduct.setWaitingCount(donationProduct.getWaitingCount()+applyDto.getCount());
+
             apply = DonationApply.builder()
                     .donation(donation)
                     .memberId(memberId)
@@ -90,6 +94,7 @@ public class ApplyServiceImpl implements ApplyService {
         if(apply.get().getInvoice()==null) {
             DonationProduct donationProduct = productRepository.findById(apply.get().getDonationProduct().getDonationProductId()).get();
             donationProduct.setDeliveryCount(donationProduct.getDeliveryCount() + apply.get().getCount());
+            donationProduct.setWaitingCount(donationProduct.getWaitingCount() - apply.get().getCount());
         }
 
         apply.get().setInvoice(waybillDto.getInvoice());
