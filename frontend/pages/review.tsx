@@ -8,6 +8,7 @@ import {
   Button,
   InputBase,
   Paper,
+  Link
 } from "@mui/material/";
 import {
   Table,
@@ -84,12 +85,6 @@ const Review: FC = () => {
                 {/* 이미지 출력 부분 */}
                 <Stack alignItems="center" sx={{ mb: 5 }}>
                   <CarouselMain />
-                  {/* <Image
-                    src={volunteer1}
-                    alt="volunteer first"
-                    width={1200}
-                    height={200}
-                  /> */}
                 </Stack>
               </Box>
               <Box sx={{ fontWeight: "bold", my: 5 }}>
@@ -138,7 +133,9 @@ const Review: FC = () => {
                           {data.donationConfirmId}
                         </StyledTableCell> */}
                         <StyledTableCell align="center" sx={{ width: 400 }}>
-                          {data.title}
+                          <Link href={`/detail/review/${data.donationConfirmId}`} underline="none" color="inherit">
+                            {data.title}
+                          </Link>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {data.name}
