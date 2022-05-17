@@ -1,5 +1,6 @@
 package com.ssafy.helpus.donation.dto.Donation;
 
+import com.ssafy.helpus.donation.enumClass.DonationStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -38,4 +39,6 @@ public class DonationResDto {
 
     @ApiModelProperty(value = "기부 물품")
     private List<DonationProductResDto> products;
+
+    private DonationStatus status;
 }

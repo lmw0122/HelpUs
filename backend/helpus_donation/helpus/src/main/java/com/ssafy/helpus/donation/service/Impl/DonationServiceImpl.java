@@ -115,6 +115,7 @@ public class DonationServiceImpl implements DonationService {
                 .createDate(donation.get().getCreateDate())
                 .updateDate(donation.get().getUpdateDate())
                 .endDate(donation.get().getEndDate())
+                .status(donation.get().getStatus())
                 .images(fileService.getDonationFileList(donation.get().getImages()))
                 .products(productService.getDonationProduct(donation.get().getProducts())).build();
 
