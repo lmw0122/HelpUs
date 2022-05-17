@@ -79,7 +79,7 @@ export const donationOrgCommentDelete = async (
 export const getReviewList = async (params) => {
   return await axios({
     method: "GET",
-    url: `/9080/d.confirm`,
+    url: `/8000/api/d.confirm`,
     params: params,
   });
 };
@@ -283,7 +283,7 @@ export const getOrgDonationList = async (id, params) => {
 export const getNewsList = async (params) => {
   return await axios({
     method: "GET",
-    url: `/9080/news`,
+    url: `/8000/api/news`,
     params: params,
   });
 };
@@ -427,7 +427,7 @@ export const createVolunteer = async (id, token, volunteerReqDto, files) => {
 export const volunteerDetail = async (id) => {
   return await axios({
     method: "GET",
-    url: `/9081/volunteer/${id}`,
+    url: `/8000/api/volunteer/${id}`,
   });
 };
 
@@ -679,7 +679,7 @@ export const csCommentDelete = async (commentId, memberId, id, token) => {
 export const getCsDetail = async (id) => {
   return await axios({
     method: "GET",
-    url: `/9082/desk/${id}`,
+    url: `/8000/api/desk/${id}`,
   });
 };
 
@@ -687,7 +687,7 @@ export const getCsDetail = async (id) => {
 export const getCSList = async (params) => {
   return await axios({
     method: "GET",
-    url: `/9082/desk`,
+    url: `/8000/api/desk`,
     params: params,
   });
 };
