@@ -46,6 +46,23 @@ export const getReviewList = async (params) => {
   });
 };
 
+// 후기 상세 페이지
+export const reviewDetail = async (id) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.confirm/${id}`,
+  });
+};
+
+//후원자 명단
+export const getSponsorList = async (id, params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/d.apply/donation/${id}`,
+    params: params,
+  });
+};
+
 // 후기 페이지 작성
 export const createReview = async (id, token, confirm, files) => {
   const newForm = new FormData();
