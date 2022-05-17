@@ -60,19 +60,7 @@ const CustomButton = styled(Button)({
     color: "white",
   },
 });
-// const setApplyPart = ({ role, status }) => {
-//   if (role === "USER" && status === -1) {
-//     return(<CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
-//       신청하기
-//     </CustomButton>);
-//   }
-//   else if (role === "USER") {
-//     return(<>신청완료 되었습니다.</>);
-//   }
-//   else {
-//     return(<></>);
-//   }
-// }
+
 const VolunteerDetail: FC = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
@@ -96,8 +84,9 @@ const VolunteerDetail: FC = () => {
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
+      console.log("id" + router.query.id);
       volunteerDetail(router.query.id).then((res) => {
-        // console.log(res);
+        console.log(res);
         setVolunteerDetails(res.data.volunteer);
         userId = res.data.volunteer.memberId;
         setLoading(true);
@@ -109,13 +98,13 @@ const VolunteerDetail: FC = () => {
           setLoading2(true);
         })
       }).then(() => {
-        volunteerApplyCheck(router.query.id, token).then((res) => {
-          console.log(res.data.applyStatus.status);
-          setCheckApply(res.data.applyStatus.status);
-          
-          console.log(applyPart);
-          setLoading3(true);
-        })
+        let tmpToken = localStorage.getItem("jwt");
+        if (role !== null) {
+          volunteerApplyCheck(router.query.id, tmpToken).then((res) => {
+            setCheckApply(res.data.applyStatus.status);  
+          })
+        }
+        setLoading3(true);
       });
     }
   }, [router.isReady]);
@@ -140,14 +129,14 @@ const VolunteerDetail: FC = () => {
     }
   }, [curPage, router.isReady, commentList]);
   
-  useEffect(()=> {
+  useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
     const role = localStorage.getItem("role");
     setRole(role);
     setId(id);
     setToken(token);
-  })
+  });
 
   // 댓글 버튼 누를 시 작성
   // const repoArray: any = [...commentList]
@@ -171,7 +160,23 @@ const VolunteerDetail: FC = () => {
       })
       .catch((err) => console.log(err + "실패"));
   };
-
+  const SetApplyPart = ({ role, status }) => {
+    if (role === "USER" && status === -1) {
+      return (
+        <>
+          <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+          신청하기
+          </CustomButton>
+        </>
+      );
+    }
+    else if (role === "USER") {
+      return(<><Typography variant="h5" sx={{ mt: 0, display: 'flex', justifyContent: 'center'}}>신청 완료</Typography></>);
+    }
+    else {
+      return(<></>);
+    }
+  }
   // 봉사 신청
   const Apply = (e) => {
     const token = localStorage.getItem("jwt");
@@ -381,10 +386,10 @@ const VolunteerDetail: FC = () => {
             </Stack> */}
               </Stack>
               <Stack sx={{ mt: 3 }}>
-                <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
+                {/* <CustomButton sx={{ width: 100, mx: "auto" }} onClick={Apply}>
                   신청하기
-                </CustomButton>
-                {/* <setApplyPart role={role} status={checkApply}></setApplyPart> */}
+                </CustomButton> */}
+                <SetApplyPart role={role} status={checkApply}/>
               </Stack>
               {/* 카카오 맵 */}
               <Stack sx={{ width: 800, height: 300, mt: 3, ml: 20 }}>
