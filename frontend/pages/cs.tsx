@@ -29,7 +29,7 @@ import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import { locale } from "dayjs";
-// import Link from "next/link";
+import CarouselMain from "../components/CarouselMain";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -92,12 +92,10 @@ const CsMain: FC = () => {
       <Grid container justifyContent="center" alignItems="center">
         <Stack>
           <Box textAlign="center">
-            <Image
-              src={volunteer1}
-              alt="volunteer first"
-              width={1200}
-              height={200}
-            />
+            {/* 이미지 출력 부분 */}
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <CarouselMain />
+            </Stack>
           </Box>
           <Box sx={{ fontWeight: "bold", my: 5 }}>
             <Typography variant="h4" textAlign="center">

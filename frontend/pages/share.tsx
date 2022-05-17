@@ -9,6 +9,7 @@ import { styled } from "@mui/material/styles";
 import volunteer1 from "../public/images/volunteer1.jpg";
 import Pagination from "@/components/Pagination";
 import { getTalentDonationList } from "function/axios";
+import CarouselMain from "../components/CarouselMain";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -183,12 +184,16 @@ const Share: FC = () => {
       <Grid container justifyContent="center" alignItems="center">
       <Stack>
         <Box textAlign="center" >
-          <Image 
-            src= {volunteer1}
+          {/* 이미지 출력 부분 */}
+        <Stack alignItems="center" sx={{ mb: 5 }}>
+          <CarouselMain />
+          {/* <Image
+            src={volunteer1}
             alt="volunteer first"
             width={1200}
             height={200}
-          />
+          /> */}
+        </Stack>
         </Box>
         <Box sx={{ fontWeight: 'bold', my: 5}}>
           <Typography variant="h4" textAlign="center">재능 기부 목록</Typography>

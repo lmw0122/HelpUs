@@ -28,6 +28,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import CarouselMain from "../components/CarouselMain";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -101,6 +102,12 @@ const NewsMain: FC = () => {
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
         <Stack>
+          <Box textAlign="center">
+            {/* 이미지 출력 부분 */}
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <CarouselMain />
+            </Stack>
+          </Box>
           <Box sx={{ fontWeight: "bold", mt: 5 }}>
             <Typography variant="h4" textAlign="center">
               기부 News

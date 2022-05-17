@@ -26,6 +26,8 @@ import volunteer1 from "../public/images/volunteer1.jpg";
 
 import { getReviewList } from "function/axios";
 import Pagination from "@/components/Pagination";
+import CarouselMain from "../components/CarouselMain";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -79,12 +81,16 @@ const Review: FC = () => {
           <Grid container justifyContent="center" alignItems="center">
             <Stack>
               <Box textAlign="center">
-                <Image
-                  src={volunteer1}
-                  alt="volunteer first"
-                  width={1200}
-                  height={200}
-                />
+                {/* 이미지 출력 부분 */}
+                <Stack alignItems="center" sx={{ mb: 5 }}>
+                  <CarouselMain />
+                  {/* <Image
+                    src={volunteer1}
+                    alt="volunteer first"
+                    width={1200}
+                    height={200}
+                  /> */}
+                </Stack>
               </Box>
               <Box sx={{ fontWeight: "bold", my: 5 }}>
                 <Typography variant="h4" textAlign="center">
