@@ -67,13 +67,13 @@ const CsMain: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [csList, setCSList] = useState<any>(null);
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const [myId, setMyId] = useState(0);
   const [myRole, setMyRole] = useState("");
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -188,6 +188,13 @@ const CsMain: FC = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+          </Stack>
+          <Stack alignItems="center" sx={{ mb: 5 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
           </Stack>
         </Stack>
       </Grid>

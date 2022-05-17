@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Image from 'next/image';
 import { styled } from "@mui/material/styles";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import Pagination from "@/components/Pagination";
 import { getTalentDonationList } from "function/axios";
 
 const CustomButton = styled(Button)({
@@ -150,11 +151,11 @@ const Share: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [talentDonationList, setTalentDonationList] = useState<any>(null);
   // pagination
-  const [curPage, setCurPage] = useState(0);
+  const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
   const params = {
-    page: curPage + 1,
+    page: curPage,
   };
 
   useEffect(() => {
@@ -237,7 +238,14 @@ const Share: FC = () => {
                   ))}
                 </TableBody>
               </Table>
-            </TableContainer>
+          </TableContainer>
+          <Stack alignItems="center" sx={{ mb: 5 }}>
+            <Pagination
+              curPage={curPage}
+              paginate={paginate}
+              totalPage={totalPages}
+            />
+          </Stack>
       </Stack>
       </Grid>
     </div>

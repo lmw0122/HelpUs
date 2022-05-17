@@ -96,7 +96,7 @@ const UserMypageDonation: FC = () => {
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <Typography variant="h4">기부 물품 배송 관리</Typography>
+            <Typography variant="h4">물품 기부 조회</Typography>
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
