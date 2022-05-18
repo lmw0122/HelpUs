@@ -16,7 +16,7 @@ import {
   IconButton,
   Toolbar,
   Divider,
-  List,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -322,7 +322,9 @@ const orgpageMyReview: FC = () => {
                                       {data.donationConfirmId}
                                     </StyledTableCell>
                                     <StyledTableCell align="center">
-                                      {data.title}
+                                      <Link href={`/detail/review/${data.donationConfirmId}`} underline="none" color="inherit">
+                                        {data.title}
+                                      </Link>
                                     </StyledTableCell>
                                     <StyledTableCell align="center">
                                       {data.createDate.substr(0, 10)}
