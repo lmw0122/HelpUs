@@ -342,7 +342,7 @@ const CsDetail: FC = () => {
                 ) : (<Box sx={{ height: 30 }}></Box>)}
               <Stack>
                 {commentList.map((item) => (
-                  <Comment comment={item} id={id} token={token} commentList={commentList} />
+                  <Comment comment={item} id={id} token={token} />
                 ))}
               </Stack>
             </Container>

@@ -509,16 +509,12 @@ const ReviewDetail: FC = () => {
             )}
               {commentList &&
                 commentList.map((item, index) => (
-<<<<<<< HEAD
-                  <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
-=======
                   <Comment
                     key={index}
                     comment={item}
                     id={userId}
                     token={token}
                   />
->>>>>>> bdb04803760af68b87afa4a291f0b8d57666fdb2
                 ))}
               {commentList && commentList.length > 0 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>

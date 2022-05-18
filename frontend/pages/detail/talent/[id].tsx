@@ -404,7 +404,7 @@ const TalentDetail: FC = () => {
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
-                    <Comment comment={item} id={id} token={token} key={i} commentList={commentList} />
+                    <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
               {commentList && commentList.length > 0 ? (

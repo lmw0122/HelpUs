@@ -709,7 +709,7 @@ const DonationOrgDetail: FC = () => {
           <Stack>
           {commentList &&
             commentList.map((item, index) => (
-              <Comment key={index} comment={item} id={userId} token={token} commentList={commentList} />
+              <Comment key={index} comment={item} id={userId} token={token} />
             ))}
           </Stack>
           {commentList && commentList.length > 0 ? (

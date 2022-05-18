@@ -87,7 +87,7 @@ const CustomButton2 = styled(Button)({
   fontSize: 12,
 });
 
-const Comment: FC<CommentData> = ({ comment, id, token, commentList }) => {
+const Comment: FC<CommentData> = ({ comment, id, token }) => {
   const [inputStatus, setInputStatus] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>();
   const [parentId, setParentId] = useState<any>();
