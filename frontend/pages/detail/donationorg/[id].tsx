@@ -45,16 +45,7 @@ import ExpiryDate from "@/components/ExpiryDate";
 
 import { useRouter } from "next/router";
 // api
-<<<<<<< HEAD
 import { donationDetail, getUserInfo, donationOrgCommentList, donationOrgComment, finishDonation } from "function/axios";
-=======
-import {
-  donationDetail,
-  getUserInfo,
-  donationOrgCommentList,
-  donationOrgComment,
-} from "function/axios";
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -718,15 +709,8 @@ const DonationOrgDetail: FC = () => {
               등록
             </CustomButton>
           </Stack>
-<<<<<<< HEAD
             {commentList &&
               commentList.map((item, j) => <Comment key={j} comment={item} id={userId} token={token} />)}
-=======
-          {commentList &&
-            commentList.map((item) => (
-              <Comment comment={item} id={userId} token={token} />
-            ))}
->>>>>>> c5730b2edf10efbd60af0be3a6a1a625ce7d9bb7
         </Container>
       </Box>
     </Box>
