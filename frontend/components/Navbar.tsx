@@ -40,6 +40,9 @@ const Navbar: FC<LoginProps> = ({ value }) => {
   const onMyPage = () => {
     if (localStorage.getItem("role") === "USER") {
       router.push("/userpage/my");
+    } else if(localStorage.getItem("role") === "ORG_WAIT"){
+      // router.push("/");
+      alert("승인 이후에 이용 가능합니다.");
     } else {
       router.push("/orgpage/my");
     }

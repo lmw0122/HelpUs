@@ -94,6 +94,11 @@ const OrgMypage: FC = () => {
   const [myInfo, setMyInfo] = useState<any>(null);
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "ORG_WAIT") {
+      alert("승인 이후에 이용 가능합니다.");
+      location.href = "/";
+    }
     const token = localStorage.getItem("id");
     getUserInfo(token).then((res) => {
       setMyInfo(res.data);

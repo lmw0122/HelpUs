@@ -273,11 +273,14 @@ export const getDonationList = async (params) => {
 };
 
 // 마이페이지(기관) - 배송 현황 조회
-export const getDeliveryList = async (id, params) => {
+export const getDeliveryList = async (id, token,params) => {
   return await axios({
     method: "GET",
     url: `/8000/d.apply/tracking/${id}`,
     params: params,
+    headers: {
+      Authorization: token
+    },
   });
 };
 

@@ -88,10 +88,11 @@ const orgpageMyCheckDelivery: FC = () => {
 
   useEffect(() => {
     const memberId = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
     const params = {
       page: curPage,
     };
-    getDeliveryList(memberId, params).then((res) => {
+    getDeliveryList(memberId, token,params).then((res) => {
       setDeliveryList(res.data.apply);
       setTotalPages(res.data.totalPage);
     });
