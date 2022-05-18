@@ -904,7 +904,7 @@ export const tokenCheck = async () => {
 };
 
 // 회원 수정
-export const userEdit = async (token, id, intro, file) => {
+export const userEdit = async (token, id, intro, file, params) => {
   const data = {
     info: intro,
   };
@@ -928,7 +928,7 @@ export const userEdit = async (token, id, intro, file) => {
       Authorization: token,
       memberId: id,
     },
-    // params: params,
+    params: params,
     data: newForm,
   });
 };
