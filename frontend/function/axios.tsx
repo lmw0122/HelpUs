@@ -219,24 +219,27 @@ export const getUserDonationList = async (id, params) => {
 };
 
 // 마이페이지(개인) - 후원 송장 입력
-export const sendApply = async (id, data) => {
+export const sendApply = async (id, token, data) => {
+  console.log(id, data);
   return await axios({
     method: "PUT",
     url: "/8000/d.apply",
     headers: {
       memberId: id,
+      Authorization: token,
     },
     data: data,
   });
 };
 
 // 마이페이지(개인) - 후원 송장 수정
-export const updateApply = async (id, data) => {
+export const updateApply = async (id, token, data) => {
   return await axios({
     method: "PUT",
     url: "/8000/d.apply",
     headers: {
       memberId: id,
+      Authorization: token,
     },
     data: data,
   });

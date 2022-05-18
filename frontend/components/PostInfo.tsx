@@ -162,13 +162,14 @@ const PostInfo: FC<IPostInfo> = ({
 
   const onClickSendApply = () => {
     const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("jwt");
     const data = {
       donationApplyId: donationApplyId,
-      memberId: userId,
+      memberId: parseInt(userId),
       invoice: postNum,
       parcel: company.toString(),
     };
-    sendApply(userId, data)
+    sendApply(userId, token, data)
       .then((res) => {
         console.log("송장 입력 성공");
         getStatus(!postStatus);

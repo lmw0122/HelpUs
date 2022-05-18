@@ -260,6 +260,9 @@ const Review: FC = () => {
 
     createReview(id, token, confirm, imageList)
       .then((res) => {
+        if(res.status === 200){
+          alert("해당 기부 글의 후기가 존재합니다.")
+        }
         console.log(res + "성공");
         Router.push("/review");
       })
