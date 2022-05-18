@@ -140,10 +140,12 @@ const CsDetail: FC = () => {
 
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
-
+  const [role, setRole] = useState<any>();
   useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
+    const role = localStorage.getItem("role");
+    setRole(role);
     setId(id);
     setToken(token);
   })
@@ -314,6 +316,7 @@ const CsDetail: FC = () => {
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글 
               </Typography>
+              {commentList < 1 && role === "ADMIN"? (
               <Stack
                 justifyContent="space-between"
                 direction="row"
@@ -326,7 +329,7 @@ const CsDetail: FC = () => {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-                { commentList < 1 ? (
+                
                   <CustomButton 
                     variant="contained" 
                     size="small" 
@@ -334,9 +337,9 @@ const CsDetail: FC = () => {
                     onClick={handelComment}
                     >
                     등록
-                  </CustomButton>
-                ) : null}
+                    </CustomButton>
               </Stack>
+                ) : (<></>)}
               <Stack>
                 {commentList.map((item) => (
                   <Comment comment={item} id={id} token={token} />

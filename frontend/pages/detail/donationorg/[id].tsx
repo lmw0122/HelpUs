@@ -665,7 +665,8 @@ const DonationOrgDetail: FC = () => {
           <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
             댓글
           </Typography>
-          <Stack
+          {role === "USER" || role === "ORG" || role === "ADMIN" ? (
+            <Stack
             justifyContent="space-between"
             direction="row"
             sx={{ mt: 1.5, mb: 3, mx: 5 }}
@@ -686,10 +687,25 @@ const DonationOrgDetail: FC = () => {
               등록
             </CustomButton>
           </Stack>
+          ): (
+            <></>
+          )}
+          
           {commentList &&
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} />
             ))}
+          {commentList && commentList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+                <Pagination
+                  paginate={paginate}
+                  curPage={curPage}
+                  totalPage={totalPages}
+                />
+              </Box>
+              ): (
+                <></>
+              )}
         </Container>
       </Box>
     </Box>

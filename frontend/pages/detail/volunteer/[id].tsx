@@ -131,7 +131,8 @@ const VolunteerDetail: FC = () => {
         })
         .then(() => {
           let tmpToken = localStorage.getItem("jwt");
-          if (role !== null) {
+          let tmpRole = localStorage.getItem("role");
+          if (tmpRole === "USER") {
             volunteerApplyCheck(router.query.id, tmpToken).then((res) => {
               setCheckApply(res.data.applyStatus.status);
             });
@@ -513,7 +514,8 @@ const VolunteerDetail: FC = () => {
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
               </Typography>
-              <Box>
+              {role === "USER" || role === "ORG" || role === "ADMIN" ? (
+                <Box>
                 <Stack
                   justifyContent="space-between"
                   direction="row"
@@ -539,13 +541,21 @@ const VolunteerDetail: FC = () => {
                     <Comment comment={item} id={id} token={token} />
                   ))}
               </Box>
-              <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
+              ): (
+                <></>
+              )}
+              {commentList && commentList.length > 0 ? (
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination
                   paginate={paginate}
                   curPage={curPage}
                   totalPage={totalPages}
                 />
               </Box>
+              ): (
+                <></>
+              )}
+              
               <Stack justifyContent="center">
                 <Modal open={open} onClose={handleClose}>
                   <Box sx={style}>

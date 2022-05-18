@@ -153,7 +153,7 @@ const TalentDetail: FC = () => {
 
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
-
+  const [role, setRole] = useState<any>();
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -187,6 +187,8 @@ const TalentDetail: FC = () => {
   useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
+    const role = localStorage.getItem("role");
+    setRole(role);
     setId(id);
     setToken(token);
   }, []);
@@ -374,6 +376,7 @@ const TalentDetail: FC = () => {
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
               </Typography>
+              {role === "USER" || role === "ORG" || role === "ADMIN" ? (
               <Stack
                 justifyContent="space-between"
                 direction="row"
@@ -395,19 +398,26 @@ const TalentDetail: FC = () => {
                   등록
                 </CustomButton>
               </Stack>
+                ): (
+                  <></>
+                )}
               <Stack>
                 {commentList &&
                   commentList.map((item, i) => (
                     <Comment comment={item} id={id} token={token} key={i} />
                   ))}
               </Stack>
+              {commentList && commentList.length > 0 ? (
               <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                 <Pagination
                   paginate={paginate}
                   curPage={curPage}
                   totalPage={totalPages}
                 />
-              </Box>
+                </Box>
+                ): (
+                  <></>
+                )}
             </Container>
           </Box>
         </Box>
