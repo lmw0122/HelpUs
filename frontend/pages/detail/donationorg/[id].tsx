@@ -706,11 +706,12 @@ const DonationOrgDetail: FC = () => {
           ) : (
             <></>
           )}
-
+          <Stack>
           {commentList &&
             commentList.map((item, index) => (
               <Comment key={index} comment={item} id={userId} token={token} />
             ))}
+          </Stack>
           {commentList && commentList.length > 0 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
                 <Pagination
