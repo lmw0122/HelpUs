@@ -121,12 +121,13 @@ public class MemberController {
     }
 
     @PutMapping(value = "/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Boolean> updateMember(@RequestPart(required = false) MemberDto member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers) throws IOException {
+    public ResponseEntity<Boolean> updateMember(@RequestPart(required = false) MemberDto member, @RequestPart(required = false) MultipartFile profile,@RequestHeader HttpHeaders headers,@RequestParam(required = false) String isDefault) throws IOException {
         int tokenMemberId = Integer.parseInt(headers.get("memberId").get(0));
+        System.out.println("is Default : "+isDefault);
         String newInfo = "";
         if(member != null)
             newInfo = member.getInfo();
-        boolean result = memberService.updateMember(tokenMemberId,profile,newInfo);
+        boolean result = memberService.updateMember(tokenMemberId,profile,newInfo,isDefault);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
     @PutMapping(value = "/admin/update",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

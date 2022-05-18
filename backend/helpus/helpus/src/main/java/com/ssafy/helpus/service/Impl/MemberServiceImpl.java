@@ -160,12 +160,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean updateMember(int id, MultipartFile newProfile,String newInfo) throws IOException {
+    public boolean updateMember(int id, MultipartFile newProfile,String newInfo,String isDefault) throws IOException {
         System.out.println(newProfile);
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            if(newProfile != null){
+            if(isDefault != null && isDefault == "true"){
+                m.setProfile(null);
+            }
+            else if(newProfile != null){
                 if(preUrl != null){
                     s3Service.delete(preUrl);
                 }

@@ -17,7 +17,7 @@ public interface MemberService {
     boolean checkEmail(String email);
     boolean checkTel(String phoneNumber);
     MemberDto getMemberById(int id);
-    boolean updateMember(int id,MultipartFile newProfile,String newInfo) throws IOException;
+    boolean updateMember(int id,MultipartFile newProfile,String newInfo,String isDefault) throws IOException;
     boolean updateMemberByAdmin(int id,MultipartFile newProfile,Member member) throws IOException;
     boolean deleteMember(int id);
     int getCount();
