@@ -101,19 +101,19 @@ const Navbar: FC<LoginProps> = ({ value }) => {
               )}
             </Typography>
             <Typography variant="h6" sx={{ mx: 3 }}>
-              {pathName === "/cs" ? (
+              {pathName === "/review" ? (
                 <Link
-                  href="/cs"
+                  href="/review"
                   underline="none"
                   color="#CDAD78"
                   fontWeight="bold"
                   variant="h5"
                 >
-                  고객센터
+                  인증하기
                 </Link>
               ) : (
-                <Link href="/cs" underline="none" color="inherit">
-                  고객센터
+                <Link href="/review" underline="none" color="inherit">
+                  인증하기
                 </Link>
               )}
             </Typography>
@@ -146,6 +146,23 @@ const Navbar: FC<LoginProps> = ({ value }) => {
             sx={{ width: 500 }}
             justifyContent="right"
           >
+            <Typography variant="h6" sx={{ mx: 3 }}>
+              {pathName === "/cs" ? (
+                <Link
+                  href="/cs"
+                  underline="none"
+                  color="#CDAD78"
+                  fontWeight="bold"
+                  variant="h5"
+                >
+                  고객센터
+                </Link>
+              ) : (
+                <Link href="/cs" underline="none" color="inherit">
+                  고객센터
+                </Link>
+              )}
+            </Typography>
             {isLogin ? (
               role === "ADMIN" ? (
                 <>
