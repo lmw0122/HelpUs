@@ -575,6 +575,14 @@ export const getTalentDonationList = async (params) => {
   });
 };
 
+// 재능기부 목록 검색
+export const searchTalentDonationList = async (keyword,params) => {
+  return await axios({
+    method: "GET",
+    url: `/8000/api/talentDonation/search/${keyword}`,
+    params: params
+  });
+};
 // 재능기부 상세 조회
 export const getTalentDonationDetail = async (id) => {
   return await axios({

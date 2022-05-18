@@ -113,6 +113,21 @@ const CsMain: FC = () => {
   }
   const optionHandleChange = (event: SelectChangeEvent) => {
     setOption(event.target.value as string);
+    if (event.target.value === "전체")
+      params.category = null;
+    else
+      params.category = event.target.value;
+    if (word === '')
+      params.word = null;
+    console.log(event.target.value);
+    setLoading(false);
+    getCSList(params).then((res) => {
+      console.log(res);
+      setCSList(res.data.desk);
+      setTotalPages(res.data.totalPage);
+      // console.log("data는", reviewList);
+      setLoading(true);
+    });
   };
   
   useEffect(() => {
@@ -263,13 +278,18 @@ const CsMain: FC = () => {
               </Table>
             </TableContainer>
           </Stack>
-          <Stack alignItems="center" sx={{ mb: 5 }}>
-            <Pagination
-              curPage={curPage}
-              paginate={paginate}
-              totalPage={totalPages}
-            />
-          </Stack>
+          {csList && csList.length > 0 ? (
+            <Stack alignItems="center" sx={{ mb: 5 }}>
+              <Pagination
+                curPage={curPage}
+                paginate={paginate}
+                totalPage={totalPages}
+              />
+            </Stack>
+          ): (
+              <></>
+          )}
+          
         </Stack>
       </Grid>
     </div>

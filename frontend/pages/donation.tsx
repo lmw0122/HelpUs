@@ -289,13 +289,16 @@ const Donation: FC = () => {
                       </Typography>
                     )}
                   </Box>
+                  {recentDonation && recentDonation.length > 0 ? (
                   <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
                     <Pagination
                       curPage={curPage}
                       paginate={paginate}
                       totalPage={totalPages}
                     />
-                  </Stack>
+                    </Stack>
+                  ) : (<></>
+                    )}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <Box
@@ -318,13 +321,17 @@ const Donation: FC = () => {
                       </Typography>
                     )}
                   </Box>
+                  {recentVolunteer && recentVolunteer.length > 0 ? (
                   <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
                     <Pagination
                       curPage={curPage2}
                       paginate={paginate2}
                       totalPage={totalPages2}
                     />
-                  </Stack>
+                    </Stack>
+                  ) : (
+                    <></>
+                    )}
                 </TabPanel>
               </Box>
             </Box>
