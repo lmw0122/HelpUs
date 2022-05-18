@@ -281,7 +281,7 @@ const Cs: FC = () => {
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     <MenuItem value="문의">문의</MenuItem>
-                    <MenuItem value="정보 수정">정보 수정</MenuItem>
+                    <MenuItem value="정보수정">정보 수정</MenuItem>
                     <MenuItem value="신고">신고</MenuItem>
                     <MenuItem value="도움">도움이 필요합니다</MenuItem>
                   </Select>
