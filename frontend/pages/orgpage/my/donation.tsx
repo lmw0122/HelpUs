@@ -192,7 +192,7 @@ const orgpageMyDonation: FC = () => {
               <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Stack direction="row" justifyContent="space-between">
                   <Typography variant="h4">물품 후원 게시글</Typography>
-                  <CustomButton href="create/donation">글 작성</CustomButton>
+                  <CustomButton href="/create/donationorg">글 작성</CustomButton>
                 </Stack>
                 {/* Tab 시작 */}
                 <Box sx={{ width: "100%", mt: 2 }}>
