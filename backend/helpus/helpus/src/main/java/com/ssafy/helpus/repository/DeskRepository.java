@@ -15,7 +15,7 @@ public interface DeskRepository extends JpaRepository<HelpDesk, Long> {
     //카테고리 조회
     Page<HelpDesk> findByCategory(DeskCategory category, Pageable pageable);
     //전체 검색
-    Page<HelpDesk> findByContentContainingIgnoreCase(String word, Pageable pageable);
+    Page<HelpDesk> findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(String word, String word2, Pageable pageable);
     //카테고리내 검색
-    Page<HelpDesk> findByCategoryAndContentContainingIgnoreCase(DeskCategory category, String word, Pageable pageable);
+    Page<HelpDesk> findByCategoryAndContentContainingIgnoreCaseOrTitleContainingIgnoreCase(DeskCategory category, String word, String word2, Pageable pageable);
 }

@@ -132,9 +132,9 @@ public class HelpDeskServiceImpl implements HelpDeskService {
         } else if(category!=null && word==null) { //카테고리 조회
             helpDesks = deskRepository.findByCategory(DeskCategory.valueOf(category), pageRequest);
         } else if(category==null && word!=null) { //전체 검색
-            helpDesks = deskRepository.findByContentContainingIgnoreCase(word, pageRequest);
+            helpDesks = deskRepository.findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(word, word, pageRequest);
         } else { //카테고리 검색
-            helpDesks = deskRepository.findByCategoryAndContentContainingIgnoreCase(DeskCategory.valueOf(category), word, pageRequest);
+            helpDesks = deskRepository.findByCategoryAndContentContainingIgnoreCaseOrTitleContainingIgnoreCase(DeskCategory.valueOf(category), word, word, pageRequest);
         }
 
         return makeList(helpDesks);
