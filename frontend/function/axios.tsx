@@ -548,10 +548,12 @@ export const getVolunteerOrg = async (memberId) => {
 };
 
 //봉사 현황 조회
-export const getInquiryApplyList = async (id) => {
+export const getInquiryApplyList = async (params) => {
+  console.log(params.page);
   return await axios({
     method: "GET",
-    url: `/8000/api/inquiry/apply/${id}`,
+    url: `/8000/api/inquiry/apply/${params.id}`,
+    params: params,
   });
 };
 

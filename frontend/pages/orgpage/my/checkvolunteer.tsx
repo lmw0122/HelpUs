@@ -80,12 +80,16 @@ const orgpageMyCheckVolunteer: FC = () => {
   const getData = (volStatus) => {
     setVolStatus(volStatus);
   };
+  const params = {
+    id: "",
+    page: curPage,
+  };
 
   useEffect(() => {
     setUserToken(localStorage.getItem("jwt"));
     setUserId(localStorage.getItem("id"));
-    getInquiryApplyList(localStorage.getItem("id")).then((res) => {
-      // console.log(res.data.listApply.volunteerApplyId);
+    params.id = localStorage.getItem("id");
+    getInquiryApplyList(params).then((res) => {
       setInquiryApplyList(res.data.listApply);
       setTotalPages(res.data.totalPage);
       setLoading(true);
