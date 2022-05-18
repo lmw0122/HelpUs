@@ -98,7 +98,10 @@ const CsMain: FC = () => {
       params.category = null;
     else
       params.category = option;
-    params.word = word;
+    if (word === '')
+      params.word = null;
+    else
+      params.word = word;
     setLoading(false);
     getCSList(params).then((res) => {
       console.log(res);
