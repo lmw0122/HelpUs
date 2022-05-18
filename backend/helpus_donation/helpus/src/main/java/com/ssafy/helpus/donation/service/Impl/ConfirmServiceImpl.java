@@ -38,6 +38,11 @@ public class ConfirmServiceImpl implements ConfirmService {
 
         Map<String, Object> resultMap = new HashMap<>();
 
+        if(confirmRepository.existsByDonationId(confirmDto.getDonationId())) {
+            resultMap.put("message", Message.CONFIRM_FIND);
+            return resultMap;
+        }
+
         //게시글 저장
         DonationConfirm confirm = DonationConfirm.builder()
                 .donationId(confirmDto.getDonationId())

@@ -8,5 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DonationConfirmRepository extends JpaRepository<DonationConfirm, Long> {
+    
     Page<DonationConfirm> findByMemberId(Long memberId, Pageable pageable);
+    
+    //후기 작성 여부 확인
+    boolean existsByDonationId (Long donationId);
 }

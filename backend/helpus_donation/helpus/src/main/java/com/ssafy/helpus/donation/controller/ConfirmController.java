@@ -45,6 +45,8 @@ public class ConfirmController {
             } else {
                 Long memberId = Long.valueOf(headers.get("memberIdByToken").get(0));
                 resultMap = confirmService.registerConfirm(confirm, memberId, files);
+                if(resultMap.get("message").equals(Message.CONFIRM_FIND))
+                    status = HttpStatus.OK;
             }
         } catch (Exception e) {
             log.error(Message.CONFIRM_REGISTER_FAIL+" : {}", e.getMessage());
