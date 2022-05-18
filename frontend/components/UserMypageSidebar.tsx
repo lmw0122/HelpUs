@@ -95,6 +95,9 @@ export default function UserMypageSidebar() {
       label: "기부 물품 배송 관리",
       path: "/userpage/my/delivery",
     },
+  ];
+
+  const data3 = [
     {
       icon:
         pathName === "/userpage/my/donation" ? (
@@ -284,6 +287,72 @@ export default function UserMypageSidebar() {
                 <Link href={item.path} key={item.path}>
                   <ListItemButton
                     key={item.path}
+                    sx={{
+                      py: 0,
+                      minHeight: 32,
+                      color: "#000000",
+                      "&:hover, &:focus": {
+                        "& svg": { opacity: 1 },
+                        bgcolor: "#f5e1be",
+                      },
+                      bgcolor: pathName === item.path ? "#CDAD78" : "#FCF8F0",
+                    }}
+                  >
+                    <ListItemIcon sx={{ color: "inherit" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.label}
+                      primaryTypographyProps={{
+                        fontSize: 14,
+                        fontWeight: "medium",
+                      }}
+                    />
+                  </ListItemButton>
+                </Link>
+              ))}
+            </Box>
+            <Box
+              sx={{
+                bgcolor: "#FCF8F0",
+                pb: 2,
+              }}
+            >
+              <ListItemButton
+                alignItems="flex-start"
+                sx={{
+                  px: 3,
+                  pt: 2.5,
+                  pb: 0,
+                  color: "#000000",
+                  "&:hover, &:focus": {
+                    "& svg": { opacity: 1 },
+                    // bgcolor: "#F8DD8E",
+                  },
+                }}
+              >
+                <ListItemText
+                  primary="내역 조회"
+                  primaryTypographyProps={{
+                    fontSize: 15,
+                    fontWeight: "medium",
+                    lineHeight: "20px",
+                    mb: "2px",
+                    color: "#000000",
+                  }}
+                  secondary="Authentication, Firestore Database, Realtime Database, Storage, Hosting, Functions, and Machine Learning"
+                  secondaryTypographyProps={{
+                    noWrap: true,
+                    fontSize: 12,
+                    lineHeight: "16px",
+                    color: "rgba(0,0,0,0)",
+                  }}
+                  sx={{ my: 0 }}
+                />
+              </ListItemButton>
+              {data3.map((item) => (
+                <Link href={item.path} key={item.path}>
+                  <ListItemButton
                     sx={{
                       py: 0,
                       minHeight: 32,
