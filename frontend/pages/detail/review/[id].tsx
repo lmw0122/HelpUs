@@ -141,8 +141,10 @@ const ReviewDetail: FC = () => {
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
   const [loading1, setLoading1] = useState<boolean>(false);
   const [loading2, setLoading2] = useState<boolean>(false);
+  const [loading3, setLoading3] = useState<boolean>(false);
   const [userId, setUserId] = useState<any>("");
   const [token, setToken] = useState<any>("");
+  const [role, setRole] = useState<any>("");
   // 댓글
   const [comment, setComment] = useState<string>("");
   const [parentCommentId, setParentComeentId] = useState("");
@@ -150,8 +152,11 @@ const ReviewDetail: FC = () => {
 
   // pagination
   const [curPage, setCurPage] = useState(1);
+  const [curPage2, setCurPage2] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalPages2, setTotalPages2] = useState(0);
   const paginate = (pageNumber) => setCurPage(pageNumber);
+  const paginate2 = (pageNumber) => setCurPage2(pageNumber);
 
   const params = {
     page: curPage,
@@ -161,6 +166,7 @@ const ReviewDetail: FC = () => {
   useEffect(() => {
     setUserId(localStorage.getItem("id"));
     setToken(localStorage.getItem("jwt"));
+    setRole(localStorage.getItem("role"));
     if (router.isReady) {
       reviewDetail(router.query.id).then((res) => {
         setReviewDetails(res.data.confirm);
@@ -194,7 +200,7 @@ const ReviewDetail: FC = () => {
   }, [detailLoading]);
 
   const params2 = {
-    page: curPage,
+    page: curPage2,
   };
 
   // 댓글
@@ -202,8 +208,8 @@ const ReviewDetail: FC = () => {
     if (router.isReady) {
       reviewCommentList(router.query.id, params2).then((res) => {
         setCommentList(res.data.comment);
-        setTotalPages(res.data.totalPage);
-        setLoading1(true);
+        setTotalPages2(res.data.totalPage);
+        setLoading3(true);
       });
     }
   }, [curPage, router.isReady, commentList]);
@@ -233,7 +239,7 @@ const ReviewDetail: FC = () => {
 
   return (
     <>
-      {loading1 && loading2 ? (
+      {loading1 && loading2 && loading3? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -462,18 +468,21 @@ const ReviewDetail: FC = () => {
                 </Table>
               </TableContainer>
               {sponsorList && sponsorList.length > 0 ? (
-                <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
-                  <Pagination
-                    paginate={paginate}
-                    curPage={curPage}
-                    totalPage={totalPages}
-                  />
-                </Box>
-              ) : null}
+              <Box sx={{ display: "flex", justifyContent: "center", my: 5,pb: 5 }}>
+                <Pagination
+                  paginate={paginate}
+                  curPage={curPage}
+                  totalPage={totalPages}
+                />
+              </Box>
+                ): (
+                  <></>
+                )}
               <Divider color="#CDAD78" sx={{ my: 4, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글
               </Typography>
+              {role === "USER" || role === "ORG" || role === "ADMIN" ? (
               <Stack
                 justifyContent="space-between"
                 direction="row"
@@ -494,7 +503,10 @@ const ReviewDetail: FC = () => {
                 >
                   등록
                 </CustomButton>
-              </Stack>
+                </Stack>
+              ) : (
+              <Box sx={{ height: 30 }}></Box>
+            )}
               {commentList &&
                 commentList.map((item, index) => (
                   <Comment
@@ -505,21 +517,18 @@ const ReviewDetail: FC = () => {
                   />
                 ))}
               {commentList && commentList.length > 0 ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    my: 5,
-                    pb: 5,
-                  }}
-                >
-                  <Pagination
-                    paginate={paginate}
-                    curPage={curPage}
-                    totalPage={totalPages}
-                  />
-                </Box>
-              ) : null}
+                <Box sx={{ display: "flex", justifyContent: "center", my: 5, pb:5 }}>
+                <Stack alignItems="center" sx={{ mb: 2, mt: 5 }}>
+                    <Pagination
+                      curPage={curPage2}
+                      paginate={paginate2}
+                      totalPage={totalPages2}
+                    />
+                    </Stack>
+              </Box>
+              ): (
+                <></>
+              )}
             </Container>
           </Box>
         </Box>

@@ -339,7 +339,7 @@ const CsDetail: FC = () => {
                     등록
                     </CustomButton>
               </Stack>
-                ) : (<></>)}
+                ) : (<Box sx={{ height: 30 }}></Box>)}
               <Stack>
                 {commentList.map((item) => (
                   <Comment comment={item} id={id} token={token} />
