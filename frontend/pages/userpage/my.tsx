@@ -143,7 +143,7 @@ const UserMypage: FC = () => {
   }
   // 수정 버튼 클릭시
   const clickEdit = () => {
-    userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile,params)
+    userEdit(localStorage.getItem('jwt'), myInfo.memberId, intro, profile)
     .then(res => {
       handleClose()
       location.reload()

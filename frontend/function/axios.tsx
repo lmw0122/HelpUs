@@ -928,7 +928,7 @@ export const userEdit = async (token, id, intro, file) => {
       Authorization: token,
       memberId: id,
     },
-
+    // params: params,
     data: newForm,
   });
 };
