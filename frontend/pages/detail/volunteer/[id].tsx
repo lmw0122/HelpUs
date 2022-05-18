@@ -109,7 +109,7 @@ const VolunteerDetail: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  console.log(open);
   // 상세 페이지 내용 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -152,6 +152,7 @@ const VolunteerDetail: FC = () => {
   };
 
   useEffect(() => {
+
     if (router.isReady) {
       volunteerCommentList(router.query.id, params).then((res) => {
         setCommentList(res.data.comment);
@@ -160,7 +161,7 @@ const VolunteerDetail: FC = () => {
         setLoading(true);
       });
     }
-  }, [curPage, router.isReady, commentList, open]);
+  }, [curPage, router.isReady,commentList, open]);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
@@ -545,6 +546,12 @@ const VolunteerDetail: FC = () => {
               ) : (
                 <></>
               )}
+              <Stack>
+                {commentList &&
+                  commentList.map((item,i) => (
+                    <Comment comment={item} id={id} token={token} key={i}/>
+                  ))}
+              </Stack>
               {commentList && commentList.length > 0 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", my: 5 }}>
                   <Pagination
