@@ -342,8 +342,6 @@ const TalentDetail: FC = () => {
               >
                 작성일 {talentDonationDetail.createDate}
               </Typography>
-<<<<<<< HEAD
-=======
               {talentDonationDetail.updateDate === null ? null : (
                 <Typography
                   sx={{ mt: 2 }}
@@ -354,7 +352,6 @@ const TalentDetail: FC = () => {
                   수정일 {talentDonationDetail.updateDate}
                 </Typography>
               )}
->>>>>>> eb1608a8aa031bfb0099d2582b8c8903c06c4f4d
               <Divider color="#CDAD78" sx={{ my: 2, borderBottomWidth: 5 }} />
               <Typography variant="h5" fontWeight="bold" sx={{ mx: 5 }}>
                 댓글 
