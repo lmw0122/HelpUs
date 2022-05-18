@@ -165,7 +165,7 @@ public class MemberServiceImpl implements MemberService {
         try {
             Member m = memberRepository.findByMemberId(id);
             String preUrl = m.getProfile();
-            if(isDefault != null && isDefault == "true"){
+            if(isDefault != null && isDefault.equals("true")){
                 m.setProfile(null);
             }
             else if(newProfile != null){
