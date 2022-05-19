@@ -11,10 +11,10 @@ import java.util.Map;
 
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
-    @Query(value = "SELECT * from (SELECT r.chatroom_id as chatroomId, r.user2 as user, m.message, m.date FROM chat_room r, chat_log m WHERE r.user1 = :userId AND r.chatroom_id = m.chatroom_id order by m.date desc LIMIT 18446744073709551615) filtered group by chatroomId order by date desc;", nativeQuery = true)
+    @Query(value = "select chatroomId, ANY_VALUE(user) as user,ANY_VALUE(message) as message, ANY_VALUE(date) as date from (SELECT r.chatroom_id as chatroomId, r.user2 as user, m.message as message, m.date as date FROM chat_room r, chat_log m WHERE r.user1 = :userId AND r.chatroom_id = m.chatroom_id order by m.date desc LIMIT 18446744073709551615) as tmp group by chatroomId order by date desc;\n", nativeQuery = true)
     List<Map<String, String>> findRoomByID1(@Param("userId") String paramString);
 
-    @Query(value = "SELECT * from (SELECT r.chatroom_id as chatroomId, r.user1 as user, m.message, m.date FROM chat_room r, chat_log m WHERE r.user2 = :userId AND r.chatroom_id = m.chatroom_id order by m.date desc LIMIT 18446744073709551615) filtered group by chatroomId order by date desc;", nativeQuery = true)
+    @Query(value = "select chatroomId, ANY_VALUE(user) as user,ANY_VALUE(message) as message, ANY_VALUE(date) as date from (SELECT r.chatroom_id as chatroomId, r.user1 as user, m.message as message, m.date as date FROM chat_room r, chat_log m WHERE r.user2 = :userId AND r.chatroom_id = m.chatroom_id order by m.date desc LIMIT 18446744073709551615) as tmp group by chatroomId order by date desc;", nativeQuery = true)
     List<Map<String, String>> findRoomByID2(@Param("userId") String paramString);
 
     @Query(value = "SELECT chatroom_id FROM chat_room WHERE user1 = :user1 AND user2 = :user2", nativeQuery = true)

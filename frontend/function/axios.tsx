@@ -22,6 +22,7 @@ import { parseDocumentSize } from "html2canvas/dist/types/css/layout/bounds";
 //   })
 // }
 export const getChatroomList = async (id) => {
+  console.log("get chatroom act");
   return await axios({
     method: "GET",
     url: "/9082/chat/list",
@@ -30,10 +31,23 @@ export const getChatroomList = async (id) => {
     },
   });
 };
-export const getRoomId = async (id) => {
+// 룸이 없으면 204 반환
+export const getRoomId = async (oppId, id) => {
+  console.log("get roomId act");
   return await axios({
     method: "GET",
-    url: "/9082/chat/list",
+    url: `/9082/chat/enter/${oppId}`,
+    headers: {
+      memberIdByToken: id,
+    },
+  });
+};
+// 룸이 없으면 204 반환
+export const createRoom = async (oppId, id) => {
+  console.log("create room act");
+  return await axios({
+    method: "POST",
+    url: `/9082/chat/room/${oppId}`,
     headers: {
       memberIdByToken: id,
     },

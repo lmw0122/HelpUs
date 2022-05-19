@@ -1,5 +1,10 @@
 import { FC, useState, useEffect } from "react";
-import { getNewsList } from "function/axios";
+import {
+  getUserInfo,
+  getChatroomList,
+  getRoomId,
+  createRoom
+} from "function/axios";
 import Pagination from "@/components/Pagination";
 import {
   Box,
@@ -29,6 +34,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Image from "next/image";
 import volunteer1 from "../public/images/volunteer1.jpg";
+import { useRouter } from "next/router";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -65,6 +71,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const Chatting: FC = () => {
+  const router = useRouter();
+
+  const [userInfo, setUserInfo] = useState({});
+  const [oppUser, setOppUser] = useState({});
+  const [chatroomList, setChatroomList] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [roomId, setRoomId] = useState(0);
+  const [memberId, setMemberId] = useState<any>("");
+  const [token, setToken] = useState("");
+  
   const theme = createTheme({
     typography: {
       // fontFamily: "Gowun Dodum",
@@ -77,9 +93,40 @@ const Chatting: FC = () => {
       },
     },
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [chatroomList, setChatroomList] = useState<any>(null);
-
+  
+  useEffect(() => {
+    setMemberId(localStorage.getItem("id"));
+    setToken(localStorage.getItem("token"));
+    console.log("id : " + memberId + " token : " + token);
+    if (router.isReady && Number(router.query.id) !== 0) {
+      const oppMemberId = Number(router.query.id);
+      getUserInfo(oppMemberId).then((res) => {
+        console.log(res);
+        setOppUser(res.data);
+      }).then(() => {
+        getRoomId(oppMemberId,memberId).then((res) => {
+          console.log(res);
+          if (res.status === 204) {
+            //방을 새로 만들어야할 때
+            createRoom(oppMemberId, memberId);
+          }
+          else {
+            console.log(res.data.chatroomId);
+            setRoomId(res.data.chatroomId);
+            getChatroomList(memberId).then((res) => {
+              console.log(res);
+              setChatroomList(res.data);
+            });
+          }
+        })
+      })
+    }
+  }, [router.isReady]);
+  const createMessageRoom = (chatroomId,oppUserId,oppNickname) => {
+    setRoomId(chatroomId);
+    setOppUser({ oppUserId: oppUserId, oppNickname: oppNickname });
+    console.log(roomId);
+  };
   // useEffect(() => {
   //   getNewsList(params).then((res) => {
   //     setChatroomList(res.data.news);
