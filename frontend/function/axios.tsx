@@ -21,7 +21,24 @@ import { parseDocumentSize } from "html2canvas/dist/types/css/layout/bounds";
 //     url: "/8000/api/donation"
 //   })
 // }
-
+export const getChatroomList = async (id) => {
+  return await axios({
+    method: "GET",
+    url: "/9082/chat/list",
+    headers: {
+      memberIdByToken: id,
+    },
+  });
+};
+export const getRoomId = async (id) => {
+  return await axios({
+    method: "GET",
+    url: "/9082/chat/list",
+    headers: {
+      memberIdByToken: id,
+    },
+  });
+};
 // 메인 페이지 - 물품 기부 목록 최근 6개
 export const getDonationMain = async (params) => {
   return await axios({

@@ -49,6 +49,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const CustomButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+});
 const UpdateButton = styled(Button)({
   backgroundColor: "#5B321E",
   color: "white",
@@ -109,10 +118,14 @@ const UserMypageOther: FC = () => {
     page: curPage,
   };
 
+  const handleOpen = (id) => {
+    window.location.href = `/chatting/${id}`;
+  }
   useEffect(() => {
     if (router.isReady) {
       getUserInfo(router.query.pk)
         .then((res) => {
+          console.log(res.data);
           setMyInfo(res.data);
           // if (res.data.role === "USER") {
           // } else {
@@ -196,6 +209,9 @@ const UserMypageOther: FC = () => {
                     >
                       <MailIcon sx={{ mr: 2 }} />
                       <Typography align="center">{myInfo.email}</Typography>
+                      <Link href={`/chatting/${myInfo.memberId}`}>
+                        <CustomButton>채팅하기</CustomButton>
+                      </Link>
                     </Grid>
                     <Box
                       sx={{

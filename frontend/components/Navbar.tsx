@@ -203,6 +203,16 @@ const Navbar: FC<LoginProps> = ({ value }) => {
                 </>
               ) : (
                 <>
+                    <Link
+                      href="/chatting/0"
+                      underline="none"
+                      color="inherit"
+                      style={{ cursor: "pointer" }}
+                  >
+                    <Typography variant="h6" sx={{ ml: 2 }}>
+                      채팅
+                    </Typography>
+                  </Link>
                   <Typography variant="h6" sx={{ mx: 2 }}>
                     {pathName === "/userpage/my" ||
                     pathName === "/userpage/my/talent" ||
