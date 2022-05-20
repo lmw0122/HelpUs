@@ -35,7 +35,6 @@ public class StompChatController {
         cl.setSender(message.getSender());
         cl.setChatRoom(cr);
         boolean over = false;
-        cl.setOver(over);
         cl.setMessage(message.getMessage());
 
         try {

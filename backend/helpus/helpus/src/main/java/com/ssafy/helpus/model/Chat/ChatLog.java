@@ -16,8 +16,6 @@ public class ChatLog {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "is_over")
-    private boolean isOver;
 
     @Column(name = "message")
     private String message;
@@ -31,10 +29,9 @@ public class ChatLog {
 
     public ChatLog() {}
 
-    public ChatLog(int message_id, LocalDateTime date, boolean isOver, String message, String sender, ChatRoom chatRoom) {
+    public ChatLog(int message_id, LocalDateTime date, String message, String sender, ChatRoom chatRoom) {
         this.message_id = message_id;
         this.date = date;
-        this.isOver = isOver;
         this.message = message;
         this.sender = sender;
         this.chatRoom = chatRoom;
@@ -48,9 +45,6 @@ public class ChatLog {
         this.date = date;
     }
 
-    public void setOver(boolean isOver) {
-        this.isOver = isOver;
-    }
 
     public void setMessage(String message) {
         this.message = message;
@@ -65,7 +59,7 @@ public class ChatLog {
     }
 
     public String toString() {
-        return "ChatLog(message_id=" + getMessage_id() + ", date=" + getDate() + ", isOver=" + isOver() + ", message=" + getMessage() + ", sender=" + getSender() + ", chatRoom=" + getChatRoom() + ")";
+        return "ChatLog(message_id=" + getMessage_id() + ", date=" + getDate()  + ", message=" + getMessage() + ", sender=" + getSender() + ", chatRoom=" + getChatRoom() + ")";
     }
 
     public int getMessage_id() {
@@ -76,9 +70,6 @@ public class ChatLog {
         return this.date;
     }
 
-    public boolean isOver() {
-        return this.isOver;
-    }
 
     public String getMessage() {
         return this.message;
@@ -92,11 +83,10 @@ public class ChatLog {
         return this.chatRoom;
     }
 
-    public ChatLog(LocalDateTime date, boolean isOver, String message, String sender) {
+    public ChatLog(LocalDateTime date, String message, String sender) {
         this.message = message;
         this.sender = sender;
         this.date = date;
-        this.isOver = isOver;
     }
 }
 

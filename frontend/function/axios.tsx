@@ -53,6 +53,22 @@ export const createRoom = async (oppId, id) => {
     },
   });
 };
+// 채팅 갯수 반환
+export const getChatCount = async (roomId) => {
+  console.log("create room act");
+  return await axios({
+    method: "GET",
+    url: `/9082/chat/counts/${roomId}`
+  });
+};
+// 채팅 이력 반환
+export const getChatLogs = async (roomId,lastMessageId,totalCount,count) => {
+  console.log("create room act");
+  return await axios({
+    method: "GET",
+    url: `/9082/chat/logs/${roomId}/${lastMessageId}/${totalCount}/${count}`
+  });
+};
 // 메인 페이지 - 물품 기부 목록 최근 6개
 export const getDonationMain = async (params) => {
   return await axios({

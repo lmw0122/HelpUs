@@ -3,6 +3,8 @@ import {
   getChatroomList,
   getRoomId,
   createRoom,
+  getChatCount,
+  getChatLogs
 } from "function/axios";
 import { FC, useState, useEffect, useRef } from "react";
 import { getNewsList } from "function/axios";
@@ -43,6 +45,9 @@ import { useRouter } from "next/router";
 // 채팅 컴포넌트
 import ChatRoomList from "@/components/chat/ChatRoomList";
 import ChatBubble from "@/components/chat/ChatBubble";
+// 채팅 외부 라이브러리
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -77,13 +82,30 @@ const CssTextField = styled(TextField)({
 const Chatting: FC = () => {
   const router = useRouter();
 
+  const [roomChange, setRoomChange] = useState<boolean>(false);
+
   const [userInfo, setUserInfo] = useState({});
   const [oppUser, setOppUser] = useState({});
   const [chatroomList, setChatroomList] = useState<any>(null);
+  const [chatLogList, setChatLogList] = useState<any>(null);
+  const [chatLoadingDone, setChatLoadingDone] = useState(false);
+  const [inputVisible, setInputVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loading2, setLoading2] = useState<boolean>(false);
+  const [loading3, setLoading3] = useState<boolean>(false);
   const [roomId, setRoomId] = useState(0);
   const [memberId, setMemberId] = useState<any>("");
   const [token, setToken] = useState("");
+  const [find, setFind] = useState<any>({});
+  const [count, setCount] = useState(0);
+  const [getLastMesssage, setGetLastMessage] = useState(false);
+  //tcp 연결
+  let sock = new SockJS("http://k6c106.p.ssafy.io:9082/stomp/chatting");
+  let stomp = Stomp.over(sock);
+
+  const getRoomChange = (roomChange) => {
+    setRoomChange(roomChange);
+  };
 
   const theme = createTheme({
     typography: {
@@ -97,67 +119,205 @@ const Chatting: FC = () => {
       },
     },
   });
-
+  const getLogs = () => {
+    return chatLogList;
+  };
+  const startStomp = () => {
+    console.log(roomId);
+    if (roomId === 0) {
+      return;
+    }
+    let prevChats = getLogs();
+    stomp.connect({
+    }, function (frame) {
+      //console.log(frame);
+      console.log("Stomp conn!");
+      stomp.subscribe("/sub/chatting/room/" + roomId, function (chat) {
+        let content = JSON.parse(JSON.parse(JSON.stringify(chat)).body);
+        prevChats = prevChats.concat(content);
+        console.log(prevChats);
+        setChatLogList(prevChats);
+        getChatroomList(memberId).then((res) => {
+          setChatroomList(res.data);
+        });
+      }, {'Authorization': token});
+    });
+  };
   useEffect(() => {
     setMemberId(localStorage.getItem("id"));
     setToken(localStorage.getItem("token"));
     console.log("id : " + memberId + " token : " + token);
-    if (router.isReady && Number(router.query.id) !== 0) {
-      const oppMemberId = Number(router.query.id);
-      getUserInfo(oppMemberId)
-        .then((res) => {
-          console.log(res);
-          setOppUser(res.data);
-        })
-        .then(() => {
-          getRoomId(oppMemberId, memberId).then((res) => {
-            console.log(res);
-            if (res.status === 204) {
-              //방을 새로 만들어야할 때
-              createRoom(oppMemberId, memberId);
-            } else {
-              console.log(res.data.chatroomId);
-              setRoomId(res.data.chatroomId);
-              getChatroomList(memberId).then((res) => {
-                console.log(res);
-                setChatroomList(res.data);
-              });
-            }
-          });
-        });
+    if (router.isReady) {
+      // 채팅방 목록 부르기
+      getChatroomList(memberId).then((res) => {
+        setChatroomList(res.data);
+        setLoading(true);
+      });
     }
   }, [router.isReady]);
-  const createMessageRoom = (chatroomId, oppUserId, oppNickname) => {
-    setRoomId(chatroomId);
-    setOppUser({ oppUserId: oppUserId, oppNickname: oppNickname });
-    console.log(roomId);
-  };
-  // useEffect(() => {
-  //   getNewsList(params).then((res) => {
-  //     setChatroomList(res.data.news);
-  //     // console.log("data는", reviewList);
-  //     setLoading(true);
-  //   });
-  // }, []);
-  // const [loading, setLoading] = useState<boolean>(false);
-  // const [chatroomList, setChatroomList] = useState<any>(null);
+  
+  useEffect(() => {
+    if (loading) {
+      const oppMemberId = Number(router.query.id);
+      if (oppMemberId !== 0) {
+        // 상대방과 1:1 채팅 중
+        getUserInfo(oppMemberId)
+          .then((res) => {
+            console.log(res);
+            setOppUser(res.data);
+          })
+          .then(() => {
+            getRoomId(oppMemberId, memberId).then((res) => {
+              console.log(res);
+              if (res.status === 204) {
+                //방을 새로 만들어야할 때
+                createRoom(oppMemberId, memberId);
+                setChatroomList(null);
+                setLoading2(true);
+              } else {
+                console.log(res.data.chatroomId);
+                setRoomId(res.data.chatroomId);
+                setLoading3(true);
+              }
+            })
+            //   .then(() => {
+            //   console.log("안찍히는 것", roomId);
+            //   getChatCount(roomId).then((res) => {
+            //     console.log(res.data);
+            //     let tmpFind = res.data[0];
+            //     if (tmpFind.lastMessageId === null) {
+            //       tmpFind.lastMessageId = 0;
+            //     }
+                
+            //     setFind((prevFind) => {
+            //       return Object.assign({}, tmpFind);
+            //     });
+            // }).then(() => {
+            //     console.log(find);
+            //     getChatLogs(roomId, find.lastMessageId, find.totalCount, count).then((res) => {
+            //       if (res.status === 202) {
+            //         setGetLastMessage(true);
+            //       }
+            //       console.log(res.data);
+            //       setChatLogList(res.data);
+            //       startStomp();
+            //       setCount(count + 1);
+            //     });
+            //   })      
+            // });
+          });
+        
+      }
+
+    }
+  }, [loading])
+
+  useEffect(() => {
+    getChatCount(roomId).then((res) => {
+      console.log(res.data);
+      let tmpFind = res.data[0];
+      if (tmpFind.lastMessageId === null) {
+        tmpFind.lastMessageId = 0;
+      }
+      
+      setFind((prevFind) => {
+        return Object.assign({}, tmpFind);
+      });
+      return tmpFind;
+      // 안되니?...... ㅜㅜㅜ
+      // roomId 까지는 받아졌는데 그 다음인 find가 또 안받아져서 강제로 받아서 해볼라구
+      // 그럼 useEffect 하나 더 만들까? ㅋㅋㅋㅋㅋ구
+      //  근데 이 api 3~4개 세트를 써야하는 일이 많아서 애매하네
+      // 저게 맨 위에거 하나 실행되면 아래 실행되는 세트 느낌이라 흠 
+  }).then((tmpFind) => {
+    console.log(tmpFind);
+    console.log(roomId + " " + count);
+      getChatLogs(roomId, tmpFind.lastMessageId, tmpFind.totalCount, count).then((res) => {
+        if (res.status === 202) {
+          setGetLastMessage(true);
+        }
+        console.log(res.data);
+        setChatLogList(res.data);
+        startStomp();
+        setCount(count + 1);
+      });
+    }) 
+
+  }, [loading2, loading3])
+
+  useEffect(() => {
+    getChatroomList(memberId).then((res) => {
+      setChatroomList(res.data);
+    });
+    const oppMemberId = Number(router.query.id);
+    getRoomId(oppMemberId, memberId).then((res) => {
+      console.log(res);
+      if (res.status === 204) {
+        //방을 새로 만들어야할 때
+        createRoom(oppMemberId, memberId);
+        setChatroomList(null);
+      } else {
+        console.log(res.data.chatroomId);
+        setRoomId(res.data.chatroomId);
+      }
+    });
+    getChatCount(roomId).then((res) => {
+      console.log(res.data);
+      let tmpFind = res.data[0];
+      if (tmpFind.lastMessageId === null) {
+        tmpFind.lastMessageId = 0;
+      }
+      setFind((prevFind) => {
+        return Object.assign({}, tmpFind);
+      });
+    }).then(() => {
+      console.log(find);
+      getChatLogs(roomId, find.lastMessageId, find.totalCount, count).then((res) => {
+        if (res.status === 202) {
+          setGetLastMessage(true);
+        }
+        console.log(res.data);
+        setChatLogList(res.data);
+        startStomp();
+        setCount(count + 1);
+      });
+    })
+  }, [roomChange]);
 
   const scrollRef = useRef();
 
   // const router = useRouter();
 
   const messageBoxRef = useRef<HTMLUListElement>();
-
+  
   const scrollToBottom = () => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
     }
   };
+  const scroll = (e) => {
+    if (getLastMesssage)
+      return;
+    if (e.target.scrollTop == 0) {
+      getChatLogs(roomId, find.lastMessageId, find.totalCount, count).then((res) => {
+        if (res.status === 202) {
+          setGetLastMessage(true);
+        }
+        console.log(res.data);
+        setChatLogList(res.data.concat(chatLogList));
+        startStomp();
+        setCount(count + 1);
 
+      });
+    }
+      
+  };
   useEffect(() => {
     scrollToBottom();
   }, []);
-
+  useEffect(() => {
+    console.log("useEffect 4 act");
+  }, [find]);
   // 현재 보고 있는 유저의 memberId
   const [userId, setUserId] = useState<any>(null);
 
@@ -171,7 +331,17 @@ const Chatting: FC = () => {
       setUserId(router.query.id);
     }
   }, [router.isReady]);
+  const sendMessage = () => {
+    let msg = chatInput;
+    let date = new Date();
+    stomp.send('/pub/chatting/message', {'Authorization': token}, JSON.stringify({ chatroomId: roomId, date: date, message: msg.value, sender: memberId}));
+    setChatInput('');
+  };
 
+  const onKeyPress = (e) => {
+    console.log(e);
+      if (e.key == 'Enter') sendMessage(); 
+  }
   const dummyChatList = [
     {
       name: "김나영",
@@ -296,9 +466,9 @@ const Chatting: FC = () => {
                   >
                     {/* 채팅방 목록 표시 부분 */}
                     <Stack>
-                      {dummyChatList &&
-                        dummyChatList.map((item, i) => (
-                          <ChatRoomList chatList={item} key={i} />
+                      {chatroomList &&
+                        chatroomList.map((item, i) => (
+                          <ChatRoomList chatList={item} key={i} roomChange={roomChange} getRoomChange={getRoomChange} />
                         ))}
                     </Stack>
                   </Box>
@@ -331,9 +501,10 @@ const Chatting: FC = () => {
                       className="scroolBar"
                       ref={messageBoxRef}
                       sx={{ height: "520px", overflowY: "scroll" }}
+                      // onScroll = {scroll}
                     >
-                      {dummyChat &&
-                        dummyChat.map((item, i) => (
+                      {chatLogList &&
+                        chatLogList.map((item, i) => (
                           <ChatBubble chat={item} key={i} myId={myId} />
                         ))}
                     </Stack>
@@ -344,6 +515,7 @@ const Chatting: FC = () => {
                       sx={{ mt: 1.5, mx: 5 }}
                       alignItems="center"
                       spacing={3}
+                      onKeyPress={onKeyPress}
                     >
                       <CssTextField
                         sx={{ backgroundColor: "#ffffff", width: 400 }}

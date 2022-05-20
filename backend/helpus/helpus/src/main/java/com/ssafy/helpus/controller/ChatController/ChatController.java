@@ -82,10 +82,14 @@ public class ChatController {
             from = 0;
             isLast = true;
         }
+        System.out.println("c id : "+chatroomId+" from : "+from+" lastId : "+lastMessageId+" gap : "+gap);
         try {
             result = this.chatLogRepository.findByChatroomIdAndLastMessageId(chatroomId, from, lastMessageId, gap);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        for(int i=0; i<result.size(); i++){
+            System.out.println(result.get(i).getMessage());
         }
         if (isLast)
             return ResponseEntity.accepted().body(result);
