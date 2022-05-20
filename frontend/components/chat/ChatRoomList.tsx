@@ -43,7 +43,7 @@ const ChatRoomList: FC<IChatRoomList> = ({ chatList, roomChange, getRoomChange }
 
   const onClickRoomList = () => {
     getRoomChange(!roomChange);
-    router.push(`/chatting/${chatList.user}`)
+    location.href = `/chatting/${chatList.user}`;
   };
 
   return (

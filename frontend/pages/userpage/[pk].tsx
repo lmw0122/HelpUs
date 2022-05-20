@@ -209,9 +209,9 @@ const UserMypageOther: FC = () => {
                     >
                       <MailIcon sx={{ mr: 2 }} />
                       <Typography align="center">{myInfo.email}</Typography>
-                      <Link href={`/chatting/${myInfo.memberId}`}>
+                      {/* <Link href={`/chatting/${myInfo.memberId}`}>
                         <CustomButton>채팅하기</CustomButton>
-                      </Link>
+                      </Link> */}
                     </Grid>
                     <Box
                       sx={{

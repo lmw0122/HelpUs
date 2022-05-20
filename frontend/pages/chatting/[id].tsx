@@ -85,7 +85,7 @@ const Chatting: FC = () => {
   const [roomChange, setRoomChange] = useState<boolean>(false);
 
   const [userInfo, setUserInfo] = useState({});
-  const [oppUser, setOppUser] = useState({});
+  const [oppUser, setOppUser] = useState<any>({});
   const [chatroomList, setChatroomList] = useState<any>(null);
   const [chatLogList, setChatLogList] = useState<any>(null);
   const [chatLoadingDone, setChatLoadingDone] = useState(false);
@@ -129,17 +129,16 @@ const Chatting: FC = () => {
     }
     let prevChats = getLogs();
     stomp.connect({
+      'Authorization': token
     }, function (frame) {
       //console.log(frame);
+      console.log(roomId);
       console.log("Stomp conn!");
       stomp.subscribe("/sub/chatting/room/" + roomId, function (chat) {
         let content = JSON.parse(JSON.parse(JSON.stringify(chat)).body);
         prevChats = prevChats.concat(content);
         console.log(prevChats);
         setChatLogList(prevChats);
-        getChatroomList(memberId).then((res) => {
-          setChatroomList(res.data);
-        });
       }, {'Authorization': token});
     });
   };
@@ -162,50 +161,31 @@ const Chatting: FC = () => {
       if (oppMemberId !== 0) {
         // 상대방과 1:1 채팅 중
         getUserInfo(oppMemberId)
-          .then((res) => {
+        .then((res) => {
+          console.log(res);
+          setOppUser(res.data);
+        })
+        .then(() => {
+          getRoomId(oppMemberId, memberId).then((res) => {
             console.log(res);
-            setOppUser(res.data);
+            let tmpRoomId = res.data.chatroomId;
+            if (res.status === 204) {
+              //방을 새로 만들어야할 때
+              createRoom(oppMemberId, memberId);
+              setChatroomList(null);
+              setLoading2(true);
+            } else {
+              console.log(res.data.chatroomId);
+              setRoomId(res.data.chatroomId);
+              setLoading3(true);
+            }
+            return tmpRoomId;
+            
+          }).then((data) => {
+            startStomp();
+            
           })
-          .then(() => {
-            getRoomId(oppMemberId, memberId).then((res) => {
-              console.log(res);
-              if (res.status === 204) {
-                //방을 새로 만들어야할 때
-                createRoom(oppMemberId, memberId);
-                setChatroomList(null);
-                setLoading2(true);
-              } else {
-                console.log(res.data.chatroomId);
-                setRoomId(res.data.chatroomId);
-                setLoading3(true);
-              }
-            })
-            //   .then(() => {
-            //   console.log("안찍히는 것", roomId);
-            //   getChatCount(roomId).then((res) => {
-            //     console.log(res.data);
-            //     let tmpFind = res.data[0];
-            //     if (tmpFind.lastMessageId === null) {
-            //       tmpFind.lastMessageId = 0;
-            //     }
-                
-            //     setFind((prevFind) => {
-            //       return Object.assign({}, tmpFind);
-            //     });
-            // }).then(() => {
-            //     console.log(find);
-            //     getChatLogs(roomId, find.lastMessageId, find.totalCount, count).then((res) => {
-            //       if (res.status === 202) {
-            //         setGetLastMessage(true);
-            //       }
-            //       console.log(res.data);
-            //       setChatLogList(res.data);
-            //       startStomp();
-            //       setCount(count + 1);
-            //     });
-            //   })      
-            // });
-          });
+        });
         
       }
 
@@ -238,7 +218,7 @@ const Chatting: FC = () => {
         }
         console.log(res.data);
         setChatLogList(res.data);
-        startStomp();
+        
         setCount(count + 1);
       });
     }) 
@@ -260,6 +240,7 @@ const Chatting: FC = () => {
         console.log(res.data.chatroomId);
         setRoomId(res.data.chatroomId);
       }
+      startStomp();
     });
     getChatCount(roomId).then((res) => {
       console.log(res.data);
@@ -278,7 +259,7 @@ const Chatting: FC = () => {
         }
         console.log(res.data);
         setChatLogList(res.data);
-        startStomp();
+        
         setCount(count + 1);
       });
     })
@@ -305,7 +286,6 @@ const Chatting: FC = () => {
         }
         console.log(res.data);
         setChatLogList(res.data.concat(chatLogList));
-        startStomp();
         setCount(count + 1);
 
       });
@@ -334,99 +314,17 @@ const Chatting: FC = () => {
   const sendMessage = () => {
     let msg = chatInput;
     let date = new Date();
-    stomp.send('/pub/chatting/message', {'Authorization': token}, JSON.stringify({ chatroomId: roomId, date: date, message: msg.value, sender: memberId}));
+    stomp.send('/pub/chatting/message', {'Authorization': token}, JSON.stringify({ chatroomId: roomId, date: date, message: msg, sender: memberId}));
     setChatInput('');
+    getChatroomList(memberId).then((res) => {
+      setChatroomList(res.data);
+    });
   };
 
   const onKeyPress = (e) => {
     console.log(e);
       if (e.key == 'Enter') sendMessage(); 
   }
-  const dummyChatList = [
-    {
-      name: "김나영",
-      lastMessage: "인생",
-      memberId: 1,
-    },
-    {
-      name: "이다예",
-      lastMessage: "ㅋㅋ",
-      memberId: 2,
-    },
-    {
-      name: "이제민",
-      lastMessage: "ㅎㅎ",
-      memberId: 3,
-    },
-    {
-      name: "최다운",
-      lastMessage: "ㅋㅋ",
-      memberId: 4,
-    },
-    {
-      name: "이명원",
-      lastMessage: "채팅채팅",
-      memberId: 100,
-    },
-  ];
-
-  const dummyChat = [
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "김나영",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 1000,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-    {
-      name: "이명원",
-      message: "채팅채팅",
-      time: "12:22",
-      memberId: 100,
-    },
-  ];
-
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -442,14 +340,19 @@ const Chatting: FC = () => {
           }}
         >
           <Container maxWidth="lg">
-            <Typography
+            {roomId === 0 ? (
+              <></>
+            ): (
+              <Typography
               sx={{ my: 5 }}
               textAlign="center"
               variant="h4"
               fontWeight="bold"
-            >
-              @@@님과의 채팅방
-            </Typography>
+              >
+            {oppUser.name}님과의 채팅방
+              </Typography>    
+            )}
+            
             <Stack direction="row" spacing={20} justifyContent="center">
               <Stack>
                 <Stack>
@@ -505,7 +408,7 @@ const Chatting: FC = () => {
                     >
                       {chatLogList &&
                         chatLogList.map((item, i) => (
-                          <ChatBubble chat={item} key={i} myId={myId} />
+                          <ChatBubble chat={item} key={i} myId={memberId} oppUser={oppUser}/>
                         ))}
                     </Stack>
                     {/* 입력창 */}
@@ -527,6 +430,7 @@ const Chatting: FC = () => {
                         variant="contained"
                         size="small"
                         sx={{ width: 30, height: 35 }}
+                        onClick={sendMessage}
                         // onClick={handleComment}
                       >
                         등록

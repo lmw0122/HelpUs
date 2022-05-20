@@ -19,17 +19,17 @@ import userDefaultImage from "../../public/images/userDefaultImage.png";
 interface IChatBubble {
   chat: any;
   myId: any;
+  oppUser: any;
 }
 
-const ChatBubble: FC<IChatBubble> = ({ chat, myId }) => {
-  // console.log(chat.memberId, myId);
+const ChatBubble: FC<IChatBubble> = ({ chat, myId, oppUser }) => {
 
-  if (Number(chat.memberId) == Number(myId)) {
+  if (Number(chat.sender) === Number(myId)) {
     return (
       <Stack style={{ margin: "0 20px 0 auto" }}>
         <Stack direction="row">
           <Typography style={{ margin: "auto 10px 0 0 " }}>
-            {chat.time}
+            {chat.date}
           </Typography>
           <Box
             sx={{
@@ -39,7 +39,7 @@ const ChatBubble: FC<IChatBubble> = ({ chat, myId }) => {
               borderRadius: 1.25,
             }}
           >
-            <Typography sx={{ p: 2 }}>{chat.message}내 말풍선 </Typography>
+            <Typography sx={{ p: 2 }}>{chat.message}</Typography>
           </Box>
         </Stack>
       </Stack>
@@ -47,7 +47,7 @@ const ChatBubble: FC<IChatBubble> = ({ chat, myId }) => {
   } else {
     return (
       <Stack style={{ margin: "0 auto 0 20px" }}>
-        <Typography>{chat.name}</Typography>
+        <Typography>{oppUser.name}</Typography>
         <Stack direction="row">
           <Box
             sx={{
@@ -57,10 +57,10 @@ const ChatBubble: FC<IChatBubble> = ({ chat, myId }) => {
               borderRadius: 1.25,
             }}
           >
-            <Typography sx={{ p: 2 }}>{chat.message}상대방 </Typography>
+            <Typography sx={{ p: 2 }}>{chat.message}</Typography>
           </Box>
           <Typography style={{ margin: "auto 0 0 10px " }}>
-            {chat.time}
+            {chat.date}
           </Typography>
         </Stack>
       </Stack>
