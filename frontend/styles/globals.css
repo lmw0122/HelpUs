@@ -1,9 +1,15 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Serif+KR:wght@500&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap'); */
+
 html,
-body {
+body,
+div,
+h1 {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Gowun Dodum"
 }
 
 a {
@@ -13,4 +19,15 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@font-face {
+  /* font-family: "Gowun Dodum", sans-serif; */
+  /* font-family: 'Noto Serif KR', serif; */
+  font-family: 'Noto Sans KR', sans-serif;
+  /* font-weight: 400; */
+  /* src: url(../public/GowunDodum-Regular.ttf); */
+  /* src: url(../public/NotoSerifKR-Medium.otf) */
+  src: url(../public/NotoSansKR-Regular.otf);
+  /* src: url(../public/NotoSansKR-Light.otf) */
 }
