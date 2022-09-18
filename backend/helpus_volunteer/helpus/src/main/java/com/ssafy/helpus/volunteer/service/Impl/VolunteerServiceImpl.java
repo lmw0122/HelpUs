@@ -342,7 +342,6 @@ public class VolunteerServiceImpl implements VolunteerService{
         List<ListVolunteerResDto> list = new ArrayList<>();
 
         for(VolunteerApply volunteerApply : volunteerApplies){
-
             Map<String, String> member = memberService.getMember(volunteerApply.getVolunteer().getMemberId());
 
             ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
@@ -369,6 +368,46 @@ public class VolunteerServiceImpl implements VolunteerService{
         resultMap.put("message", "성공");
         return resultMap;
 
+    }
+
+    @Override
+    public Map<String, Object> myVolList(Long memberId) throws Exception {
+        log.info("VolunteeerSevice myVolList call");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        List<VolunteerApply> volunteerApplies = volunteerApplyRepository.findByMemberIdAndStatus(memberId, 1);
+
+        if(volunteerApplies.isEmpty()){
+            resultMap.put("message", "봉사한 항목 없음");
+            return resultMap;
+        }
+        List<ListVolunteerResDto> list = new ArrayList<>();
+
+        for(VolunteerApply volunteerApply : volunteerApplies){
+            Map<String, String> member = memberService.getMember(volunteerApply.getVolunteer().getMemberId());
+
+            ListVolunteerResDto listVolunteerResDto = ListVolunteerResDto.builder()
+                    .volunteerId(volunteerApply.getVolunteer().getVolunteerId())
+                    .title(volunteerApply.getVolunteer().getTitle())
+                    .content(volunteerApply.getVolunteer().getContent())
+                    .applicant(volunteerApply.getVolunteer().getApplicant())
+                    .people(volunteerApply.getVolunteer().getPeople())
+                    .percent(volunteerApply.getVolunteer().getPercent())
+                    .volDate(volunteerApply.getVolunteer().getVolDate())
+                    .volAddress(volunteerApply.getVolunteer().getVolAddress())
+                    .volZipcode(volunteerApply.getVolunteer().getVolZipcode())
+                    .time(volunteerApply.getVolunteer().getTime())
+                    .memberId(Long.parseLong(member.get("memberId")))
+                    .name(member.get("name"))
+                    .profile(member.get("profile"))
+                    .status(volunteerApply.getStatus())
+                    .createDate(volunteerApply.getVolunteer().getCreateDate()).build();
+            list.add(listVolunteerResDto);
+        }
+
+        resultMap.put("listVolunteer", list);
+        resultMap.put("message", "성공");
+        return resultMap;
     }
 
 

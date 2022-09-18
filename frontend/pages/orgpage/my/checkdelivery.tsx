@@ -82,7 +82,7 @@ const style = {
 
 const orgpageMyCheckDelivery: FC = () => {
   // 배송 현황 리스트
-  const [deliveryList, setDeliveryList] = useState<any>("");
+  const [deliveryList, setDeliveryList] = useState<any>([]);
 
   // pagination
   const [curPage, setCurPage] = useState(1);
@@ -106,6 +106,7 @@ const orgpageMyCheckDelivery: FC = () => {
       .then((res) => {
         // console.log(res + "성공");
         setCpStatus(!cpStatus);
+        setOpen(false);
       })
       .catch((err) => console.log(err + "실패"));
   };
@@ -246,18 +247,124 @@ const orgpageMyCheckDelivery: FC = () => {
                           </>
                         </StyledTableCell>
                         <StyledTableCell align="center">
-                          <CustomButton
-                            sx={{ width: 80, height: 30 }}
-                            onClick={() => deliverySubmit(data.donationApplyId)}
-                          >
-                            도착완료
-                          </CustomButton>
+                          <>
+                            <CustomButton
+                              sx={{ width: 80, height: 30 }}
+                              // onClick={() => deliverySubmit(data.donationApplyId)}
+                              onClick={handleOpen}
+                            >
+                              도착완료
+                            </CustomButton>
+                            <Modal open={open} onClose={handleClose}>
+                              <Box sx={style}>
+                                <Typography
+                                  variant="h5"
+                                  fontWeight="bold"
+                                  textAlign="center"
+                                >
+                                  도착 완료 확인
+                                </Typography>
+                                <Stack
+                                  direction="row"
+                                  alignItems="center"
+                                  justifyContent="left"
+                                  sx={{ mt: 2, ml: 10 }}
+                                  spacing={2}
+                                >
+                                  <Typography
+                                    sx={{ fontSize: 20 }}
+                                    fontWeight="bold"
+                                  >
+                                    물품명
+                                  </Typography>
+                                  <Typography>{data.productName}</Typography>
+                                </Stack>
+                                <Stack
+                                  direction="row"
+                                  alignItems="center"
+                                  justifyContent="left"
+                                  sx={{ mt: 2, ml: 10 }}
+                                  spacing={2}
+                                >
+                                  <Typography
+                                    sx={{ fontSize: 20 }}
+                                    fontWeight="bold"
+                                  >
+                                    수량
+                                  </Typography>
+                                  <Typography>{data.count}</Typography>
+                                </Stack>
+                                <Stack
+                                  direction="row"
+                                  alignItems="center"
+                                  justifyContent="left"
+                                  sx={{ mt: 2, ml: 10 }}
+                                  spacing={2}
+                                >
+                                  <Typography
+                                    sx={{ fontSize: 20 }}
+                                    fontWeight="bold"
+                                  >
+                                    발송인
+                                  </Typography>
+                                  <Typography>{data.name}</Typography>
+                                </Stack>
+                                <Stack
+                                  justifyContent="center"
+                                  alignItems="center"
+                                >
+                                  <Typography
+                                    textAlign="center"
+                                    sx={{ mb: 1, mt: 2 }}
+                                  >
+                                    도착 완료로 변경하시겠습니까?
+                                  </Typography>
+                                  <Stack
+                                    direction="row"
+                                    spacing={3}
+                                    sx={{ mt: 1 }}
+                                  >
+                                    <CustomButton2 onClick={handleClose}>
+                                      취소
+                                    </CustomButton2>
+                                    <CustomButton
+                                      onClick={() =>
+                                        deliverySubmit(data.donationApplyId)
+                                      }
+                                    >
+                                      확인
+                                    </CustomButton>
+                                  </Stack>
+                                </Stack>
+                              </Box>
+                            </Modal>
+                          </>
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
                 </TableBody>
               </Table>
             </TableContainer>
+            {/* 모달 */}
+            {/* <Stack justifyContent="center">
+              <Modal open={open} onClose={handleClose}>
+                <Box sx={style}>
+                  <Stack justifyContent="center" alignItems="center">
+                    <Typography textAlign="center" sx={{ mb: 1 }}>
+                      도착 완료로 변경하시겠습니까?
+                    </Typography>
+                    <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                      <CustomButton2 onClick={handleClose}>취소</CustomButton2>
+                      <CustomButton
+                        onClick={() => deliverySubmit(data.donationApplyId)}
+                      >
+                        확인
+                      </CustomButton>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Modal>
+            </Stack> */}
             {deliveryList && deliveryList.length > 0 ? (
               <Stack alignItems="center" sx={{ mb: 2, mt: 2 }}>
                 <Pagination

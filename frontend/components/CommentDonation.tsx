@@ -36,6 +36,7 @@ import {
   talentRecomment,
   donationOrgRecomment,
 } from "function/axios";
+import { getUserInfo } from "function/axios";
 
 const style = {
   position: "absolute" as "absolute",
@@ -201,6 +202,16 @@ const Comment2: FC<CommentData> = ({
     setUserId(Id);
   }, [id]);
 
+  const profile = (e) => {
+    getUserInfo(e).then((res) => {
+      if (res.data.role === "ORG" || res.data.role === "ORG_WAIT") {
+        router.push(`/orgpage/${res.data.memberId}`);
+      } else if (res.data.role === "USER") {
+        router.push(`/userpage/${res.data.memberId}`);
+      }
+    });
+  };
+
   return (
     <>
       <>
@@ -228,14 +239,15 @@ const Comment2: FC<CommentData> = ({
                     height="40px"
                   />
                 )}
-                <Link href={`/userpage/${comment.memberId}`}>
-                  <Typography
-                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
-                    fontWeight="bold"
-                  >
-                    {comment.name}
-                  </Typography>
-                </Link>
+                {/* <Link href={`/profile/${comment.memberId}`}> */}
+                <Typography
+                  sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                  fontWeight="bold"
+                  onClick={() => profile(comment.memberId)}
+                >
+                  {comment.name}
+                </Typography>
+                {/* </Link> */}
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -320,28 +332,39 @@ const Comment2: FC<CommentData> = ({
               justifyContent="space-between"
             >
               <Stack direction="row" alignItems="center">
-                <Image
-                  src={defaultImage}
-                  alt="프로필 이미지"
-                  width="40px"
-                  height="40px"
-                />
-                <Link href={`/userpage/${comment.memberId}`}>
-                  <Typography
-                    sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
-                    fontWeight="bold"
-                  >
-                    {comment.name}
-                  </Typography>
-                </Link>
-                <Link href={`/userpage/${comment.memberId}`}>
-                  <Typography
-                    sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
-                    fontWeight="bold"
-                  >
-                    {comment.parentName}
-                  </Typography>
-                </Link>
+                {comment && comment.profile ? (
+                  <Image
+                    src={comment.profile}
+                    alt="프로필 이미지"
+                    width="40px"
+                    height="40px"
+                  />
+                ) : (
+                  <Image
+                    src={defaultImage}
+                    alt="프로필 이미지"
+                    width="40px"
+                    height="40px"
+                  />
+                )}
+                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                <Typography
+                  sx={{ fontSize: 18, ml: 1, cursor: "pointer" }}
+                  fontWeight="bold"
+                  onClick={() => profile(comment.memberId)}
+                >
+                  {comment.name}
+                </Typography>
+                {/* </Link> */}
+                {/* <Link href={`/userpage/${comment.memberId}`}> */}
+                <Typography
+                  sx={{ ml: 1, color: "#3470ca", fontSize: 14 }}
+                  fontWeight="bold"
+                  onClick={() => profile(comment.memberId)}
+                >
+                  {comment.parentName}
+                </Typography>
+                {/* </Link> */}
                 <Typography sx={{ ml: 1 }}>{comment.content}</Typography>
               </Stack>
               <Stack direction="row" alignItems="center">
@@ -365,6 +388,31 @@ const Comment2: FC<CommentData> = ({
                     삭제
                   </Button>
                 ) : null}
+                <Stack justifyContent="center">
+                  <Modal open={open} onClose={handleClose}>
+                    <Box sx={style}>
+                      <Stack justifyContent="center" alignItems="center">
+                        <Typography
+                          textAlign="center"
+                          sx={{ mb: 1, fontWeight: "bold" }}
+                        >
+                          이 댓글을 삭제하시겠습니까?
+                        </Typography>
+                        <Typography textAlign="center" sx={{ mb: 1 }}>
+                          [이 댓글에 달린 대댓글도 모두 삭제됩니다]
+                        </Typography>
+                        <Stack direction="row" spacing={3} sx={{ mt: 1 }}>
+                          <CustomButton2 onClick={handleClose}>
+                            취소
+                          </CustomButton2>
+                          <CustomButton onClick={removeComment}>
+                            확인
+                          </CustomButton>
+                        </Stack>
+                      </Stack>
+                    </Box>
+                  </Modal>
+                </Stack>
               </Stack>
             </Stack>
             {inputStatus === true ? (

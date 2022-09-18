@@ -137,159 +137,182 @@ const CsMain: FC = () => {
     });
   }, [curPage]);
 
+  const Unix_timestamp = (t) => {
+    var date = new Date(t);
+    date.setHours(date.getHours() + 9);
+    var year = date.getFullYear();
+    var month = "0" + (date.getMonth() + 1);
+    var day = "0" + date.getDate();
+    var hour = "0" + date.getHours();
+    var minute = "0" + date.getMinutes();
+    return (
+      year +
+      "-" +
+      month.substr(-2) +
+      "-" +
+      day.substr(-2) +
+      " " +
+      hour.substr(-2) +
+      ":" +
+      minute.substr(-2)
+    );
+  };
+
   return (
     <div>
-      <Grid container justifyContent="center" alignItems="center">
-        <Stack>
-          <Box textAlign="center">
-            {/* 이미지 출력 부분 */}
-            <Stack alignItems="center" sx={{ mb: 5 }}>
-              <CarouselMain />
+      {loading ? (
+        <Grid container justifyContent="center" alignItems="center">
+          <Stack>
+            <Box textAlign="center">
+              {/* 이미지 출력 부분 */}
+              <Stack alignItems="center" sx={{ mb: 5 }}>
+                <CarouselMain />
+              </Stack>
+            </Box>
+            <Box sx={{ fontWeight: "bold", mt: 5 }}>
+              <Typography variant="h4" textAlign="center">
+                문의 게시판
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              {myRole === "USER" || myRole === "ORG" ? (
+                <CustomButton variant="contained" href="create/cs">
+                  글 작성
+                </CustomButton>
+              ) : (
+                <></>
+              )}
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+              <Box
+                sx={{
+                  minWidth: 200,
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mr: 6,
+                }}
+              >
+                <FormControl>
+                  <InputLabel>카테고리</InputLabel>
+                  <Select
+                    value={option}
+                    label="option"
+                    onChange={optionHandleChange}
+                    defaultValue={option}
+                  >
+                    <MenuItem value="전체">전체</MenuItem>
+                    <MenuItem value="문의">문의</MenuItem>
+                    <MenuItem value="정보수정">정보수정</MenuItem>
+                    <MenuItem value="신고">신고</MenuItem>
+                    <MenuItem value="도움">도움</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Paper
+                component="form"
+                sx={{
+                  p: "2px 4px",
+                  display: "flex",
+                  alignItems: "center",
+                  width: 250,
+                }}
+                onSubmit={Search}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="검색"
+                  onChange={(event) => {
+                    //adding the onChange event
+                    setWord(event.target.value);
+                  }}
+                />
+                <IconButton type="submit" sx={{ p: "10px" }} onClick={Search}>
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
+            </Box>
+            <Stack>
+              <TableContainer component={Paper} sx={{ my: 5 }}>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        카테고리
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        제목
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        공개 여부
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        답변 여부
+                      </StyledTableCell>
+                      <StyledTableCell align="center" sx={{ fontSize: 17 }}>
+                        작성일
+                      </StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {csList &&
+                      csList.map((data, i) => (
+                        <StyledTableRow key={i}>
+                          <StyledTableCell align="center">
+                            {data?.category}
+                          </StyledTableCell>
+
+                          {myRole !== "ADMIN" &&
+                          data?.visible === "비공개" &&
+                          data?.memberId !== myId ? (
+                            <StyledTableCell
+                              align="center"
+                              sx={{ width: 400 }}
+                              onClick={onClickVisible}
+                            >
+                              {data?.title}
+                            </StyledTableCell>
+                          ) : (
+                            <StyledTableCell align="center" sx={{ width: 400 }}>
+                              <Link
+                                href={`/detail/cs/${data?.helpDeskId}`}
+                                underline="none"
+                                color="inherit"
+                              >
+                                {data.title}
+                              </Link>
+                            </StyledTableCell>
+                          )}
+
+                          <StyledTableCell align="center">
+                            {data?.visible}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {data?.status}
+                          </StyledTableCell>
+                          <StyledTableCell align="center">
+                            {Unix_timestamp(data?.createDate)}
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Stack>
-          </Box>
-          <Box sx={{ fontWeight: "bold", mt: 5 }}>
-            <Typography variant="h4" textAlign="center">
-              문의 게시판
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            {myRole === "USER" || myRole === "ORG" ? (
-              <CustomButton variant="contained" href="create/cs">
-                글 작성
-              </CustomButton>
+            {csList && csList.length > 0 ? (
+              <Stack alignItems="center" sx={{ mb: 5 }}>
+                <Pagination
+                  curPage={curPage}
+                  paginate={paginate}
+                  totalPage={totalPages}
+                />
+              </Stack>
             ) : (
               <></>
             )}
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
-            <Box
-              sx={{
-                minWidth: 200,
-                display: "flex",
-                justifyContent: "flex-end",
-                mr: 6,
-              }}
-            >
-              <FormControl>
-                <InputLabel>카테고리</InputLabel>
-                <Select
-                  value={option}
-                  label="option"
-                  onChange={optionHandleChange}
-                  defaultValue={option}
-                >
-                  <MenuItem value="전체">전체</MenuItem>
-                  <MenuItem value="문의">문의</MenuItem>
-                  <MenuItem value="정보수정">정보수정</MenuItem>
-                  <MenuItem value="신고">신고</MenuItem>
-                  <MenuItem value="도움">도움</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
-
-            <Paper
-              component="form"
-              sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                width: 250,
-              }}
-              onSubmit={Search}
-            >
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="검색"
-                onChange={(event) => {
-                  //adding the onChange event
-                  setWord(event.target.value);
-                }}
-              />
-              <IconButton type="submit" sx={{ p: "10px" }} onClick={Search}>
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-          </Box>
-          <Stack>
-            <TableContainer component={Paper} sx={{ my: 5 }}>
-              <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      카테고리
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      제목
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      공개 여부
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      답변 여부
-                    </StyledTableCell>
-                    <StyledTableCell align="center" sx={{ fontSize: 17 }}>
-                      작성일
-                    </StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {csList &&
-                    csList.map((data) => (
-                      <StyledTableRow key={data.helpDeskId}>
-                        <StyledTableCell align="center">
-                          {data.category}
-                        </StyledTableCell>
-
-                        {myRole !== "ADMIN" &&
-                        data.visible === "비공개" &&
-                        data.memberId !== myId ? (
-                          <StyledTableCell
-                            align="center"
-                            sx={{ width: 400 }}
-                            onClick={onClickVisible}
-                          >
-                            {data.title}
-                          </StyledTableCell>
-                        ) : (
-                          <StyledTableCell align="center" sx={{ width: 400 }}>
-                            <Link
-                              href={`/detail/cs/${data.helpDeskId}`}
-                              underline="none"
-                              color="inherit"
-                            >
-                              {data.title}
-                            </Link>
-                          </StyledTableCell>
-                        )}
-
-                        <StyledTableCell align="center">
-                          {data.visible}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.status}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {data.createDate.substr(0, 10)}
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
           </Stack>
-          {csList && csList.length > 0 ? (
-            <Stack alignItems="center" sx={{ mb: 5 }}>
-              <Pagination
-                curPage={curPage}
-                paginate={paginate}
-                totalPage={totalPages}
-              />
-            </Stack>
-          ) : (
-            <></>
-          )}
-        </Stack>
-      </Grid>
+        </Grid>
+      ) : null}
     </div>
   );
 };

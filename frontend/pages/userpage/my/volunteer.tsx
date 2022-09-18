@@ -84,6 +84,17 @@ const Unix_timestamp = (t) => {
   );
 };
 
+const UpdateButton = styled(Button)({
+  backgroundColor: "#5B321E",
+  color: "white",
+  fontWeight: "bold",
+  "&:hover": {
+    backgroundColor: "#CDAD78",
+    color: "white",
+  },
+  // width: "50px",
+});
+
 // const ConvertTime = ((stringTime) => ({
 //   console.log(stringTime);
 //   let converted = new Date(stringTime);
@@ -126,15 +137,25 @@ const UserMypageVolunteer: FC = () => {
           component="main"
           sx={{
             flexGrow: 1,
-            height: "100vh",
+            height: "110vh",
             overflow: "auto",
             mt: 0,
           }}
         >
           <Container maxWidth="lg" sx={{}}>
-            <Typography variant="h4" sx={{ mt: 5 }}>
-              봉사 조회
-            </Typography>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{ mt: 5 }}
+            >
+              <Typography variant="h4">봉사 조회</Typography>
+              <Link href="/certivol">
+                <UpdateButton style={{ marginLeft: "10px", marginTop: "5px" }}>
+                  증명서 발급
+                </UpdateButton>
+              </Link>
+            </Stack>
+
             <TableContainer component={Paper} sx={{ mt: 5 }}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
@@ -182,6 +203,7 @@ const UserMypageVolunteer: FC = () => {
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           {Unix_timestamp(data.volDate)}
+                          {/* {data.volDate} */}
                         </StyledTableCell>
                         <StyledTableCell align="center">
                           <Link

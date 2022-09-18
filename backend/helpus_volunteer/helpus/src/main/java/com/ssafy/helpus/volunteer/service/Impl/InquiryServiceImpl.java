@@ -147,7 +147,6 @@ public class InquiryServiceImpl implements InquiryService {
             }
     }
 
-
     public Sort gerOrder(String order, String id) {
         log.info("Service getOrder");
         //정렬(최신, 달성률 높은, 달성률 낮은, 오래된)

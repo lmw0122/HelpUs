@@ -91,10 +91,15 @@ const DonationOrg: FC = (props) => {
 
   // 물품 input칸 추가
   const addFormFields = () => {
-    setFormValues([
-      ...formValues,
-      { productName: "", totalCount: 0, productInfo: "" },
-    ]);
+    if (formValues.length >= 6){
+      alert('물품은 최대 6개까지 가능합니다.')
+    } else{
+      setFormValues([
+        ...formValues,
+        { productName: "", totalCount: 0, productInfo: "" },
+      ]);
+    }
+
   };
   // 물품 input칸 삭제
   const removeFormFields = (i) => {
@@ -575,6 +580,7 @@ const DonationOrg: FC = (props) => {
                           name="totalCount"
                           value={element.totalCount || ""}
                           onChange={(e) => handleChange(index, e)}
+                          inputProps={{ maxLength: 3 }}
                         />
                       </Box>
                       <Box>

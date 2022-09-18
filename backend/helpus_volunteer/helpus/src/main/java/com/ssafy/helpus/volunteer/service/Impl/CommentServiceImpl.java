@@ -128,11 +128,7 @@ public class CommentServiceImpl implements CommentService {
             return resultMap;
         }
 
-        if(comment.get().getParentCommentId()==null){
             commentRepository.deleteById(commentId);
-        }else{
-            comment.get().setContent("삭제된 댓글입니다");
-        }
 
         resultMap.put("message", "삭제 성공");
         return resultMap;

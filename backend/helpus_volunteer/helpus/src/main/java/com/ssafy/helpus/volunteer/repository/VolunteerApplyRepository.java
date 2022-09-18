@@ -16,4 +16,5 @@ public interface VolunteerApplyRepository extends JpaRepository <VolunteerApply,
      Page<VolunteerApply> findByWriteId(Long writeId, Pageable pageable);
      Page<VolunteerApply> findByMemberId(Long memberId, Pageable pageable);
      Optional<VolunteerApply> findByVolunteerAndMemberId(Volunteer volunteer, Long memberId);
+     List<VolunteerApply> findByMemberIdAndStatus(Long writeId, int status);
 }

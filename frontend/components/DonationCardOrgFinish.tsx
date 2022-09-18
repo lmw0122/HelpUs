@@ -25,6 +25,7 @@ interface IDonationCardOrgFinish {
 const DonationCardOrgFinish: FC<IDonationCardOrgFinish> = ({ item }) => {
   const router = useRouter();
   const [hover, setHover] = useState<any>({ cursor: "pointer" });
+  const doTitle = item.title;
 
   return (
     <div>
@@ -60,7 +61,38 @@ const DonationCardOrgFinish: FC<IDonationCardOrgFinish> = ({ item }) => {
           >
             <Box>
               {/* 제목은 17자까지만 보여주기??*/}
-              <Link href={`/detail/donationorg/${item.donationId}`}>
+              {doTitle.length > 18 ? (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.5,
+                      }}
+                    >
+                      {doTitle.substring(0, 17)}...
+                    </Typography>
+                  </a>
+                </Link>
+              ) : (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.5,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </a>
+                </Link>
+              )}
+              {/* <Link href={`/detail/donationorg/${item.donationId}`}>
                 <a>
                   <Typography
                     sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3.5 }}
@@ -68,7 +100,7 @@ const DonationCardOrgFinish: FC<IDonationCardOrgFinish> = ({ item }) => {
                     {item.title}
                   </Typography>
                 </a>
-              </Link>
+              </Link> */}
               <Grid
                 container
                 sx={{

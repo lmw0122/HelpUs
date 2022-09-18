@@ -60,6 +60,7 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
   getStatus,
   fStatus,
 }) => {
+  const doTitle = item.title;
   const router = useRouter();
 
   // 모달
@@ -99,7 +100,38 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
             }}
           >
             <Box>
-              <Link href={`/detail/donationorg/${item.donationId}`}>
+              {doTitle.length > 18 ? (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.2,
+                      }}
+                    >
+                      {doTitle.substring(0, 17)}...
+                    </Typography>
+                  </a>
+                </Link>
+              ) : (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.2,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </a>
+                </Link>
+              )}
+              {/* <Link href={`/detail/donationorg/${item.donationId}`}>
                 <a>
                   <Typography
                     sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3.2 }}
@@ -107,7 +139,7 @@ const DonationCardOrg: FC<IDonationCardOrg> = ({
                     {item.title}
                   </Typography>
                 </a>
-              </Link>
+              </Link> */}
               <Grid
                 container
                 sx={{

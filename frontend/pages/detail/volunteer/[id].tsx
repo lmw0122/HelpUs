@@ -107,6 +107,10 @@ const VolunteerDetail: FC = () => {
   let userId = 0;
   let applyPart;
 
+  // const [realVolDate, setRealVolDate] = useState<any>("");
+
+  // const realVolDate = "" + volunteerDetails.volDate;
+
   // 모달
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -123,6 +127,7 @@ const VolunteerDetail: FC = () => {
       volunteerDetail(router.query.id)
         .then((res) => {
           setVolunteerDetails(res.data.volunteer);
+          // setRealVolDate("" + volunteerDetails.volDate);
           userId = res.data.volunteer.memberId;
           setLoading(true);
         })
@@ -383,6 +388,13 @@ const VolunteerDetail: FC = () => {
               <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 2 }}>
                 모집 인원수 : {volunteerDetails?.people}명
               </Typography>
+              <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 2 }}>
+                봉사 일시 : {volunteerDetails?.volDate.substring(0, 10)}{" "}
+                {volunteerDetails?.volDate.substring(11, 16)}
+              </Typography>
+              <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 2 }}>
+                봉사 시간 : {volunteerDetails?.time}시간
+              </Typography>
               <Typography variant="h6" fontWeight="bold" sx={{ ml: 5, mt: 1 }}>
                 장소 : {volunteerDetails?.volAddress}
               </Typography>
@@ -459,9 +471,9 @@ const VolunteerDetail: FC = () => {
                         flexDirection="column"
                         display="flex"
                       >
-                        <Typography sx={{ fontSize: 13 }} textAlign="center">
+                        {/* <Typography sx={{ fontSize: 13 }} textAlign="center">
                           {(100 - volunteerDetails?.percent).toFixed()}%
-                        </Typography>
+                        </Typography> */}
                       </Box>
                     ) : (
                       <Box

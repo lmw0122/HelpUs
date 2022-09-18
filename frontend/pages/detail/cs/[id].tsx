@@ -42,7 +42,7 @@ import CustomCarousel from "@/components/Carousel";
 
 import { useRouter } from "next/router";
 // api
-import { getCsDetail, csComment } from "function/axios";
+import { getCsDetail, csComment, userDetail } from "function/axios";
 
 const CustomButton = styled(Button)({
   backgroundColor: "#5B321E",
@@ -145,16 +145,11 @@ const CsDetail: FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  // console.log("라우터 쿼리는", router.query.id);
-
   const [csDetails, setCsDetails] = useState<any>("");
-
-  const [orgInfo, setOrgInfo] = useState<any>("");
 
   const [deleteStatus, setDeleteStatus] = useState<boolean>(false);
 
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string>("");
 
   // 댓글
   const [comment, setComment] = useState<string>("");
@@ -164,6 +159,10 @@ const CsDetail: FC = () => {
   const [id, setId] = useState<any>();
   const [token, setToken] = useState<any>();
   const [role, setRole] = useState<any>();
+
+  const [writerInfo, setWriterInfo] = useState<any>("");
+  const [writerLoading, setWriterLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const id = localStorage.getItem("id");
     const token = localStorage.getItem("jwt");
@@ -173,7 +172,6 @@ const CsDetail: FC = () => {
     setToken(token);
   });
 
-  // console.log(id)
   // 상세 페이지 정보 불러오기
   useEffect(() => {
     if (router.isReady) {
@@ -182,10 +180,18 @@ const CsDetail: FC = () => {
         setCommentList(res.data.desk.comments);
         setLoading(true);
         setDetailLoading(true);
-        setLoading(true);
       });
     }
   }, [router.isReady, comment]);
+
+  useEffect(() => {
+    if (detailLoading) {
+      userDetail(csDetails.memberId).then((res) => {
+        setWriterInfo(res.data);
+        setWriterLoading(true);
+      });
+    }
+  }, [detailLoading]);
 
   const getDeleteStatus = (deleteStatus) => {
     setDeleteStatus(deleteStatus);
@@ -211,7 +217,7 @@ const CsDetail: FC = () => {
 
   return (
     <>
-      {loading ? (
+      {loading && detailLoading && writerLoading ? (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <Box
@@ -260,9 +266,30 @@ const CsDetail: FC = () => {
                   </div>
                 </Grid>
                 <Grid>
-                  <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
+                  {writerInfo.role === "ORG" ? (
+                    <Link href={`/orgpage/${csDetails.memberId}`}>
+                      <Typography
+                        sx={{ mt: 2.5, cursor: "pointer" }}
+                        variant="h6"
+                        fontWeight="bold"
+                      >
+                        {csDetails.name}
+                      </Typography>
+                    </Link>
+                  ) : (
+                    <Link href={`/userpage/${csDetails.memberId}`}>
+                      <Typography
+                        sx={{ mt: 2.5, cursor: "pointer" }}
+                        variant="h6"
+                        fontWeight="bold"
+                      >
+                        {csDetails.name}
+                      </Typography>
+                    </Link>
+                  )}
+                  {/* <Typography sx={{ mt: 2.5 }} variant="h6" fontWeight="bold">
                     {csDetails.name}
-                  </Typography>
+                  </Typography> */}
                   <Grid
                     sx={{ mt: 2 }}
                     container

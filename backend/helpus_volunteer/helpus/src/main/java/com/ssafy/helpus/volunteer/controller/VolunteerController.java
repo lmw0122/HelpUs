@@ -227,12 +227,26 @@ public class VolunteerController {
         }catch (Exception e){
             log.error(e.getMessage());
 
-            resultMap.put("message", "조회 실패");
+            resultMap.put("message", e.getMessage());
             stat = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity(resultMap, stat);
     }
 
+    @ApiOperation(value = "봉사목록 한번에")
+    @GetMapping("/myVolunteerList/{memberId}")
+    public ResponseEntity myVolList(@PathVariable Long memberId){
 
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        try {
+            resultMap = volunteerService.myVolList(memberId);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            resultMap.put("message", "실패");
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity(resultMap, status);
+    }
 
 }

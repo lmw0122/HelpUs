@@ -27,6 +27,7 @@ const DonationCardOrgReview: FC<IDnc> = ({ item }) => {
   const onClickCreateReview = () => {
     window.location.href = `/create/review/${item.donationId}`;
   };
+  const doTitle = item.title;
 
   return (
     <div>
@@ -51,7 +52,38 @@ const DonationCardOrgReview: FC<IDnc> = ({ item }) => {
             }}
           >
             <Box>
-              <Link href={`/detail/donationorg/${item.donationId}`}>
+              {doTitle.length > 18 ? (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.2,
+                      }}
+                    >
+                      {doTitle.substring(0, 17)}...
+                    </Typography>
+                  </a>
+                </Link>
+              ) : (
+                <Link href={`/detail/donationorg/${item.donationId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.2,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </a>
+                </Link>
+              )}
+              {/* <Link href={`/detail/donationorg/${item.donationId}`}>
                 <a>
                   <Typography
                     sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3.2 }}
@@ -59,7 +91,7 @@ const DonationCardOrgReview: FC<IDnc> = ({ item }) => {
                     {item.title}
                   </Typography>
                 </a>
-              </Link>
+              </Link> */}
               <Grid
                 container
                 sx={{

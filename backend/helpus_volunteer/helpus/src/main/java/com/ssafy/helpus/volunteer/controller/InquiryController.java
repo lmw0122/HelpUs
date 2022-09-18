@@ -74,5 +74,4 @@ public class InquiryController {
         return new ResponseEntity(resultMap, stat);
     }
 
-
 }

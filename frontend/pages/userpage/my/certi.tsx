@@ -44,11 +44,18 @@ const UserMypageCerti: FC = () => {
           <Container maxWidth="lg">
             <Stack sx={{ mt: 10 }} alignItems="center">
               <Image src={logo} height="300px" width="300px" alt="d" />
-              <Link href="/certi">
-                <UpdateButton sx={{ width: 150, mt: 5 }}>
-                  증명서 발급 이동
-                </UpdateButton>
-              </Link>
+              <div>
+                <Link href="/certi">
+                  <UpdateButton sx={{ width: 100, mt: 4, mx:2 }}>
+                    기부 증명서
+                  </UpdateButton>
+                </Link>
+                <Link href="/certivol">
+                  <UpdateButton sx={{ width: 100, mt: 4, mx:2 }}>
+                    봉사 증명서
+                  </UpdateButton>
+                </Link>
+              </div>
             </Stack>
           </Container>
         </Box>

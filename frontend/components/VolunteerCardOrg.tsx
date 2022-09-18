@@ -58,7 +58,7 @@ const CustomButton2 = styled(Button)({
 
 const VolunteerCardOrg: FC<IVC> = ({ item, token, id, getStatus, fStatus }) => {
   const volDate = "" + item.volDate;
-
+  const volTitle = "" + item.title;
   // 모달
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -98,7 +98,38 @@ const VolunteerCardOrg: FC<IVC> = ({ item, token, id, getStatus, fStatus }) => {
             }}
           >
             <Box>
-              <Link href={`/detail/volunteer/${item.volunteerId}`}>
+              {volTitle.length > 18 ? (
+                <Link href={`/detail/volunteer/${item.volunteerId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.5,
+                      }}
+                    >
+                      {volTitle.substring(0, 17)}...
+                    </Typography>
+                  </a>
+                </Link>
+              ) : (
+                <Link href={`/detail/volunteer/${item.volunteerId}`}>
+                  <a>
+                    <Typography
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: 17,
+                        mt: 0.5,
+                        ml: 3.5,
+                      }}
+                    >
+                      {item.title}
+                    </Typography>
+                  </a>
+                </Link>
+              )}
+              {/* <Link href={`/detail/volunteer/${item.volunteerId}`}>
                 <a>
                   <Typography
                     sx={{ fontWeight: "bold", fontSize: 17, mt: 0.5, ml: 3.5 }}
@@ -106,7 +137,7 @@ const VolunteerCardOrg: FC<IVC> = ({ item, token, id, getStatus, fStatus }) => {
                     {item.title}
                   </Typography>
                 </a>
-              </Link>
+              </Link> */}
               <Grid
                 container
                 sx={{

@@ -1,5 +1,6 @@
 import react, { FC } from "react";
 import "../styles/globals.css";
+import "../styles/scroll.css";
 import type { AppProps } from "next/app";
 import Layout from "../components/Layout";
 
@@ -26,9 +27,9 @@ const MyApp: FC = ({ Component, pageProps }: AppProps) => {
     },
     palette: {
       primary: {
-        main: '#5B321E'
-      }
-    }
+        main: "#5B321E",
+      },
+    },
   });
 
   // const theme = createTheme();

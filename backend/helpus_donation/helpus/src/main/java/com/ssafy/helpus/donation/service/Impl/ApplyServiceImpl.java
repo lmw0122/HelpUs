@@ -177,6 +177,7 @@ public class ApplyServiceImpl implements ApplyService {
 
         ApplyStatus status = type.equals("tracking") ? ApplyStatus.배송중 : ApplyStatus.배송완료;
         Page<DonationApply> applies;
+        Sort sort = status.equals(ApplyStatus.배송중) ? Sort.by("donationApplyId").ascending() : Sort.by("donationApplyId").descending();
 
         if(donationId == null) { //전체 조회
             List<Donation> donations = donationRepository.findByMemberId(memberId);
@@ -184,11 +185,10 @@ public class ApplyServiceImpl implements ApplyService {
             if(donations.isEmpty()) { //기부 글이 없을 경우
                 return new HashMap<>(){{put("message", Message.DONATION_NOT_FOUND);}};
             }
-
-            applies = applyRepository.findByStatusAndDonationIn(status, donations, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+            applies = applyRepository.findByStatusAndDonationIn(status, donations, PageRequest.of(page, 10, sort));
         } else { //글별 조회
             Donation donation = donationRepository.findById(donationId).get();
-            applies = applyRepository.findByStatusAndDonation(status, donation, PageRequest.of(page, 10, Sort.by("donationApplyId").ascending()));
+            applies = applyRepository.findByStatusAndDonation(status, donation, PageRequest.of(page, 10, sort));
         }
 
         return makeList(applies, "org");

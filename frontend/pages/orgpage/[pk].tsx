@@ -415,11 +415,7 @@ const OrgPage: FC = () => {
                       totalPage={totalPages}
                     />
                   </Stack>
-                ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    진행 중인 기부가 없습니다.
-                  </Typography>
-                )}
+                ) : null}
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   마감된 기부
                 </Typography>
@@ -451,11 +447,7 @@ const OrgPage: FC = () => {
                       totalPage={totalPages2}
                     />
                   </Stack>
-                ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    마감된 기부가 없습니다.
-                  </Typography>
-                )}
+                ) : null}
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
@@ -489,11 +481,7 @@ const OrgPage: FC = () => {
                       totalPage={totalPages4}
                     />
                   </Stack>
-                ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    진행 중인 봉사가 없습니다.
-                  </Typography>
-                )}
+                ) : null}
                 <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
                   마감된 봉사
                 </Typography>
@@ -525,11 +513,7 @@ const OrgPage: FC = () => {
                       totalPage={totalPages5}
                     />
                   </Stack>
-                ) : (
-                  <Typography fontWeight="bold" variant="h5" sx={{ mb: 2 }}>
-                    마감된 봉사가 없습니다.
-                  </Typography>
-                )}
+                ) : null}
               </TabPanel>
               <TabPanel value={value} index={2}>
                 {review && review.length > 0 ? (

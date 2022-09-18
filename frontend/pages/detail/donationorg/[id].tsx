@@ -36,6 +36,7 @@ import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 
+import defaultImage from "../../../public/images/defaultImage.png";
 import testImage from "../../../public/images/testImage.jpg";
 import Comment from "../../../components/CommentDonation";
 import Pagination from "../../../components/Pagination";
@@ -155,7 +156,7 @@ const DonationOrgDetail: FC = () => {
   const router = useRouter();
   const routerId = useRouter().query.id;
 
-  const [donationDetails, setDonationDetails] = useState<any>('');
+  const [donationDetails, setDonationDetails] = useState<any>("");
   const [orgInfo, setOrgInfo] = useState<any>("");
   const [orgId, setOrgId] = useState<any>("");
   const [detailLoading, setDetailLoading] = useState<boolean>(false);
@@ -300,7 +301,7 @@ const DonationOrgDetail: FC = () => {
                     />
                   ) : (
                     <Image
-                      src={testImage}
+                      src={defaultImage}
                       alt="orgImage"
                       width="150px"
                       height="150px"
@@ -609,11 +610,15 @@ const DonationOrgDetail: FC = () => {
                               </Typography>
                             </Stack>
                           )}
-                          {data.totalCount -
+                          {data.deliveryCount +
+                            data.finishCount +
+                            data.waitingCount ===
+                            0 ||
+                          data.totalCount -
                             data.deliveryCount -
                             data.finishCount -
                             data.waitingCount ===
-                          0 ? null : (
+                            0 ? (
                             <Stack
                               direction="column"
                               sx={{
@@ -629,8 +634,30 @@ const DonationOrgDetail: FC = () => {
                             >
                               <Box
                                 sx={{
-                                  // borderTopRightRadius: 5,
-                                  // borderBottomRightRadius: 5,
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                            </Stack>
+                          ) : (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount -
+                                    data.waitingCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
                                   height: 25,
                                   bgcolor: "#dbd5ca",
                                 }}
@@ -651,12 +678,81 @@ const DonationOrgDetail: FC = () => {
                               </Typography>
                             </Stack>
                           )}
-                          {/* <Typography
-                            align="center"
-                            sx={{ ml: 1, fontSize: 14, width: 50 }}
-                          >
-                            {data.finishCount}/{data.totalCount}
-                          </Typography> */}
+                          {/* {data.totalCount -
+                            data.deliveryCount -
+                            data.finishCount -
+                            data.waitingCount ===
+                          0 ? (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount -
+                                    data.waitingCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount -
+                                    data.waitingCount) /
+                                    data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          ) : (
+                            <Stack
+                              direction="column"
+                              sx={{
+                                width: `${
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount -
+                                    data.waitingCount) /
+                                    data.totalCount) *
+                                  100
+                                }%`,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  height: 25,
+                                  bgcolor: "#dbd5ca",
+                                }}
+                                justifyContent="center"
+                                flexDirection="column"
+                                display="flex"
+                              ></Box>
+                              <Typography sx={{ fontSize: 11 }}>
+                                {(
+                                  ((data.totalCount -
+                                    data.deliveryCount -
+                                    data.finishCount -
+                                    data.waitingCount) /
+                                    data.totalCount) *
+                                  100
+                                ).toFixed()}
+                                %
+                              </Typography>
+                            </Stack>
+                          )} */}
                         </Stack>
                       </StyledTableCell>
                       <StyledTableCell align="center">
