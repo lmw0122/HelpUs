@@ -19,19 +19,19 @@
 
 ## 기술 스택
 - Front-end
-    
+  
     `React` `Next.js` `Typescript` 
     
 - Back-end
-    
+  
     `SpringBoot` `Gateway` `JPA`
     
 - DB
-    
+  
     `MySQL` `S3`
     
 - Deploy
-    
+  
     `AWS EC2` `Jenkins CI/CD`
 
 
@@ -75,3 +75,21 @@
     - 댓글 관리자만 작성가능
 - 뉴스
     - 기부 관련 최신 뉴스 제공
+
+
+
+## 서비스 흐름도
+
+![image-20220919083257074](C:\Users\qlrqo\AppData\Roaming\Typora\typora-user-images\image-20220919083257074.png)
+
+
+
+## 주요 기능
+
+![image-20220919083321740](C:\Users\qlrqo\AppData\Roaming\Typora\typora-user-images\image-20220919083321740.png)
+
+
+
+## 아키텍처
+
+![image-20220919083403343](C:\Users\qlrqo\AppData\Roaming\Typora\typora-user-images\image-20220919083403343.png)
