@@ -75,3 +75,10 @@
     - 댓글 관리자만 작성가능
 - 뉴스
     - 기부 관련 최신 뉴스 제공
+    
+## 서비스 흐름도
+![service2](https://user-images.githubusercontent.com/74301875/197927865-942b39a2-bdc8-457b-bdb7-8256334d1570.PNG)
+
+## 시스템 아키텍쳐
+![sa](https://user-images.githubusercontent.com/74301875/197927882-3ca94f1b-1d5c-4a9a-a159-578638c71531.PNG)
+
