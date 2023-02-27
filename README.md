@@ -5,16 +5,16 @@
 - 물품을 직접사서 기관에 보냄으로서 기부금 횡령을 방지
 - 기부만이 아닌 봉사활동에 대한 서비스 제공 -> 기관은 봉사자를 구할 수 있고, 개인은 봉사지원 및 재능기부를 통한 따뜻한 사회 실현
 
-서비스 URL: http://k6c106.p.ssafy.io
+서비스 URL: ~~http://k6c106.p.ssafy.io~~
 
 [시연 시나리오](https://github.com/lmw0122/HelpUs/blob/master/exec/Helpus_%EC%8B%9C%EC%97%B0_%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.pdf) 
 
 ## 팀원 역할
 | 이름 | 역할 |
 | ---- | ---- |
+| **이명원** | **Backend(회원, 게이트웨이 서버)** |
 | 최다운 | 팀장 & Backend & Deploy |
 | 박소희 | Backend |
-| 이명원 | Backend |
 | 김나영 | Frontend |
 | 이다예 | Frontend |
 | 이제민 | Frontend |
@@ -26,11 +26,11 @@
     
 - Back-end
     
-    `SpringBoot` `Gateway` `JPA`
+    **`SpringBoot`** **`Spring Cloud Gateway`** **`JPA`**
     
 - DB
     
-    `MySQL` `S3`
+    **`MySQL`** `S3`
     
 - Deploy
     
