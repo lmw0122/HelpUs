@@ -7,7 +7,7 @@
 
 서비스 URL: http://k6c106.p.ssafy.io
 
-[시연 시나리오](../exec) 
+[시연 시나리오](https://github.com/lmw0122/HelpUs/blob/master/exec/Helpus_%EC%8B%9C%EC%97%B0_%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4.pdf) 
 
 ## 팀원 역할
 | 이름 | 역할 |
